@@ -14,6 +14,9 @@ const validateLogin = [
       .exists({ checkFalsy: true })
       .notEmpty()
       .withMessage('Please provide a valid email or username.'),
+    // check('firstName')
+    //   .exists({checkFalsy: true})
+    //   .withMessage('Please provide a first name'),
     check('password')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a password.'),
@@ -23,13 +26,13 @@ const validateLogin = [
 
 //login 
 router.post('/', validateLogin, async (req, res, next) => {
-      const { credential, password } = req.body;
+      const { credential, password} = req.body;
   
       const user = await User.unscoped().findOne({
         where: {
           [Op.or]: {
             username: credential,
-            email: credential
+            email: credential,
           }
         }
       });
@@ -44,6 +47,7 @@ router.post('/', validateLogin, async (req, res, next) => {
   
       const safeUser = {
         id: user.id,
+        firstName: user.firstName,
         email: user.email,
         username: user.username,
       };
@@ -70,6 +74,7 @@ router.get('/', (req, res) => {
       if (user) {
         const safeUser = {
           id: user.id,
+          firstName: user.firstName,
           email: user.email,
           username: user.username,
         };
