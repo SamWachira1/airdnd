@@ -20,7 +20,7 @@ const validateLogin = [
     check('password')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a password.'),
-    handleValidationErrors
+      handleValidationErrors
   ];
 
 
@@ -44,7 +44,6 @@ router.post('/', validateLogin, async (req, res, next) => {
 
       }
 
-  
       const safeUser = {
         id: user.id,
         firstName: user.firstName,
