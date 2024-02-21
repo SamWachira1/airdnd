@@ -62,12 +62,25 @@ router.get('/:id', async (req, res)=>{
         ],
 
         attributes: {
-            exclude: ['previewImage'] // Exclude the 'previewImage' attribute
+            exclude: ['previewImage'] 
           }
 
     })
 
-    res.json(spots)
+    let date = new Date(spots.createdAt)
+    date = date.toISOString().replace('T', ' ').split('.')[0];
+
+
+
+    const responseSpot = {
+        ...spots.toJSON(), 
+        createdAt: date,
+        updatedAt: date
+      };
+      
+
+
+    res.json(responseSpot)
 })
 
 
