@@ -26,13 +26,14 @@ module.exports = {
         name: "App Academy",
         description: "Place where web developers are created",
         price: 123,
-        avgRating: 4.5,
+        numReviews: 5,
+        avgStarRating: 4.5,
         previewImage: "image url"
       },
 
       {
         id: 2,
-        ownerId: 2,
+        ownerId: 1,
         address: "1233 Disney Lane",
         city: "Los Angels",
         state: "California",
@@ -42,7 +43,8 @@ module.exports = {
         name: "App Academy",
         description: "Place where web developers are created",
         price: 123,
-        avgRating: 4.8,
+        numReviews: 5,
+        avgStarRating: 4.8,
         previewImage: "image url"
       },
  

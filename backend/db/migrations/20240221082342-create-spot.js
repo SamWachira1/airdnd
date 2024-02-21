@@ -69,11 +69,17 @@ module.exports = {
         allowNull: false,
 
       },
-      avgRating: {
+      numReviews: {
+        type: Sequelize.INTEGER,
+        allowNull: false 
+      },
+
+      avgStarRating: {
         type: Sequelize.DECIMAL,
         allowNull: false,
 
       },
+
       previewImage: {
         type: Sequelize.STRING,
         allowNull: false,
