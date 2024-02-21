@@ -21,6 +21,12 @@ module.exports = {
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Spots',
+          key: 'id'
+        },
+
+        onDelete: 'CASCADE'
       },
       address: {
         type: Sequelize.STRING,

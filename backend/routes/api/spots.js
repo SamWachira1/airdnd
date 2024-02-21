@@ -1,7 +1,7 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot } = require('../../db/models');
+const { Spot, User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors, handleValidationErrorsUsers } = require('../../utils/validation');
 
@@ -16,6 +16,25 @@ router.get('/', async (req, res)=>{
 
    res.status(200).json(response)
 
+})
+
+
+router.get('/current', async (req, res)=> {
+
+    let currentUser = req.user
+
+    let user = await User.findOne({
+        where: {id: currentUser.id},
+
+    })
+
+    let getUserSpots = await user.getSpots()
+
+    let response = {Spots: getUserSpots}
+
+    res.json(response)
+
+  
 })
 
 
