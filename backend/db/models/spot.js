@@ -75,18 +75,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    numReviews: {
-      type: DataTypes.INTEGER,
-      allowNull: false 
-    },
-    avgStarRating: {
-      type: DataTypes.DECIMAL,
-      allowNull: false
-    },
-    previewImage: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
+    // numReviews: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false 
+    // },
+    // avgStarRating: {
+    //   type: DataTypes.DECIMAL,
+    //   allowNull: false
+    // },
+    // previewImage: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false
+    // }
   }, {
     sequelize,
     modelName: 'Spot',

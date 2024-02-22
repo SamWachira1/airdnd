@@ -177,7 +177,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     if(!currentUser) res.json({message: 'No user logged in'})
 
-    let { address, city, state, country, lat, lng, name, description, price, numReviews, avgStarRating, previewImage } = req.body
+    let { address, city, state, country, lat, lng, name, description, price} = req.body
 
     let newSpot = await Spot.create({
         ownerId: currentUser,
@@ -190,9 +190,6 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
         name,
         description,
         price,
-        numReviews,  // against schema
-        avgStarRating,  // against schema
-        previewImage   // against schema
 
     })
 
