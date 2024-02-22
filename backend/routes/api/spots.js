@@ -196,6 +196,22 @@ router.get('/:spotId', async (req, res) => {
     res.json(responseSpot)
 })
 
+router.delete('/:spotId', requireAuth, async (req, res)=>{
+
+    let {spotId} = req.params 
+
+    let spot = await Spot.findOne({where: {id: spotId}})
+
+    if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    await spot.destroy()
+
+    res.status(200).json({message: "Successfully deleted" })
+
+})
+
 
 
 router.get('/', async (req, res) => {
