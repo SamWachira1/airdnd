@@ -8,6 +8,91 @@ const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErr
 const router = express.Router();
 
 
+router.post("/:spotId/images", requireAuth, async (req, res) => {
+
+    const currUser = await req.user.dataValues;
+
+
+    const { spotId } = req.params;
+    const { url, preview } = req.body;
+    const spot = await Spot.findByPk(spotId);
+
+    if(!spot){
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    if (spot.ownerId === currUser.id){
+        const newImage = await Image.create({
+            url,
+            preview,
+            imageableId: spot.id,
+            imageableType: 'Spot',
+         });
+
+
+        const safeResponse = {
+            url: newImage.url,
+            preview: newImage.preview
+        }
+
+        res.status(200).json(safeResponse)
+    }
+
+
+ 
+  });
+
+  router.get('/:spotId', async (req, res) => {
+
+    let { spotId } = req.params
+
+    id = Number(spotId)
+
+    let spots = await Spot.findOne({
+        where: { id: id },
+
+        include: [
+            {
+                model: Image,
+                as: 'SpotImages',
+                attributes: ['id', 'url', 'preview']
+            },
+
+            {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName'],
+            },
+
+        ],
+
+        attributes: {
+            exclude: ['previewImage']
+        }
+
+    })
+
+
+    if (!spots) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+
+    let date = new Date(spots.createdAt)
+    date = date.toISOString().replace('T', ' ').split('.')[0];
+
+    const responseSpot = {
+        ...spots.toJSON(),
+        createdAt: date,
+        updatedAt: date
+    };
+
+
+
+    res.json(responseSpot)
+})
+
+
 
 router.get('/', async (req, res) => {
 
@@ -69,55 +154,9 @@ router.get('/current', async (req, res) => {
 
 })
 
-router.get('/:spotId', async (req, res) => {
-
-    let { spotId } = req.params
-
-    id = Number(spotId)
-
-    let spots = await Spot.findOne({
-        where: { id: id },
-
-        include: [
-            {
-                model: Image,
-                as: 'SpotImages',
-                attributes: ['id', 'url', 'preview']
-            },
-
-            {
-                model: User,
-                as: 'Owner',
-                attributes: ['id', 'firstName', 'lastName'],
-            },
-
-        ],
-
-        attributes: {
-            exclude: ['previewImage']
-        }
-
-    })
-
-
-    if (!spots) {
-        return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-
-    let date = new Date(spots.createdAt)
-    date = date.toISOString().replace('T', ' ').split('.')[0];
-
-    const responseSpot = {
-        ...spots.toJSON(),
-        createdAt: date,
-        updatedAt: date
-    };
 
 
 
-    res.json(responseSpot)
-})
 
 
 const validateSpot = [
@@ -213,6 +252,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     
         res.status(201).json(safeSpot)
     }
+
 
 })
 
