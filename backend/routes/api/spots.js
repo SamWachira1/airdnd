@@ -12,7 +12,21 @@ router.get('/', async (req, res)=>{
 
     let getAllSpots  = await Spot.findAll()
 
-   let response = {Spots: getAllSpots}
+   let getFormatedResponse = getAllSpots.map((spot)=> {
+        const date = new Date(spot.createdAt);
+        const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+        const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+
+        return {
+            ...spot.toJSON(),
+            createdAt: formattedCreatedAt,
+            updatedAt: formattedUpdatedAt,
+        }; 
+   })
+
+   let response = {
+    Spots: getFormatedResponse
+   }
 
    res.status(200).json(response)
 
@@ -30,7 +44,24 @@ router.get('/current', async (req, res)=> {
 
     let getUserSpots = await user.getSpots()
 
-    let response = {Spots: getUserSpots}
+
+    const formattedSpots = getUserSpots.map((spot) => {
+        const date = new Date(spot.createdAt);
+        const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+        const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+
+        return {
+            ...spot.toJSON(),
+            createdAt: formattedCreatedAt,
+            updatedAt: formattedUpdatedAt,
+        };
+    });
+
+
+    let response = {
+        Spots: formattedSpots,
+    };
+
 
     res.json(response)
 
@@ -39,12 +70,13 @@ router.get('/current', async (req, res)=> {
 
 router.get('/:id', async (req, res)=>{
 
-    let {id} = req.params 
+    let {id} = req.params
+    
     id = Number(id)
-
-
+    
+    
     let spots = await Spot.findOne({
-        where: {id},
+        where: {id: id},
 
         include: [
             {
@@ -67,10 +99,14 @@ router.get('/:id', async (req, res)=>{
 
     })
 
+
+    if (!spots) {
+        return res.status(404).json({ message: 'Spot not found' });
+    }
+
+
     let date = new Date(spots.createdAt)
     date = date.toISOString().replace('T', ' ').split('.')[0];
-
-
 
     const responseSpot = {
         ...spots.toJSON(), 
