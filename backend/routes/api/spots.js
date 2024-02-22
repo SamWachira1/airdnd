@@ -73,14 +73,6 @@ router.get('/:spotId', async (req, res)=>{
     let {spotId} = req.params
     
     id = Number(spotId)
-
-    if (isNaN(id)) {
-        return res.status(400).json({ message: 'Invalid spotId' });
-    }
-
-
-    console.log(id)
-    
     
     let spots = await Spot.findOne({
         where: {id: id},
@@ -108,7 +100,7 @@ router.get('/:spotId', async (req, res)=>{
 
 
     if (!spots) {
-        return res.status(404).json({ message: 'Spot not found' });
+        return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
 
