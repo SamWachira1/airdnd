@@ -7,6 +7,57 @@ const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErr
 
 const router = express.Router();
 
+const validateSpot = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("Street address is required"),
+    check('city')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("City is required"),
+    check('state')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("State is required"),
+    check('country')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("Country is required"),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isFloat({ min: -90, max: 90 })
+        .withMessage("Latitude must be within -90 and 90"),
+
+    check('lng')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage("Longitude must be within -180 and 180"),
+
+    check('name')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isLength({ max: 50 })
+        .withMessage("Name must be less than 50 characters"),
+
+    check('description')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("Description is required"),
+
+    check('price')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isFloat({ gt: 0 })
+        .withMessage("Price per day must be a positive number"),
+
+    handleValidationErrorsSpots
+
+];
+
+
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
 
@@ -15,19 +66,19 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
     const { spotId } = req.params;
     const { url, preview } = req.body;
-    const spot = await Spot.findByPk(spotId);
+    const spot = await Spot.findOne({ where: { id: spotId } });
 
-    if(!spot){
+    if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    if (spot.ownerId === currUser.id){
+    if (spot.ownerId === currUser.id) {
         const newImage = await Image.create({
             url,
             preview,
             imageableId: spot.id,
             imageableType: 'Spot',
-         });
+        });
 
 
         const safeResponse = {
@@ -39,10 +90,63 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     }
 
 
- 
-  });
 
-  router.get('/:spotId', async (req, res) => {
+});
+
+
+
+router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
+
+    const currUser = await req.user.dataValues;
+    const { spotId } = req.params
+    const { address, city, state, country, lat, lng, name, description, price } = req.body
+
+    let spot = await Spot.findOne({ where: { id: spotId } })
+
+    if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    if (spot.ownerId === parseInt(currUser.id)) {
+
+        spot.address = address
+        spot.city = city;
+        spot.state = state;
+        spot.country = country;
+        spot.lat = lat;
+        spot.lng = lng;
+        spot.name = name;
+        spot.description = description;
+        spot.price = price;
+
+        await spot.save()
+
+        const date = new Date(spot.createdAt).toISOString().replace('T', ' ').split('.')[0];
+        const responseEdit = {
+            id: spot.id,
+            ownerId: spot.ownerId,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: spot.lat,
+            lng: spot.lng,
+            name: spot.name,
+            description: spot.description,
+            price: spot.price,
+            createdAt: date,
+            updatedAt: date,
+        };
+
+        res.status(200).json(responseEdit)
+
+    }
+
+
+
+})
+
+router.get('/:spotId', async (req, res) => {
 
     let { spotId } = req.params
 
@@ -159,66 +263,17 @@ router.get('/current', async (req, res) => {
 
 
 
-const validateSpot = [
-    check('address')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("Street address is required"),
-    check('city')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("City is required"),
-    check('state')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("State is required"),
-    check('country')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("Country is required"),
-    check('lat')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isFloat({ min: -90, max: 90 })
-        .withMessage("Latitude must be within -90 and 90"),
-
-    check('lng')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isFloat({ min: -180, max: 180 })
-        .withMessage("Longitude must be within -180 and 180"),
-
-    check('name')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isLength({ max: 50 })
-        .withMessage("Name must be less than 50 characters"),
-
-    check('description')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage("Description is required"),
-
-    check('price')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isFloat({ gt: 0 })
-        .withMessage("Price per day must be a positive number"),
-
-    handleValidationErrorsSpots
-
-];
 
 
 router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     const currentUser = await req.user.dataValues.id; // Wait for user data
 
-    if(!currentUser) res.json({message: 'No user logged in'})
+    if (!currentUser) res.json({ message: 'No user logged in' })
 
-    let { address, city, state, country, lat, lng, name, description, price} = req.body
+    let { address, city, state, country, lat, lng, name, description, price } = req.body
 
-    if (currentUser){
+    if (currentUser) {
 
         let newSpot = await Spot.create({
             ownerId: currentUser,
@@ -231,9 +286,9 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
             name,
             description,
             price,
-    
+
         })
-        
+
         const safeSpot = {
             id: newSpot.id,
             ownerId: newSpot.ownerId,
@@ -246,10 +301,10 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
             name: newSpot.name,
             description: newSpot.description,
             price: newSpot.price
-    
+
         }
-    
-    
+
+
         res.status(201).json(safeSpot)
     }
 

@@ -79,6 +79,9 @@ const handleValidationErrorsSpots = (req, _res, next) => {
 
 
 
+
+
+
 module.exports = {
-  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots
+  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots,
 };
