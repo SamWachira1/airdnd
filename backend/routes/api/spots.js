@@ -68,11 +68,18 @@ router.get('/current', async (req, res)=> {
   
 })
 
-router.get('/:id', async (req, res)=>{
+router.get('/:spotId', async (req, res)=>{
 
-    let {id} = req.params
+    let {spotId} = req.params
     
-    id = Number(id)
+    id = Number(spotId)
+
+    if (isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid spotId' });
+    }
+
+
+    console.log(id)
     
     
     let spots = await Spot.findOne({
