@@ -179,37 +179,41 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     let { address, city, state, country, lat, lng, name, description, price} = req.body
 
-    let newSpot = await Spot.create({
-        ownerId: currentUser,
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price,
+    if (currentUser){
 
-    })
-
-    const safeSpot = {
-        id: newSpot.id,
-        ownerId: newSpot.ownerId,
-        address: newSpot.address,
-        city: newSpot.city,
-        state: newSpot.state,
-        country: newSpot.country,
-        lat: newSpot.lat,
-        lng: newSpot.lng,
-        name: newSpot.name,
-        description: newSpot.description,
-        price: newSpot.price
-
+        let newSpot = await Spot.create({
+            ownerId: currentUser,
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price,
+    
+        })
+        
+        const safeSpot = {
+            id: newSpot.id,
+            ownerId: newSpot.ownerId,
+            address: newSpot.address,
+            city: newSpot.city,
+            state: newSpot.state,
+            country: newSpot.country,
+            lat: newSpot.lat,
+            lng: newSpot.lng,
+            name: newSpot.name,
+            description: newSpot.description,
+            price: newSpot.price
+    
+        }
+    
+    
+        res.status(201).json(safeSpot)
     }
 
-
-    res.status(201).json(safeSpot)
 })
 
 
