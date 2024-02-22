@@ -13,7 +13,7 @@ module.exports = {
  
     await Image.bulkCreate([
       {
-        id: 1,
+
         url: 'image url',
         preview: true,
         imageableType: 'Spot',
@@ -21,7 +21,7 @@ module.exports = {
       },
 
       {
-        id: 2,
+ 
         url: 'image url',
         preview: false,
         imageableType: 'Spot',
