@@ -39,8 +39,11 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 model: Image,
                 as: 'ReviewImages',
-                attributes: ['id', 'url']
-
+                attributes: ['id', 'url'],
+                scope: {
+                    imageableType: 'Review'
+                }
+                
             }
 
         ]

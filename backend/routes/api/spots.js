@@ -64,9 +64,11 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
     const currUser = req.user;
 
-
     const { spotId } = req.params;
     const { url, preview } = req.body;
+
+    
+
     const spot = await Spot.findOne({ where: { id: spotId } });
 
     if (!spot) {
@@ -81,16 +83,17 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
             imageableType: 'Spot',
         });
 
-
+      
         const safeResponse = {
             url: newImage.url,
             preview: newImage.preview
         }
 
+
         res.status(200).json(safeResponse)
+    }else {
+        res.status(403).json({message:  "Forbidden"})
     }
-
-
 
 });
 
@@ -140,6 +143,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
         res.status(200).json(responseEdit)
 
+    }else {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+
     }
 
 
@@ -161,7 +167,7 @@ router.get('/current', requireAuth, async (req, res) => {
     })
 
     if (!getUserSpots) {
-        return res.status(404).json({ message: "Spot couldn't be found" });
+        return res.status(403).json({ message: "Fobidden" });
     }
 
     const formattedSpots = getUserSpots.map((spot) => {
@@ -244,7 +250,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.delete('/:spotId', requireAuth, async (req, res) => {
-
+    let currUser = req.user 
     let { spotId } = req.params
 
     let spot = await Spot.findOne({ where: { id: spotId } })
@@ -253,9 +259,15 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    await spot.destroy()
+    if (currUser.id === spot.ownerId){
+        
+            await spot.destroy()
+        
+            res.status(200).json({ message: "Successfully deleted" })
 
-    res.status(200).json({ message: "Successfully deleted" })
+    }else{
+        res.status(403).json({message: "Forbidden"})
+    }
 
 })
 
@@ -284,8 +296,8 @@ router.get('/', async (req, res) => {
         include: [
             {
                 model: Review,
-                attributes: [], // Include reviews but don't fetch their attributes
-                where: { spotId: Sequelize.col('Spot.id') }, // Join based on spotId
+                attributes: [],
+                where: {  spotId: Sequelize.literal('"Spot"."id" = "Reviews"."spotId"')}, // Join based on spotId
             },
             {
                 model: Image,
@@ -344,8 +356,6 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     const currentUser = req.user; // Wait for user data
 
-    if (!currentUser) res.json({ message: 'No user logged in' })
-
     let { address, city, state, country, lat, lng, name, description, price } = req.body
 
     if (currentUser) {
@@ -379,8 +389,9 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
         }
 
-
         res.status(201).json(safeSpot)
+    }else {
+        res.status(403).json({message: "Forbidden"})
     }
 
 
