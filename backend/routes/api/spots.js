@@ -260,9 +260,6 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 
 
-
-
-
 router.get('/', async (req, res) => {
 
     let getAllSpots = await Spot.findAll()
