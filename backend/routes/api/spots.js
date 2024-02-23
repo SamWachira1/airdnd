@@ -61,7 +61,7 @@ const validateSpot = [
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
 
-    const currUser = await req.user.dataValues;
+    const currUser = req.user;
 
 
     const { spotId } = req.params;
@@ -94,10 +94,9 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 });
 
 
-
 router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
-    const currUser = await req.user.dataValues;
+    const currUser =  req.user;
     const { spotId } = req.params
     const { address, city, state, country, lat, lng, name, description, price } = req.body
 
@@ -146,90 +145,20 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
 })
 
-router.get('/:id', async (req, res) => {
-
-    let { id } = req.params
-    let spotId = Number(id)
-
-    let getAllSpots = await Spot.findAll({
-
-        where: { id: spotId},
-
-        include: [
-            {
-                model: Image,
-                as: 'SpotImages',
-                attributes: ['id', 'url', 'preview']
-            },
-
-            {
-                model: User,
-                as: 'Owner',
-                attributes: ['id', 'firstName', 'lastName'],
-            },
-
-        ],
-
-        attributes: {
-            exclude: ['previewImage']
-        }
-
-    })
-
-    if (!getAllSpots || getAllSpots.length === 0) {
-        return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    let formattedResponse = getAllSpots.map((spot) => {
-
-        let createdAtDate = new Date(spot.createdAt)
-        let upadatedAtDate = new Date(spot.updatedAt)
-
-        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
-
-        return {
-           ...spot.toJSON(),
-           createdAt: createdAtDate,
-           updatedAt: upadatedAtDate
-        }
-
-      
-    })
-
-    res.json(formattedResponse)
-
-
-})
-
-router.delete('/:spotId', requireAuth, async (req, res)=>{
-
-    let {spotId} = req.params 
-
-    let spot = await Spot.findOne({where: {id: spotId}})
-
-    if (!spot) {
-        return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    await spot.destroy()
-
-    res.status(200).json({message: "Successfully deleted" })
-
-})
-
 router.get('/current', requireAuth, async (req, res) => {
+    // console.log("\n\n\n",req.user , "\n\n\n")
+    // console.log("\n\n\n",req.user , "\n\n\n")
+    let currentUser = req.user
+    // console.log("\n\n\n",currentUser , "\n\n\n")
 
-    let currentUser = req.user.dataValues
+    // console.log(req.user)
 
-    console.log(currentUser)
- 
     let getUserSpots = await Spot.findAll({
 
-        where: {ownerId: currentUser.id},
+        where: { ownerId: currentUser.id },
 
     })
-    
+
     if (!getUserSpots) {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
@@ -238,8 +167,8 @@ router.get('/current', requireAuth, async (req, res) => {
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
 
-         createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
         return {
             ...spot.toJSON(),
@@ -259,6 +188,77 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
 })
+
+
+router.get('/:id', async (req, res) => {
+
+    let { id } = req.params
+    let spotId = Number(id)
+
+    let getAllSpots = await Spot.findAll({
+
+        where: { id: spotId },
+
+        include: [
+            {
+                model: Image,
+                as: 'SpotImages',
+                attributes: ['id', 'url', 'preview']
+            },
+
+            {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName'],
+            },
+
+        ],
+
+    })
+
+    if (!getAllSpots || getAllSpots.length === 0) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    let formattedResponse = getAllSpots.map((spot) => {
+
+        let createdAtDate = new Date(spot.createdAt)
+        let upadatedAtDate = new Date(spot.updatedAt)
+
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+        return {
+            ...spot.toJSON(),
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate
+        }
+
+
+    })
+
+    res.json(formattedResponse)
+
+
+})
+
+router.delete('/:spotId', requireAuth, async (req, res) => {
+
+    let { spotId } = req.params
+
+    let spot = await Spot.findOne({ where: { id: spotId } })
+
+    if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    await spot.destroy()
+
+    res.status(200).json({ message: "Successfully deleted" })
+
+})
+
+
 
 
 
@@ -289,16 +289,9 @@ router.get('/', async (req, res) => {
 
 
 
-
-
-
-
-
-
-
 router.post('/', requireAuth, validateSpot, async (req, res) => {
 
-    const currentUser = await req.user.dataValues.id; // Wait for user data
+    const currentUser = req.user; // Wait for user data
 
     if (!currentUser) res.json({ message: 'No user logged in' })
 
@@ -307,7 +300,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     if (currentUser) {
 
         let newSpot = await Spot.create({
-            ownerId: currentUser,
+            ownerId: currentUser.id,
             address,
             city,
             state,
