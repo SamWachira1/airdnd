@@ -30,14 +30,14 @@ module.exports = {
         url: 'image url',
         preview: true,
         imageableType: 'Review',
-        imageableId: 1 
+        imageableId: 2
       },
 
       {
         url: 'image url',
         preview: true,
         imageableType: 'Review',
-        imageableId: 1 
+        imageableId: 2 
       },
 
     ], options, {validate: true })
