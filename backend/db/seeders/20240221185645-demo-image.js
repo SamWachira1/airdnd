@@ -26,6 +26,20 @@ module.exports = {
         imageableId: 1 
       },
 
+      {
+        url: 'image url',
+        preview: true,
+        imageableType: 'Review',
+        imageableId: 1 
+      },
+
+      {
+        url: 'image url',
+        preview: true,
+        imageableType: 'Review',
+        imageableId: 1 
+      },
+
     ], options, {validate: true })
     
 

@@ -31,7 +31,7 @@ module.exports = {
       },
 
       {
-        ownerId: 1,
+        ownerId: 2,
         address: "1233 Disney Lane",
         city: "Los Angels",
         state: "California",

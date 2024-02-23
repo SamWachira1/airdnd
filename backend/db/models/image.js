@@ -19,6 +19,15 @@ module.exports = (sequelize, DataTypes) => {
           imageableType: 'Spot'
         }
       })
+
+      Image.belongsTo(models.Review, {
+        foreignKey: 'imageableId',
+        constraints: false,
+        as: 'ReviewImages',
+        scope: {
+          imageableType: 'Review'
+        }
+      })
     }
   }
   Image.init({
@@ -31,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false 
     },
     imageableType: {
-      type: DataTypes.ENUM('User', 'Spot'),
+      type: DataTypes.ENUM('User', 'Spot', 'Review'),
       allowNull: false,
     },
     imageableId: {

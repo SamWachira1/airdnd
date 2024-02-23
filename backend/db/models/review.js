@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         constraints: false,
         scope: {
           imageableType: 'Review'
-        }
+        },
+        as: 'ReviewImages'
       })
     }
   }
