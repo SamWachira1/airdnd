@@ -29,14 +29,14 @@ module.exports = {
       {
         url: 'image url',
         preview: true,
-        imageableType: 'Review',
+        imageableType: 'Spot',
         imageableId: 2
       },
 
       {
         url: 'image url',
         preview: true,
-        imageableType: 'Review',
+        imageableType: 'Spot',
         imageableId: 2 
       },
 
