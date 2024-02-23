@@ -25,7 +25,7 @@ module.exports = {
         allowNull: false,
       },
       imageableType: {
-        type: Sequelize.ENUM('User', 'Spot', 'Review'),
+        type: Sequelize.ENUM('Spot', 'Review'),
         allowNull: false,
       },
       imageableId: {
