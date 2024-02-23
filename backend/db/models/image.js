@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false 
     },
     imageableType: {
-      type: DataTypes.ENUM('Spot', 'Review'),
+      type: DataTypes.ENUM('User', 'Spot', 'Review'),
       allowNull: false,
     },
     imageableId: {
