@@ -275,77 +275,102 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 router.get('/', async (req, res) => {
 
-    let getAllSpots = await Spot.findAll({
-        attributes: [
-            'id',
-            'ownerId',
-            "address",
-            "city",
-            "state",
-            "country",
-            "lat",
-            "lng",
-            "name",
-            "description",
-            "price",
-            "createdAt",
-            "updatedAt",
+    // let getAllSpots = await Spot.findAll({
+    //     attributes: [
+    //         'id',
+    //         'ownerId',
+    //         "address",
+    //         "city",
+    //         "state",
+    //         "country",
+    //         "lat",
+    //         "lng",
+    //         "name",
+    //         "description",
+    //         "price",
+    //         "createdAt",
+    //         "updatedAt",
 
-            [Sequelize.fn('avg', Sequelize.col('Reviews.stars')), 'avgRating']
-        ],
-        include: [
-            {
-                model: Review,
-                attributes: [],
-                where: {  spotId: Sequelize.literal('"Spot"."id" = "Reviews"."spotId"')}, // Join based on spotId
-            },
-            {
-                model: Image,
-                attributes: ['url'],
-                as: 'SpotImages', // Assuming your association alias is 'SpotImages'
-                where: { imageableType: 'Spot' }, // Filter images by Spot
-            },
-        ],
-        group: ['Spot.id'], 
-    })
+    //         [Sequelize.fn('avg', Sequelize.col('Reviews.stars')), 'avgRating']
+    //     ],
+    //     include: [
+    //         {
+    //             model: Review,
+    //             attributes: [],
+    //             // where: {  spotId: Sequelize.col('Spot.id')}, // Join based on spotId
+    //         },
+    //         {
+    //             model: Image,
+    //             attributes: ['id', 'url'],
+    //             as: 'SpotImages', // Assuming your association alias is 'SpotImages'
+    //             where: { imageableType: 'Spot' }, // Filter images by Spot
+    //         },
 
+          
+    //     ],
 
-    let getFormatedResponse = getAllSpots.map((spot) => {
-
-        let createdAtDate = new Date(spot.createdAt);
-        let upadatedAtDate = new Date(spot.updatedAt)
-    
-        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+    //     group: ['SpotImages.id']
+        
+    // })
 
 
-           let safeResponse =  {
-            id: spot.id,
-            ownerId: spot.id,
-            address: spot.address,
-            city: spot.city,
-            state: spot.state,
-            country: spot.country,
-            lat: spot.lat,
-            lng: spot.lng,
-            name: spot.name,
-            description: spot.description,
-            price: spot.price,
-            createdAt: createdAtDate,
-            updatedAt: upadatedAtDate,
-            avgRating: spot.dataValues.avgRating, // had to access dataValues again
-            previewImage: spot.SpotImages[0].url
+    const getAllSpots = await Spot.findAll();
+
+            const formattedSpots = [];
+
+            for (const spot of getAllSpots) {
+
+                const reviews = await Review.findAll({
+                    where: { spotId: spot.id },
+                    attributes: ['stars'],
+
+
+                });
+
+            const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+            const avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+
+            let createdAtDate = new Date(spot.createdAt);
+            let upadatedAtDate = new Date(spot.updatedAt)
+        
+            createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+            upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+            const spotImages = await Image.findAll({
+                attributes: ['id', 'url'],
+                where: { imageableType: 'Spot', imageableId: spot.id },
+            });
+
+
+            const formattedSpot = {
+           
+                id: spot.id,
+                ownerId: spot.id,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                description: spot.description,
+                price: spot.price,
+                createdAt: createdAtDate,
+                updatedAt: upadatedAtDate,
+                avgRating: avgRating,
+                previewImage: spotImages.length > 0 ? spotImages[0].url : null,
+            };
+
+            formattedSpots.push(formattedSpot);
         }
 
-        return safeResponse
+            const response = {
+            Spots: formattedSpots,
+            };
 
-    })
 
-    let response = {
-        Spots: getFormatedResponse
-    }
+        res.status(200).json(response);
 
-    res.status(200).json(response)
 
 })
 
