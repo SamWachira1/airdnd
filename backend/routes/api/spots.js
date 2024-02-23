@@ -1,9 +1,10 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, User, Image } = require('../../db/models');
+const { Spot, User, Image, Review } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots } = require('../../utils/validation');
+const Sequelize = require('sequelize');
 
 const router = express.Router();
 
@@ -262,18 +263,70 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 router.get('/', async (req, res) => {
 
-    let getAllSpots = await Spot.findAll()
+    let getAllSpots = await Spot.findAll({
+        attributes: [
+            'id',
+            'ownerId',
+            "address",
+            "city",
+            "state",
+            "country",
+            "lat",
+            "lng",
+            "name",
+            "description",
+            "price",
+            "createdAt",
+            "updatedAt",
+
+            [Sequelize.fn('avg', Sequelize.col('Reviews.stars')), 'avgRating']
+        ],
+        include: [
+            {
+                model: Review,
+                attributes: [], // Include reviews but don't fetch their attributes
+                where: { spotId: Sequelize.col('Spot.id') }, // Join based on spotId
+            },
+            {
+                model: Image,
+                attributes: ['url'],
+                as: 'SpotImages', // Assuming your association alias is 'SpotImages'
+                where: { imageableType: 'Spot' }, // Filter images by Spot
+            },
+        ],
+        group: ['Spot.id'], 
+    })
+
 
     let getFormatedResponse = getAllSpots.map((spot) => {
-        const date = new Date(spot.createdAt);
-        const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
-        const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
 
-        return {
-            ...spot.toJSON(),
-            createdAt: formattedCreatedAt,
-            updatedAt: formattedUpdatedAt,
-        };
+        let createdAtDate = new Date(spot.createdAt);
+        let upadatedAtDate = new Date(spot.updatedAt)
+    
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+
+           let safeResponse =  {
+            id: spot.id,
+            ownerId: spot.id,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: spot.lat,
+            lng: spot.lng,
+            name: spot.name,
+            description: spot.description,
+            price: spot.price,
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate,
+            avgRating: spot.dataValues.avgRating, // had to access dataValues again
+            previewImage: spot.SpotImages[0].url
+        }
+
+        return safeResponse
+
     })
 
     let response = {
@@ -283,6 +336,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(response)
 
 })
+
 
 
 
