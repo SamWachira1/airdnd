@@ -214,8 +214,6 @@ router.get('/current', requireAuth, async (req, res) => {
 
     res.status(200).json(response);
 
-
-
 })
 
 
@@ -224,50 +222,54 @@ router.get('/:id', async (req, res) => {
     let { id } = req.params
     let spotId = Number(id)
 
-    let getAllSpots = await Spot.findAll({
+    //load spot 
+    let spot = await Spot.findByPk(spotId)
 
-        where: { id: spotId },
-
-        include: [
-            {
-                model: Image,
-                as: 'SpotImages',
-                attributes: ['id', 'url', 'preview']
-            },
-
-            {
-                model: User,
-                as: 'Owner',
-                attributes: ['id', 'firstName', 'lastName'],
-            },
-
-        ],
-
-    })
-
-    if (!getAllSpots || getAllSpots.length === 0) {
+    if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    let formattedResponse = getAllSpots.map((spot) => {
-
-        let createdAtDate = new Date(spot.createdAt)
-        let upadatedAtDate = new Date(spot.updatedAt)
-
-        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
-
-        return {
-            ...spot.toJSON(),
-            createdAt: createdAtDate,
-            updatedAt: upadatedAtDate
-        }
-
-
+    //Load Spot Images 
+    let spotImages = await Image.findAll({
+        where: {imageableType: 'Spot', imageableId: spotId },
+        attributes:  ['id', 'url', 'preview']
     })
 
-    res.json(formattedResponse)
 
+    //load Owner details 
+    let owner = await User.findByPk(spot.ownerId, {
+        attributes: ['id', 'firstName', 'lastName'],
+    })
+
+
+    //load reviews 
+    let reviews = await Review.findAll({
+        where: {spotId: spot.id},
+        attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgStarRating']]
+    })
+
+
+    let totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+    let avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+
+    let createdAtDate = new Date(spot.createdAt);
+    let upadatedAtDate = new Date(spot.updatedAt)
+
+    createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+    upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+    let formattedResponse = {
+        ...spot.toJSON(),
+        createdAt: createdAtDate,
+        updatedAt: upadatedAtDate,
+        numReviews: reviews.length,
+        avgStarRating: avgRating,
+        SpotImages: spotImages,
+        Owner: owner,
+      };
+
+
+      res.status(200).json(formattedResponse)
 
 })
 
@@ -296,7 +298,6 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-
 
 
     const getAllSpots = await Spot.findAll();
