@@ -146,14 +146,14 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
 })
 
-router.get('/:spotId', async (req, res) => {
+router.get('/:id', async (req, res) => {
 
-    let { spotId } = req.params
+    let { id } = req.params
+    let spotId = Number(id)
 
-    id = Number(spotId)
+    let getAllSpots = await Spot.findAll({
 
-    let spots = await Spot.findOne({
-        where: { id: id },
+        where: { id: spotId},
 
         include: [
             {
@@ -177,23 +177,25 @@ router.get('/:spotId', async (req, res) => {
     })
 
 
-    if (!spots) {
+    if (!getAllSpots) {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
 
-    let date = new Date(spots.createdAt)
-    date = date.toISOString().replace('T', ' ').split('.')[0];
+    const date = new Date(getAllSpots.createdAt);
+    console.log(date)
 
-    const responseSpot = {
-        ...spots.toJSON(),
-        createdAt: date,
-        updatedAt: date
+    const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+    const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+
+    const response = {
+        ...getAllSpots.toJSON(),
+        createdAt: formattedCreatedAt,
+        updatedAt: formattedUpdatedAt,
     };
 
+    res.json(response);
 
-
-    res.json(responseSpot)
 })
 
 router.delete('/:spotId', requireAuth, async (req, res)=>{
@@ -211,6 +213,46 @@ router.delete('/:spotId', requireAuth, async (req, res)=>{
     res.status(200).json({message: "Successfully deleted" })
 
 })
+
+router.get('/current', requireAuth, async (req, res) => {
+
+    let currentUser =  req.user.dataValues
+    console.log(currentUser)
+
+    let spot = await Spot.findAll({where: {ownerId: currentUser.id}})
+    
+    if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+
+    let getUserSpots = await spot.getUsers()
+
+
+    const formattedSpots = getUserSpots.map((spot) => {
+        const date = new Date(spot.createdAt);
+        const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+        const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+
+        return {
+            ...spot.toJSON(),
+            createdAt: formattedCreatedAt,
+            updatedAt: formattedUpdatedAt,
+        };
+    });
+
+
+    let response = {
+        Spots: formattedSpots,
+    };
+
+
+    res.json(response)
+
+
+
+})
+
 
 
 
@@ -239,40 +281,6 @@ router.get('/', async (req, res) => {
 })
 
 
-router.get('/current', async (req, res) => {
-
-    let currentUser = req.user.dataValues
-
-    let user = await User.findOne({
-        where: { id: currentUser.id },
-
-    })
-
-    let getUserSpots = await user.getSpots()
-
-
-    const formattedSpots = getUserSpots.map((spot) => {
-        const date = new Date(spot.createdAt);
-        const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
-        const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
-
-        return {
-            ...spot.toJSON(),
-            createdAt: formattedCreatedAt,
-            updatedAt: formattedUpdatedAt,
-        };
-    });
-
-
-    let response = {
-        Spots: formattedSpots,
-    };
-
-
-    res.json(response)
-
-
-})
 
 
 

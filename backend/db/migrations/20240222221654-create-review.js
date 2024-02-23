@@ -2,46 +2,54 @@
 // /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
-options.tableName = 'Images'
+options.tableName = 'Reviews'
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(options.tableName , {
+    await queryInterface.createTable(options.tableName, {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      url: {
-        type: Sequelize.STRING,
-        allowNull: false 
+      review: {
+        type: Sequelize.STRING
       },
-      preview: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
+      stars: {
+        type: Sequelize.INTEGER
       },
-      imageableType: {
-        type: Sequelize.ENUM('User', 'Spot', 'Review'),
-        allowNull: false,
-      },
-      imageableId: {
+      userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+
         onDelete: 'CASCADE'
+
+      },
+      spotId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Spots',
+          key: 'id'
+        },
+        
+        onDelete: 'CASCADE'
+
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+        type: Sequelize.DATE
       }
     }, options);
   },
