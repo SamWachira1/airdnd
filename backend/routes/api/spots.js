@@ -176,25 +176,29 @@ router.get('/:id', async (req, res) => {
 
     })
 
-
-    if (!getAllSpots) {
+    if (!getAllSpots || getAllSpots.length === 0) {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
+    let formattedResponse = getAllSpots.map((spot) => {
 
-    const date = new Date(getAllSpots.createdAt);
-    console.log(date)
+        let createdAtDate = new Date(spot.createdAt)
+        let upadatedAtDate = new Date(spot.updatedAt)
 
-    const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
-    const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
-    const response = {
-        ...getAllSpots.toJSON(),
-        createdAt: formattedCreatedAt,
-        updatedAt: formattedUpdatedAt,
-    };
+        return {
+           ...spot.toJSON(),
+           createdAt: createdAtDate,
+           updatedAt: upadatedAtDate
+        }
 
-    res.json(response);
+      
+    })
+
+    res.json(formattedResponse)
+
 
 })
 
@@ -216,28 +220,31 @@ router.delete('/:spotId', requireAuth, async (req, res)=>{
 
 router.get('/current', requireAuth, async (req, res) => {
 
-    let currentUser =  req.user.dataValues
-    console.log(currentUser)
+    let currentUser = req.user.dataValues
 
-    let spot = await Spot.findAll({where: {ownerId: currentUser.id}})
+    console.log(currentUser)
+ 
+    let getUserSpots = await Spot.findAll({
+
+        where: {ownerId: currentUser.id},
+
+    })
     
-    if (!spot) {
+    if (!getUserSpots) {
         return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-
-    let getUserSpots = await spot.getUsers()
-
-
     const formattedSpots = getUserSpots.map((spot) => {
-        const date = new Date(spot.createdAt);
-        const formattedCreatedAt = date.toISOString().replace('T', ' ').split('.')[0];
-        const formattedUpdatedAt = date.toISOString().replace('T', ' ').split('.')[0];
+        let createdAtDate = new Date(spot.createdAt);
+        let upadatedAtDate = new Date(spot.updatedAt)
+
+         createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
         return {
             ...spot.toJSON(),
-            createdAt: formattedCreatedAt,
-            updatedAt: formattedUpdatedAt,
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate,
         };
     });
 
