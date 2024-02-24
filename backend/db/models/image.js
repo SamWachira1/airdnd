@@ -4,13 +4,17 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
+    getImageable(options) {
+      if (!this.imageableType) return Promise.resolve(null);
+      const mixinMethodName = `get${this.imageableType}`;
+      return this[mixinMethodName](options);
+    }
+
     static associate(models) {
       // define association here
+      
+
       Image.belongsTo(models.Spot,{
         foreignKey: 'imageableId',
         constraints: false,
@@ -23,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       Image.belongsTo(models.Review, {
         foreignKey: 'imageableId',
         constraints: false,
-        as: 'ReviewImages',
         scope: {
           imageableType: 'Review'
         }

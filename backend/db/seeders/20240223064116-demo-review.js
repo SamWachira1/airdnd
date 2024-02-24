@@ -23,7 +23,8 @@ module.exports = {
         stars: 4,
         userId: 2, 
         spotId: 1, 
-      }
+      },
+
     ], options, {validate: true})
   },
 
