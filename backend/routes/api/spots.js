@@ -245,12 +245,15 @@ router.get('/:id', async (req, res) => {
     //load reviews 
     let reviews = await Review.findAll({
         where: {spotId: spot.id},
-        attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgStarRating']]
+        attributes: ['stars']
+        // attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgStarRating']]
     })
 
 
     let totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+
     let avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+
 
     let createdAtDate = new Date(spot.createdAt);
     let upadatedAtDate = new Date(spot.updatedAt)
