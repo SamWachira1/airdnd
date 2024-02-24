@@ -25,12 +25,6 @@ module.exports = {
         spotId: 1, 
       },
 
-      {
-        review: 'the place is trash',
-        stars: 1,
-        userId: 1, 
-        spotId: 2, 
-      }
     ], options, {validate: true})
   },
 
