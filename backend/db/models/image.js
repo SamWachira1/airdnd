@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
@@ -43,8 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false 
     },
     imageableType: {
-      type: DataTypes.ENUM('User', 'Spot', 'Review'),
+      type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        isIn: [['User', 'Spot', 'Review']]
+      }
     },
     imageableId: {
       type: DataTypes.INTEGER,
