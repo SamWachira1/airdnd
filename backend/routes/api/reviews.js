@@ -1,76 +1,97 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, User, Image, Review } = require('../../db/models');
+const { Spot, User, Image, Review, SpotImages, ReviewImages } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots } = require('../../utils/validation');
 
 const router = express.Router();
+//user /spot/ image
+
+
+function findPreviewImage(spotImages) {
+    for (const image of spotImages) {
+      if (image.preview === true) {
+        return image.url;
+      }
+    }
+    return 'No preview image';
+  }
 
 router.get('/current', requireAuth, async (req, res) => {
-    let currUser = req.user
+        let currUser = req.user
 
-    let getUserReviews = await Review.findAll({
-        where: { userId: currUser.id },
+        let getAllReviews = await Review.findAll({
+            where: {userId: currUser.id},
+            // attributes: ['id', 'userId', 'spotId', 'review', 'stars']
+        
+        })
 
-        include: [
+        const formattedReviews = []
 
-            {
-                model: User,
-                attributes: ['id', 'firstName', 'lastName']
-            },
+        for (const review of getAllReviews) {
 
-            {
-                model: Spot,
+            const user = await User.findOne({
+                where: {id: review.userId},
+        
+                attributes: ['id', 'firstName', 'lastName'],
+            })
+
+
+            let createdAtDate = new Date(review.createdAt);
+            let upadatedAtDate = new Date(review.updatedAt)
+    
+            createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+            upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+    
+
+        
+            const spots = await Spot.findOne({
+                where: {id: review.spotId },
                 attributes: [
-                'id',
-                'ownerId',
-                'address',
-                'city',
-                'state',
-                'country',
-                'lat',
-                'lng',
-                'name',
-                'price']
+                    'id',
+                    'ownerId',
+                    'address',
+                    'city',
+                    'state',
+                    'country',
+                    'lat',
+                    'lng',
+                    'name',
+                    'price',
+                  ],
+            })
 
-            },
+            const spotImages = await Image.findOne({
+                where: {imageableType: 'Spot', imageableId: spots.id },
+            })
 
-            {
-                model: Image,
-                as: 'ReviewImages',
-                attributes: ['id', 'url'],
-                where: {
-                    imageableType: 'Review'
-                }
-                
-            }
+            const reviewImages = await Review.findOne({
+                where: {imageableType: 'Review', imageableId: review.id }
+            })
 
-        ]
-    })
+        
+            const formattedReview = {
+                ...review.toJSON(),
+                createdAt: createdAtDate,
+                updatedAt: upadatedAtDate,
+                User: user,
+                Spot: {
+                    ...spots.toJSON(),
+                    previewImage: spotImages.url
+                  },
 
+                  ReviewImages: reviewImages,
 
-    const formattedReview = getUserReviews.map((spot) => {
-        let createdAtDate = new Date(spot.createdAt);
-        let upadatedAtDate = new Date(spot.updatedAt)
+            };
+    
+            formattedReviews.push(formattedReview);
 
-        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
-
-        return {
-            ...spot.toJSON(),
-            createdAt: createdAtDate,
-            updatedAt: upadatedAtDate,
-        };
-    });
-
-    let formattedResponse = {
-        Reviews: formattedReview
-    }
+        }
 
 
-    res.status(200).json(formattedResponse)
-
+        res.status(200).json({Reviews: formattedReviews });
+      
 
 })
 
