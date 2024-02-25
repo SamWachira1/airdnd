@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, User, Image, Review } = require('../../db/models');
 const { check } = require('express-validator');
-const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots } = require('../../utils/validation');
+const { handleValidationErrors, handleValidationErrorsSpots } = require('../../utils/validation');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
@@ -135,26 +135,33 @@ router.get('/:spotId/reviews', async (req, res)=>{
 
 })
 
-router.post(':spotId/reviews', requireAuth, validateReview, async (req, res) => {
-    let user = req.user 
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
 
+
+    let user = req.user 
     let {spotId} = req.params 
+
+
     let {review, stars} = req.body 
 
 
     let spot = await Spot.findOne({
-        where: {id: spotId}
+        where: {id: spotId},
+
     })
 
+ 
     if (!spot) {
         res.status(404).json({message:  "Spot couldn't be found"})
     }
 
-    let reviewExists = await Review.findOne({
-        where: {spotId: spot.id}
+    let userReviewExisits = await Review.findOne({
+        where: {spotId: spotId, userId: user.id}
     })
+    
+    // console.log("\n\n\n", reviewExists, "\n\n\n")
 
-    if (reviewExists.userId === user.id){
+    if (userReviewExisits){
         res.status(500).json({message: "User already has a review for this spot" })
     }else {
 
@@ -186,11 +193,10 @@ router.post(':spotId/reviews', requireAuth, validateReview, async (req, res) => 
         res.status(201).json(safeResponse)
     }
 
-
-
-
    
 })
+
+
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
 
@@ -198,7 +204,6 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
     const { spotId } = req.params;
     const { url, preview } = req.body;
-
 
 
     const spot = await Spot.findOne({ where: { id: spotId } });
@@ -228,6 +233,10 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     }
 
 });
+
+
+
+
 
 
 router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
@@ -375,12 +384,6 @@ router.get('/:id', async (req, res) => {
     }));
     
 
-
-//   console.log("\n\n\n", spotImages , "\n\n\n")
-
-    // console.log(spotImages)
-
-
     //load Owner details 
     let owner = await User.findByPk(spot.ownerId, {
         attributes: ['id', 'firstName', 'lastName'],
@@ -391,7 +394,6 @@ router.get('/:id', async (req, res) => {
     let reviews = await Review.findAll({
         where: {spotId: spot.id},
         attributes: ['stars']
-        // attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgStarRating']]
     })
 
 
@@ -445,6 +447,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 
 
+
 router.get('/', async (req, res) => {
 
 
@@ -480,10 +483,7 @@ router.get('/', async (req, res) => {
             preview: image.preview,
         }));
         
-       
-
-    //   console.log("\n\n\n", images , "\n\n\n")
-
+    
 
         const formattedSpot = {
 
@@ -516,6 +516,9 @@ router.get('/', async (req, res) => {
 
 
 })
+
+
+
 
 
 router.post('/', requireAuth, validateSpot, async (req, res) => {
