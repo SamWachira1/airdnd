@@ -9,15 +9,7 @@ const router = express.Router();
 //user /spot/ image
 
 
-// function findPreviewImage(spotImages) {
-//     for (const image of spotImages) {
-//         if (image.preview === true) {
-//             return image.url;
-//         }
-//     }
-//     return 'No preview image';
-// }
-
+// GET REVIEWS OF CURRENT USER  /api/reviews/current
 router.get('/current', requireAuth, async (req, res) => {
     let currUser = req.user
 
@@ -70,8 +62,6 @@ router.get('/current', requireAuth, async (req, res) => {
 
         if (spotImages.preview !== true) {
             spotImages.url = 'No preview image'
-        }else {
-            spotImages
         }
 
         let reviewImages = await Image.findOne({
@@ -114,6 +104,58 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
     res.status(200).json({ Reviews: formattedReviews });
+
+
+})
+
+router.post('/:reviewId/images', requireAuth, async (req, res)=> {
+
+    let userId = req.user.id
+
+    let user = await User.findByPk(userId)
+
+
+    let {reviewId} = req.params
+    let {url} = req.body
+
+    let review = await Review.findByPk(reviewId)
+
+    if (!review){
+        res.status(404).json({ message: "Review couldn't be found"})
+    }
+
+    if (review.userId !== user.id){
+        res.status(403).json({message: 'Forbidden'})
+    }
+
+    let findAllImages = await Image.findAll({
+        where: {
+            imageableType: 'Review',
+            // imageableId: reviewId,
+        }
+    })
+
+    if (findAllImages.length > 10 ){
+        res.status(403).json({
+            message: "Maximum number of images for this resource was reached"
+          })
+    }
+
+    let newImage = await Image.create({
+        url,
+        preview: true,
+        imageableId: review.id,
+        imageableType: 'Review',
+
+    })
+
+    let safeResponse = {
+        url: newImage.url
+    }
+
+
+    res.status(200).json(safeResponse)
+
 
 
 })
