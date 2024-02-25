@@ -58,6 +58,16 @@ const validateSpot = [
 
 ];
 
+const validateReview = [
+    check('review')
+      .notEmpty()
+      .withMessage('Review text is required'),
+    check('stars')
+      .isInt({ min: 1, max: 5 })
+      .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+  ];
+
 router.get('/:spotId/reviews', async (req, res)=>{
 
     let {spotId} = req.params 
@@ -123,6 +133,63 @@ router.get('/:spotId/reviews', async (req, res)=>{
     
     res.status(200).json({Reviews: formattedReviews})
 
+})
+
+router.post(':spotId/reviews', requireAuth, validateReview, async (req, res) => {
+    let user = req.user 
+
+    let {spotId} = req.params 
+    let {review, stars} = req.body 
+
+
+    let spot = await Spot.findOne({
+        where: {id: spotId}
+    })
+
+    if (!spot) {
+        res.status(404).json({message:  "Spot couldn't be found"})
+    }
+
+    let reviewExists = await Review.findOne({
+        where: {spotId: spot.id}
+    })
+
+    if (reviewExists.userId === user.id){
+        res.status(500).json({message: "User already has a review for this spot" })
+    }else {
+
+        let newReview = await Review.create({
+            review, 
+            stars,
+            userId: user.id,
+            spotId: spot.id 
+        })
+
+        let createdAtDate = new Date(newReview.createdAt);
+        let updatedAtDate = new Date(newReview.updatedAt)
+
+        let createdAtD = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        let updatedAtD = updatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+        let safeResponse = {
+            id: newReview.id,
+            userId: newReview.userId,
+            spotId: newReview.spotId,
+            review: newReview.review,
+            stars:  newReview.stars, 
+            createdAt: createdAtD,
+            updatedAt: updatedAtD
+
+        }
+
+
+        res.status(201).json(safeResponse)
+    }
+
+
+
+
+   
 })
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
