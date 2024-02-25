@@ -61,6 +61,14 @@ const validateSpot = [
 router.get('/:spotId/reviews', async (req, res)=>{
 
     let {spotId} = req.params 
+    spotId = Number(spotId)
+
+    const spot = await Spot.findOne({ where: { id: spotId } });
+
+    if(!spot){
+        res.status(404).json({message:  "Spot couldn't be found"})
+    }
+
 
     let reviews = await Review.findAll({
         where: {spotId: spotId},
@@ -76,16 +84,15 @@ router.get('/:spotId/reviews', async (req, res)=>{
         })
 
         let createdAtDate = new Date(review.createdAt);
-        let upadatedAtDate = new Date(review.updatedAt)
+        let updatedAtDate = new Date(review.updatedAt)
 
-        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+        let createdAtD = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        let updatedAtD = updatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
         let images = await Image.findOne({
             where: {imageableType: 'Review'}
         })
 
-        // console.log("\n\n\n", images.id, "\n\n\n")
 
         let formattedReview = {
             id: review.id,
@@ -93,8 +100,8 @@ router.get('/:spotId/reviews', async (req, res)=>{
             spotId: review.spotId,
             review: review.review,
             stars: review.stars,
-            createdAt: createdAtDate,
-            updatedAt: upadatedAtDate,
+            createdAt: createdAtD,
+            updatedAt: updatedAtD,
             User: {
                 id: users.id,
                 firstName: users.firstName,
@@ -109,7 +116,7 @@ router.get('/:spotId/reviews', async (req, res)=>{
             ],
         }
 
-    
+
         formattedReviews.push(formattedReview)
         
     }
