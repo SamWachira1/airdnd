@@ -71,7 +71,7 @@ router.get('/current', requireAuth, async (req, res) => {
         if (spotImages.preview !== true) {
             spotImages.url = 'No preview image'
         }else {
-            spotImages.url
+            spotImages
         }
 
         let reviewImages = await Image.findOne({

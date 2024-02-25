@@ -230,14 +230,20 @@ router.get('/:id', async (req, res) => {
     }
 
     //Load Spot Images 
-    let spotImages = await Image.findAll({
+    let images = await Image.findAll({
         where: {imageableType: 'Spot'},
         attributes:  ['id', 'url', 'preview']
     })
 
+    let spotImages = images.map((image) => ({
+        id: image.id,
+        url: image.url,
+        preview: image.preview,
+    }));
+    
 
 
-//   console.log("\n\n\n", spotImages[0].dataValues , "\n\n\n")
+//   console.log("\n\n\n", spotImages , "\n\n\n")
 
     // console.log(spotImages)
 
@@ -331,10 +337,19 @@ router.get('/', async (req, res) => {
         createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
-        const spotImages = await Image.findAll({
-            attributes: ['id', 'url'],
-            where: { imageableType: 'Spot', imageableId: spot.id },
+        let images = await Image.findAll({
+            where: { imageableType: 'Spot'},
         });
+
+        let spotImages = images.map((image) => ({
+            id: image.id,
+            url: image.url,
+            preview: image.preview,
+        }));
+        
+       
+
+    //   console.log("\n\n\n", images , "\n\n\n")
 
 
         const formattedSpot = {
@@ -353,7 +368,7 @@ router.get('/', async (req, res) => {
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate,
             avgRating: avgRating,
-            previewImage: spotImages.length > 0 ? spotImages[0].url : null,
+            previewImage: spotImages[0].url,
         };
 
         formattedSpots.push(formattedSpot);
