@@ -7,7 +7,15 @@ const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErr
 
 const router = express.Router();
 //user /spot/ image
-
+const validateReview = [
+    check('review')
+      .notEmpty()
+      .withMessage('Review text is required'),
+    check('stars')
+      .isInt({ min: 1, max: 5 })
+      .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+  ];
 
 // GET REVIEWS OF CURRENT USER  /api/reviews/current
 router.get('/current', requireAuth, async (req, res) => {
@@ -161,6 +169,46 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
 })
 
 
+router.put('/:reviewId', requireAuth, validateReview, async (req, res)=>{
+
+    let user = req.user 
+    let {reviewId} = req.params
+    let {review, stars} = req.body
+    
+
+    let findReview = await Review.findByPk(reviewId)
+
+    if(!findReview){
+        res.status(404).json({message:  "Review couldn't be found"})
+    }
+
+    if (findReview.userId !== user.id){
+        res.status(403).json({message: 'Forbidden'})
+    }else {
+        findReview.review = review 
+        findReview.stars = stars 
+
+        await findReview.save()
+
+
+        const createddate = new Date(findReview.createdAt).toISOString().replace('T', ' ').split('.')[0];
+        const updateddate = new Date(findReview.updatedAt).toISOString().replace('T', ' ').split('.')[0];
+
+
+        let saveResponse = {
+            id: findReview.id,
+            userId: findReview.userId,
+            spotId: findReview.spotId,
+            review: findReview.review,
+            stars: findReview.stars,
+            createdAt: createddate,
+            updatedAt: updateddate
+        }
+
+        res.status(200).json(saveResponse)
+    }
+
+})
 
 
 
