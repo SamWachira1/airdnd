@@ -64,6 +64,10 @@ router.get('/:spotId/reviews', async (req, res)=>{
     spotId = Number(spotId)
 
     const spot = await Spot.findOne({ where: { id: spotId } });
+    
+
+    console.log("\n\n\n", spot, "\n\n\n")
+
 
     if(!spot){
         res.status(404).json({message:  "Spot couldn't be found"})
