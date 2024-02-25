@@ -231,9 +231,15 @@ router.get('/:id', async (req, res) => {
 
     //Load Spot Images 
     let spotImages = await Image.findAll({
-        where: {imageableType: 'Spot', imageableId: spotId },
+        where: {imageableType: 'Spot'},
         attributes:  ['id', 'url', 'preview']
     })
+
+
+
+//   console.log("\n\n\n", spotImages[0].dataValues , "\n\n\n")
+
+    // console.log(spotImages)
 
 
     //load Owner details 
