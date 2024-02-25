@@ -58,7 +58,65 @@ const validateSpot = [
 
 ];
 
+router.get('/:spotId/reviews', async (req, res)=>{
 
+    let {spotId} = req.params 
+
+    let reviews = await Review.findAll({
+        where: {spotId: spotId},
+
+    })
+
+    let formattedReviews = [];
+
+    for (const review of reviews){
+
+        let users = await User.findOne({
+            where: {id: review.userId}
+        })
+
+        let createdAtDate = new Date(review.createdAt);
+        let upadatedAtDate = new Date(review.updatedAt)
+
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+        let images = await Image.findOne({
+            where: {imageableType: 'Review'}
+        })
+
+        // console.log("\n\n\n", images.id, "\n\n\n")
+
+        let formattedReview = {
+            id: review.id,
+            userId: review.userId,
+            spotId: review.spotId,
+            review: review.review,
+            stars: review.stars,
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate,
+            User: {
+                id: users.id,
+                firstName: users.firstName,
+                lastName: users.lastName,
+            },
+
+            ReviewImages: [
+                {
+                    id: images.id,
+                    url: images.url,
+                },
+            ],
+        }
+
+    
+        formattedReviews.push(formattedReview)
+        
+    }
+    
+    res.status(200).json({Reviews: formattedReviews})
+
+})
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
 
@@ -124,7 +182,8 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
         await spot.save()
 
-        const date = new Date(spot.createdAt).toISOString().replace('T', ' ').split('.')[0];
+        const createddate = new Date(spot.createdAt).toISOString().replace('T', ' ').split('.')[0];
+        const updateddate = new Date(spot.updatedAt).toISOString().replace('T', ' ').split('.')[0];
         const responseEdit = {
             id: spot.id,
             ownerId: spot.ownerId,
@@ -137,8 +196,8 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
             name: spot.name,
             description: spot.description,
             price: spot.price,
-            createdAt: date,
-            updatedAt: date,
+            createdAt: createddate,
+            updatedAt: updateddate,
         };
 
         res.status(200).json(responseEdit)
