@@ -75,10 +75,10 @@ router.get('/:spotId/reviews', async (req, res)=>{
 
     const spot = await Spot.findOne({ where: { id: spotId } });
     
-      console.log("\n\n\n", spot , "\n\n\n")
+    //   console.log("\n\n\n", spot , "\n\n\n")
 
     if(!spot){
-        res.status(404).json({message:  "Spot couldn't be found"})
+        return res.status(404).json({message:  "Spot couldn't be found"})
     }
 
     let reviews = await Review.findAll({
@@ -132,7 +132,7 @@ router.get('/:spotId/reviews', async (req, res)=>{
         
     }
     
-    res.status(200).json({Reviews: formattedReviews})
+    return res.status(200).json({Reviews: formattedReviews})
 
 })
 
@@ -145,7 +145,6 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
 
     let {review, stars} = req.body 
 
-
     let spot = await Spot.findOne({
         where: {id: spotId},
 
@@ -153,7 +152,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
 
  
     if (!spot) {
-        res.status(404).json({message:  "Spot couldn't be found"})
+        return res.status(404).json({message:  "Spot couldn't be found"})
     }
 
     let userReviewExisits = await Review.findOne({
@@ -163,7 +162,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
     // console.log("\n\n\n", reviewExists, "\n\n\n")
 
     if (userReviewExisits){
-        res.status(500).json({message: "User already has a review for this spot" })
+       return  res.status(500).json({message: "User already has a review for this spot" })
     }else {
 
         let newReview = await Review.create({
@@ -191,7 +190,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
         }
 
 
-        res.status(201).json(safeResponse)
+        return res.status(201).json(safeResponse)
     }
 
    
@@ -228,15 +227,12 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
         }
 
 
-        res.status(200).json(safeResponse)
+        return res.status(200).json(safeResponse)
     } else {
-        res.status(403).json({ message: "Forbidden" })
+       return  res.status(403).json({ message: "Forbidden" })
     }
 
 });
-
-
-
 
 
 
@@ -284,7 +280,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
             updatedAt: updateddate,
         };
 
-        res.status(200).json(responseEdit)
+        return res.status(200).json(responseEdit)
 
     } else {
         return res.status(404).json({ message: "Spot couldn't be found" });
@@ -355,7 +351,7 @@ router.get('/current', requireAuth, async (req, res) => {
     };
 
 
-    res.status(200).json(response);
+    return res.status(200).json(response);
 
 })
 
@@ -420,7 +416,7 @@ router.get('/:id', async (req, res) => {
       };
 
 
-      res.status(200).json(formattedResponse)
+      return res.status(200).json(formattedResponse)
 
 })
 
@@ -438,15 +434,13 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
         await spot.destroy()
 
-        res.status(200).json({ message: "Successfully deleted" })
+        return res.status(200).json({ message: "Successfully deleted" })
 
     } else {
-        res.status(403).json({ message: "Forbidden" })
+       return  res.status(403).json({ message: "Forbidden" })
     }
 
 })
-
-
 
 
 router.get('/', async (req, res) => {
@@ -513,7 +507,7 @@ router.get('/', async (req, res) => {
     };
 
 
-    res.status(200).json(response);
+    return res.status(200).json(response);
 
 
 })
@@ -559,9 +553,9 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
         }
 
-        res.status(201).json(safeSpot)
+        return res.status(201).json(safeSpot)
     } else {
-        res.status(403).json({ message: "Forbidden" })
+       return  res.status(403).json({ message: "Forbidden" })
     }
 
 
