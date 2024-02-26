@@ -208,6 +208,32 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res)=>{
         res.status(200).json(saveResponse)
     }
 
+
+    router.delete('/:reviewId', requireAuth, async (req, res)=> {
+
+        let user = req.user 
+
+        let {reviewId} = req.params
+
+        let review = await Review.findByPk(reviewId)
+
+        if (!review){
+            res.status(404).json({message: "Review couldn't be found"})
+        }
+
+        if (review.userId !== user.id){
+            res.status(403).json({message: 'Forbidden'})
+        }else {
+
+            await review.destroy()
+            
+            res.status(200).json({ message: "Successfully deleted" })
+
+        }
+
+
+    })
+
 })
 
 
