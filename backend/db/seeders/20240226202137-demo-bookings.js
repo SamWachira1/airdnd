@@ -16,15 +16,24 @@ module.exports = {
         userId: 1,
         spotId: 2,
         startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        endDate: new Date(new Date().setDate(new Date().getDate() + 3)),
       },
 
       {
         userId: 2,
         spotId: 1,
         startDate: new Date(),
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        endDate: new Date(new Date().setDate(new Date().getDate() + 3)),
       },
+
+      {
+        userId: 1,
+        spotId: 2,
+        startDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+        endDate: new Date(),
+      },
+
+
 
     ], options, {validate: true})
 

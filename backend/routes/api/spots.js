@@ -267,6 +267,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res)=
 
 
         let formattedReponse = {
+            id: newBooking.id,
             userId: newBooking.userId, 
             spotId: newBooking.spotId,
             startDate: formatedStartDate,

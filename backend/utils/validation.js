@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const {Booking} = require('../db/models')
 const {Op} = require('sequelize')
+const {Sequelize} = require('sequelize')
 
 // middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
@@ -112,6 +113,60 @@ async function checkBookingConflicts(req, res, next) {
 }
 
 
+
+async function checkBookingConflictsbookings(req, res, next) {
+  const { startDate, endDate } = req.body;
+  const {bookingId} = req.params 
+
+
+    let booking = await Booking.findByPk(bookingId)
+    if (!booking){
+      return res.status(404).json({
+        message: "Booking couldn't be found"
+      });
+    }
+
+    const currentDate = new Date();
+    if (booking.endDate < currentDate) {
+      return res.status(403).json({
+        message: "Past bookings can't be modified"
+      });
+    }
+
+    const spotId = booking.spotId;
+
+    const bookingConflict = await Booking.findOne({
+      where: {
+        spotId: spotId, 
+        [Op.or]: [
+          {
+            startDate: {
+              [Op.between]: [startDate, endDate]
+            }
+          },
+          {
+            endDate: {
+              [Op.between]: [startDate, endDate]
+            }
+          }
+        ]
+      }
+  });
+
+  if (bookingConflict) {
+    return res.status(403).json({
+      message: 'Sorry, this spot is already booked for the specified dates',
+      errors: {
+        startDate: 'Start date conflicts with an existing booking',
+        endDate: 'End date conflicts with an existing booking'
+      }
+    });
+  }
+
+  next();
+}
+
+
 module.exports = {
-  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots, checkBookingConflicts
+  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots, checkBookingConflicts, checkBookingConflictsbookings
 };
