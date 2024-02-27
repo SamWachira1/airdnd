@@ -88,11 +88,13 @@ const validateReview = [
     for (let booking of bookings){
         
         if (user.id !== spot.ownerId){
+            let bookingStartDate = booking.startDate.toISOString().split('T')[0];
+            let bookingEndDate = booking.endDate.toISOString().split('T')[0];
     
             let formattedResponse = {
                 spotId: booking.spotId,
-                startDate: booking.startDate,
-                endDate: booking.endDate 
+                startDate: bookingStartDate,
+                endDate: bookingEndDate
             }
     
             return res.status(200).json({Bookings: [formattedResponse]})
