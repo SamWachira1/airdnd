@@ -276,6 +276,8 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res)=
         }
 
         return res.status(200).json(formattedReponse)
+    }else {
+        return res.status(404).json('Cannot book your own spot')
     }
 
 
