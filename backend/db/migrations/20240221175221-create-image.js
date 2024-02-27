@@ -24,7 +24,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-      
       imageableType: {
         type: Sequelize.TEXT,
         allowNull: false,

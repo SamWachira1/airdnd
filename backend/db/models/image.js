@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       Image.belongsTo(models.Spot,{
         foreignKey: 'imageableId',
         constraints: false,
-        as: 'SpotImages',
+        // as: 'SpotImages',
         scope: {
           imageableType: 'Spot'
         }
@@ -51,14 +51,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     imageableId: {
       type: DataTypes.INTEGER,
-      allowNull: false 
+      allowNull: false,
+      onDelete: 'CASCADE'
     }
   }, {
     sequelize,
     modelName: 'Image',
-    defaultScope: {
-      attributes: ['id', 'url', 'preview'],
-    }
+    // defaultScope: {
+    //   attributes: ['id', 'url', 'preview'],
+    // }
 
 
   });

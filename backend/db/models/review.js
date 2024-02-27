@@ -34,10 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false 
     },
     stars:{ 
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       validate: {
-        min: 1,
-        max: 5
+        min: 1.0,
+        max: 5.0
       }
     },
     userId: DataTypes.INTEGER,

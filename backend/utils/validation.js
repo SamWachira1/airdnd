@@ -80,10 +80,9 @@ const handleValidationErrorsSpots = (req, _res, next) => {
 async function checkBookingConflicts(req, res, next) {
   const { startDate, endDate } = req.body;
 
-  // Example: Replace with your actual logic to check for existing bookings
   const bookingConflict = await Booking.findOne({
     where: {
-      spotId: req.params.spotId, // Assuming you have a spotId associated with each booking
+      spotId: req.params.spotId, 
       [Op.or]: [
         {
           startDate: {

@@ -198,8 +198,10 @@ router.get('/:spotId/reviews', async (req, res)=>{
         
 
         let images = await Image.findOne({
-            where: {imageableType: 'Review'}
+            where: {imageableType: 'Review', imageableId: review.id}
         })
+
+        // console.log("\n\n\n", images , "\n\n\n")
 
 
         let formattedReview = {
@@ -460,8 +462,15 @@ router.get('/current', requireAuth, async (req, res) => {
 
         });
 
-        const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
-        const avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+        let totalStars = 0  
+
+        for (let review of reviews ){
+
+             totalStars += review.stars
+        }
+
+        let avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+        let avgFloat = parseFloat(avgRating)
 
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
@@ -470,30 +479,39 @@ router.get('/current', requireAuth, async (req, res) => {
         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
         const spotImages = await Image.findAll({
-            attributes: ['id', 'url'],
             where: { imageableType: 'Spot', imageableId: spot.id },
         });
 
 
-        const formattedSpot = {
-            id: spot.id,
-            ownerId: spot.id,
-            address: spot.address,
-            city: spot.city,
-            state: spot.state,
-            country: spot.country,
-            lat: spot.lat,
-            lng: spot.lng,
-            name: spot.name,
-            description: spot.description,
-            price: spot.price,
-            createdAt: createdAtDate,
-            updatedAt: upadatedAtDate,
-            avgRating: avgRating,
-            previewImage: spotImages.length > 0 ? spotImages[0].url : null,
-        };
+         for (let image of spotImages){
 
-        formattedSpots.push(formattedSpot);
+            // console.log("\n\n\n", image.url , "\n\n\n")
+
+
+            const formattedSpot = {
+                id: spot.id,
+                ownerId: spot.id,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                description: spot.description,
+                price: spot.price,
+                createdAt: createdAtDate,
+                updatedAt: upadatedAtDate,
+                avgRating: avgFloat,
+                previewImage: spotImages.length > 0 ? image.url : null,
+            };
+    
+            formattedSpots.push(formattedSpot);
+
+         }
+
+
+ 
     }
 
     const response = {
@@ -520,53 +538,73 @@ router.get('/:id', async (req, res) => {
 
     //Load Spot Images 
     let images = await Image.findAll({
-        where: {imageableType: 'Spot'},
+        where: {imageableType: 'Spot', imageableId: spot.id},
         attributes:  ['id', 'url', 'preview']
     })
 
-    let spotImages = images.map((image) => ({
-        id: image.id,
-        url: image.url,
-        preview: image.preview,
-    }));
+
+
+    // let spotImages = images.map((image) => ({
+    //     id: image.id,
+    //     url: image.url,
+    //     preview: image.preview,
+    // }));
+    
+    for (let image of images){
+        
+        //load Owner details 
+        let owner = await User.findByPk(spot.ownerId, {
+            attributes: ['id', 'firstName', 'lastName'],
+        })
+    
+    
+        //load reviews 
+        let reviews = await Review.findAll({
+            where: {spotId: spot.id},
+            attributes: ['stars']
+        })
+
+    //    console.log("\n\n\n", reviews , "\n\n\n")
+
+
+        let totalStars = 0;
+        let avgRating;
+
+        for (let review of reviews){
+             
+        //  totalStars = review.reduce((sum, review) => sum + review.stars, 0);
+        totalStars += review.stars 
     
 
-    //load Owner details 
-    let owner = await User.findByPk(spot.ownerId, {
-        attributes: ['id', 'firstName', 'lastName'],
-    })
+         avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+    
+        }
+
+            
+        let createdAtDate = new Date(spot.createdAt);
+        let upadatedAtDate = new Date(spot.updatedAt)
+    
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+    
+        let formattedResponse = {
+            ...spot.toJSON(),
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate,
+            numReviews: reviews.length,
+            avgStarRating: avgRating,
+            SpotImages: image,
+            Owner: owner,
+          };
 
 
-    //load reviews 
-    let reviews = await Review.findAll({
-        where: {spotId: spot.id},
-        attributes: ['stars']
-    })
+          return res.status(200).json(formattedResponse)
+    
+   
+    }
 
 
-    let totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
 
-    let avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
-
-
-    let createdAtDate = new Date(spot.createdAt);
-    let upadatedAtDate = new Date(spot.updatedAt)
-
-    createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
-    upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
-
-    let formattedResponse = {
-        ...spot.toJSON(),
-        createdAt: createdAtDate,
-        updatedAt: upadatedAtDate,
-        numReviews: reviews.length,
-        avgStarRating: avgRating,
-        SpotImages: spotImages,
-        Owner: owner,
-      };
-
-
-      return res.status(200).json(formattedResponse)
 
 })
 
@@ -619,42 +657,44 @@ router.get('/', async (req, res) => {
         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
         let images = await Image.findAll({
-            where: { imageableType: 'Spot'},
+            where: { imageableType: 'Spot', imageableId: spot.id},
         });
 
-        let spotImages = images.map((image) => ({
-            id: image.id,
-            url: image.url,
-            preview: image.preview,
-        }));
-        
+
+
+        for (let image of images){
+
+            const formattedSpot = {
+
+                id: spot.id,
+                ownerId: spot.id,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                description: spot.description,
+                price: spot.price,
+                createdAt: createdAtDate,
+                updatedAt: upadatedAtDate,
+                avgRating: avgRating,
+                previewImage: images[0].url,
+            };
     
+            formattedSpots.push(formattedSpot);
 
-        const formattedSpot = {
+        }
 
-            id: spot.id,
-            ownerId: spot.id,
-            address: spot.address,
-            city: spot.city,
-            state: spot.state,
-            country: spot.country,
-            lat: spot.lat,
-            lng: spot.lng,
-            name: spot.name,
-            description: spot.description,
-            price: spot.price,
-            createdAt: createdAtDate,
-            updatedAt: upadatedAtDate,
-            avgRating: avgRating,
-            previewImage: spotImages[0].url,
-        };
-
-        formattedSpots.push(formattedSpot);
+      
     }
 
     const response = {
         Spots: formattedSpots,
     };
+
+
 
 
     return res.status(200).json(response);

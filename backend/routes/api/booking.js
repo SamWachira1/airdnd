@@ -20,7 +20,6 @@ const validateBooking = [
     check('endDate')
       .notEmpty()
       .custom((value, { req }) => {
-        // Add your custom validation logic for endDate
         const startDate = new Date(req.body.startDate);
         const endDate = new Date(value);
   
@@ -146,8 +145,6 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
     }
 
 
-
-
 })
 
 
@@ -157,6 +154,9 @@ router.delete('/:bookingId', requireAuth, async (req, res) =>{
     let {bookingId} = req.params
 
     let booking = await Booking.findByPk(bookingId)
+    let spotId = booking.spotId
+
+    let spot = await Spot.findByPk(spotId)
 
     if(!booking){
         res.status(404).json({message:  "Booking couldn't be found"})
@@ -171,7 +171,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) =>{
          });
     }
 
-    if(booking.userId === currUser.id ){
+    if(booking.userId === currUser.id || spot.ownerId === currUser.id){
         
         await booking.destroy()
 
