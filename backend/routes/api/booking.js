@@ -51,15 +51,11 @@ router.get('/current', requireAuth, async (req, res) => {
 
         for (let spot of spots ){
 
-    //  console.log("\n\n\n", spot[0].id, "\n\n\n")
-
 
         let spotImage = await Image.findAll({
             where: {imageableType: 'Spot'},
             attributes: ['url']
         })
-
-        //  console.log("\n\n\n", spotImage[0].url , "\n\n\n")
 
 
         let createdAtDate = new Date(booking.createdAt);
@@ -150,6 +146,37 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
     }
 
 
+
+
+})
+
+
+router.delete('/:bookingId', requireAuth, async (req, res) =>{
+
+    let currUser = req.user 
+    let {bookingId} = req.params
+
+    let booking = await Booking.findByPk(bookingId)
+
+    if(!booking){
+        res.status(404).json({message:  "Booking couldn't be found"})
+    }
+
+    let currDate = new Date()
+    let bookingStartDate = new Date(booking.startDate)
+
+    if (bookingStartDate <= currDate){
+        return res.status(403).json({
+            message: "Bookings that have been started can't be deleted"
+         });
+    }
+
+    if(booking.userId === currUser.id ){
+        
+        await booking.destroy()
+
+        return res.status(200).json({message: "Successfully deleted"})
+    }
 })
 
 
