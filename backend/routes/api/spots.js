@@ -1,7 +1,7 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, User, Image, Review } = require('../../db/models');
+const { Spot, User, Image, Review, Booking } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors, handleValidationErrorsSpots } = require('../../utils/validation');
 const Sequelize = require('sequelize');
@@ -68,6 +68,72 @@ const validateReview = [
     handleValidationErrors
   ];
 
+ router.get('/:spotId/bookings', requireAuth, async (req, res)=>{
+    let currUser = req.user 
+    let {spotId} = req.params 
+    
+    let user = await User.findByPk(currUser.id)
+    let spot = await Spot.findByPk(Number(spotId))
+
+    if(!spot){
+        return res.status(404).json({message: "Spot couldn't be found" })
+    }
+    let bookings = await Booking.findAll({
+        where: {
+            spotId: spotId
+        }
+    })
+
+    // console.log("\n\n\n",bookings, "\n\n\n")
+    for (let booking of bookings){
+        
+        if (user.id !== spot.ownerId){
+    
+            let formattedResponse = {
+                spotId: booking.spotId,
+                startDate: booking.startDate,
+                endDate: booking.endDate 
+            }
+    
+            return res.status(200).json({Bookings: [formattedResponse]})
+        }else if (user.id === spot.ownerId) {
+    
+            let createdAtDate = new Date(booking.createdAt);
+            let updatedAtDate = new Date(booking.updatedAt)
+            
+            let createdAtD = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+            let updatedAtD = updatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+            
+            let bookingStartDate = booking.startDate.toISOString().split('T')[0];
+            let bookingEndDate = booking.endDate.toISOString().split('T')[0];
+    
+            let formattedResponse = {
+                User: {
+                    id: user.id,
+                    firstName: user.firstName,
+                    lastName: user.lastName
+                },
+                id: booking.id,
+                spotId: booking.spotId,
+                userId: booking.userId,
+                startDate: bookingStartDate,
+                endDate: bookingEndDate, 
+                createdAt: createdAtD,
+                updatedAt: updatedAtD
+    
+            }
+    
+            return res.status(200).json({Bookings: [formattedResponse]})
+        }
+
+
+    }
+
+
+
+ })
+
+
 router.get('/:spotId/reviews', async (req, res)=>{
 
     let {spotId} = req.params 
@@ -99,6 +165,8 @@ router.get('/:spotId/reviews', async (req, res)=>{
 
         let createdAtD = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
         let updatedAtD = updatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+        
 
         let images = await Image.findOne({
             where: {imageableType: 'Review'}
@@ -142,14 +210,12 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
     let user = req.user 
     let {spotId} = req.params 
 
-
     let {review, stars} = req.body 
 
     let spot = await Spot.findOne({
         where: {id: spotId},
 
     })
-
  
     if (!spot) {
         return res.status(404).json({message:  "Spot couldn't be found"})

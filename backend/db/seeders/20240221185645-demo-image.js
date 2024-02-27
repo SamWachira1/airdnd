@@ -28,7 +28,7 @@ module.exports = {
 
       {
         url: 'image url',
-        preview: true,
+        preview: false,
         imageableType: 'Review',
         imageableId: 2
       },
