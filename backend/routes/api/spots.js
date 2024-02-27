@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, User, Image, Review, Booking } = require('../../db/models');
 const { check } = require('express-validator');
-const { handleValidationErrors, handleValidationErrorsSpots } = require('../../utils/validation');
+const { handleValidationErrors, handleValidationErrorsSpots, checkBookingConflicts } = require('../../utils/validation');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
@@ -65,8 +65,35 @@ const validateReview = [
     check('stars')
       .isInt({ min: 1, max: 5 })
       .withMessage('Stars must be an integer from 1 to 5'),
-    handleValidationErrors
+    handleValidationErrors,
   ];
+
+  const validateBooking = [
+    check('startDate')
+    .notEmpty()
+    .custom((value, ) => {
+        if (new Date(value) < new Date()) {
+          throw new Error('startDate cannot be in the past');
+        }
+        return true;
+      }),
+    check('endDate')
+      .notEmpty()
+      .custom((value, { req }) => {
+        // Add your custom validation logic for endDate
+        const startDate = new Date(req.body.startDate);
+        const endDate = new Date(value);
+  
+        if (endDate <= startDate) {
+          throw new Error('endDate cannot be on or before startDate');
+        }
+        return true;
+      }),
+
+      handleValidationErrors,
+      checkBookingConflicts
+
+  ]
 
  router.get('/:spotId/bookings', requireAuth, async (req, res)=>{
     let currUser = req.user 
@@ -205,6 +232,58 @@ router.get('/:spotId/reviews', async (req, res)=>{
     return res.status(200).json({Reviews: formattedReviews})
 
 })
+
+router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res)=> {
+
+    let currUser = req.user 
+    let {spotId} = req.params 
+    let {startDate, endDate} = req.body 
+
+    let spot = await Spot.findByPk(spotId)
+
+    if (!spot){
+        return res.status(404).json({message: "Spot couldn't be found"})
+    }
+
+
+    if (spot.ownerId !== currUser.id ){
+
+        let newBooking = await Booking.create({
+            userId: currUser.id, 
+            spotId: spot.id,
+            startDate,
+            endDate
+        })
+
+        let formatedStartDate = newBooking.startDate.toISOString().split('T')[0];
+        let formatedEndDate = newBooking.endDate.toISOString().split('T')[0];
+
+
+    let createdAtDate = new Date(newBooking.createdAt);
+    let updatedAtDate = new Date(newBooking.updatedAt)
+
+    let createdAtD = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+    let updatedAtD = updatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
+
+        let formattedReponse = {
+            userId: newBooking.userId, 
+            spotId: newBooking.spotId,
+            startDate: formatedStartDate,
+            endDate: formatedEndDate,
+            createdAt: createdAtD,
+            updatedAt: updatedAtD
+        }
+
+        return res.status(200).json(formattedReponse)
+    }
+
+
+
+})
+
+
+
 
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
 

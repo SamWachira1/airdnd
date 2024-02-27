@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator');
+const {Booking} = require('../db/models')
+const {Op} = require('sequelize')
 
 // middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
@@ -74,6 +76,42 @@ const handleValidationErrorsSpots = (req, _res, next) => {
 };
 
 
+async function checkBookingConflicts(req, res, next) {
+  const { startDate, endDate } = req.body;
+
+  // Example: Replace with your actual logic to check for existing bookings
+  const bookingConflict = await Booking.findOne({
+    where: {
+      spotId: req.params.spotId, // Assuming you have a spotId associated with each booking
+      [Op.or]: [
+        {
+          startDate: {
+            [Op.between]: [startDate, endDate]
+          }
+        },
+        {
+          endDate: {
+            [Op.between]: [startDate, endDate]
+          }
+        }
+      ]
+    }
+  });
+
+  if (bookingConflict) {
+    return res.status(403).json({
+      message: 'Sorry, this spot is already booked for the specified dates',
+      errors: {
+        startDate: 'Start date conflicts with an existing booking',
+        endDate: 'End date conflicts with an existing booking'
+      }
+    });
+  }
+
+  next();
+}
+
+
 module.exports = {
-  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots,
+  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots, checkBookingConflicts
 };
