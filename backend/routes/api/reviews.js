@@ -74,20 +74,29 @@ router.get('/current', requireAuth, async (req, res) => {
             spotImage.url = 'No preview image'
         }
 
-        let reviewImages = await Image.findOne({
-            where: { imageableType: 'Review', imageableId: spot.id }
+        let reviewImages = await Image.findAll({
+            where: { imageableType: 'Review', imageableId: review.id }
         })
 
 
         // reviewImages = reviewImages.dataValues
 
-        let removePreview = {
-            id: reviewImages.id,
-            url: reviewImages.url
+        let reviewImageId; 
+        let reviewImageUrl;
+        
+        for (let review of reviewImages){
+            reviewImageId = review.id 
+            reviewImageUrl = review.url 
         }
 
+        // console.log("\n\n\n",reviewImages.id , "\n\n\n")
 
-        
+
+        let removePreview = {
+            id: reviewImageId,
+            url: reviewImageUrl
+        }
+
 
         const formattedReview = {
             ...review.toJSON(),
