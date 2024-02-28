@@ -170,7 +170,6 @@ router.get('/:spotId/reviews', async (req, res)=>{
 
     const spot = await Spot.findOne({ where: { id: spotId } });
     
-    //   console.log("\n\n\n", spot , "\n\n\n")
 
     if(!spot){
         return res.status(404).json({message:  "Spot couldn't be found"})
@@ -180,6 +179,8 @@ router.get('/:spotId/reviews', async (req, res)=>{
         where: {spotId: spotId},
 
     })
+
+
 
     let formattedReviews = [];
 
@@ -197,11 +198,18 @@ router.get('/:spotId/reviews', async (req, res)=>{
 
         
 
-        let images = await Image.findOne({
+        let images = await Image.findAll({
             where: {imageableType: 'Review', imageableId: review.id}
         })
 
-        // console.log("\n\n\n", images , "\n\n\n")
+        let imageId;
+        let urlResponse;
+        for (let image of images){
+            imageId = image.id
+            urlResponse = image.url
+        }
+
+        console.log("\n\n\n", images , "\n\n\n")
 
 
         let formattedReview = {
@@ -220,8 +228,8 @@ router.get('/:spotId/reviews', async (req, res)=>{
 
             ReviewImages: [
                 {
-                    id: images.id,
-                    url: images.url,
+                    id: imageId,
+                    url: urlResponse,
                 },
             ],
         }
@@ -591,8 +599,6 @@ router.get('/:id', async (req, res) => {
     
    
     }
-
-
 
 
 })

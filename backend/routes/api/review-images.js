@@ -27,11 +27,12 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
     }
 
     if (image.imageableType === 'Review'){
-        let reviewBelongsUser = await Spot.findOne({
+        let reviewBelongsUser = await Review.findOne({
             id: image.imageableId,
             ownerId: currUser.id 
         })
 
+        // console.log("\n\n\n", reviewBelongsUser[0].ownerId, "\n\n\n")
 
         if(!reviewBelongsUser){
             return res.status(404).json({message: 'Forbidden'})
