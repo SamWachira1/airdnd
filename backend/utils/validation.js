@@ -84,17 +84,40 @@ async function checkBookingConflicts(req, res, next) {
     where: {
       spotId: req.params.spotId, 
       [Op.or]: [
+        //Within
+        { endDate: { [Op.between]: [startDate, endDate] } },
         {
-          startDate: {
-            [Op.between]: [startDate, endDate]
-          }
+          [Op.and]: [
+          //startDate in conflict, endDate not in conflict
+            { startDate: { [Op.lte]: startDate } },
+
+            {endDate:{[Op.gte]:startDate}}
+          ],
         },
+
         {
-          endDate: {
-            [Op.between]: [startDate, endDate]
-          }
-        }
-      ]
+          [Op.and]: [
+            //endDate in conflict, startDate not in conflict
+
+            { startDate: { [Op.lte]: endDate } },
+
+            { endDate: { [Op.gte]: endDate } },
+          ],
+        },
+
+
+
+        {
+          [Op.and]: [
+            //Surrounding
+            { startDate: { [Op.lte]: startDate } },
+            { endDate: { [Op.gte]: endDate } },
+          ],
+        },
+        //Same day conflict
+
+        {endDate: {[Op.eq]: new Date(startDate)}}
+      ],
     }
   });
 
@@ -193,12 +216,10 @@ async function checkBookingConflictsbookings(req, res, next) {
       {
         [Op.and]: [
           {
-            // Existing booking's endDate is greater than or equal to the provided startDate
             startDate: { [Op.eq]: endDate }
 
           },
           {
-            // Existing booking's startDate is less than or equal to the provided endDate
             endDate: { [Op.gte]: endDate }
 
           }
@@ -247,7 +268,27 @@ async function checkBookingConflictsbookings(req, res, next) {
           { endDate: { [Op.gt]: endDate } }
         ]
       },
-      // Add other conditions as needed...
+
+      {
+        [Op.and]: [
+        //startDate in conflict, endDate not in conflict
+          { startDate: { [Op.lte]: startDate } },
+
+          {endDate:{[Op.gte]:startDate}}
+        ],
+      },
+
+      {
+        [Op.and]: [
+          //endDate in conflict, startDate not in conflict
+
+          { startDate: { [Op.lte]: endDate } },
+
+          { endDate: { [Op.gte]: endDate } },
+        ],
+      },
+
+      
     ]
   }
   });
