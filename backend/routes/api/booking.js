@@ -115,10 +115,12 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
     
     if (booking.userId === currUser.id){
 
-        booking.startDate = startDate
-        booking.endDate = endDate
+        await booking.update({ startDate, endDate });
+
+        // booking.startDate = startDate
+        // booking.endDate = endDate
     
-        await booking.save()
+        // await booking.save()
 
         let createdAtDate = new Date(booking.createdAt);
         let upadatedAtDate = new Date(booking.updatedAt)
