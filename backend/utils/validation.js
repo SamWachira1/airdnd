@@ -125,6 +125,7 @@ async function checkBookingConflictsbookings(req, res, next) {
       });
     }
 
+
     const currentDate = new Date();
     if (booking.endDate < currentDate) {
       return res.status(403).json({
@@ -134,22 +135,121 @@ async function checkBookingConflictsbookings(req, res, next) {
 
     const spotId = booking.spotId;
 
+
     const bookingConflict = await Booking.findOne({
       where: {
-        spotId: spotId, 
-        [Op.or]: [
+        spotId: spotId,
+     [Op.or]: [
+      // 1. Check if the provided dates surround an existing booking
+      {
+        [Op.and]: [
+          { startDate: { [Op.lte]: startDate } },
+          { endDate: { [Op.gte]: endDate } }
+        ]
+      },
+      // 2. Check if the existing booking's dates are within the provided range
+      {
+        [Op.and]: [
+          { startDate: { [Op.gte]: startDate, [Op.lte]: endDate } },
+          { endDate: { [Op.gte]: startDate, [Op.lte]: endDate } }
+        ]
+      },
+      // 3. Check if the provided start date is within the existing booking's range
+      {
+        [Op.and]: [
+          { startDate: { [Op.gte]: startDate, [Op.lte]: endDate } },
+          { endDate: { [Op.gte]: endDate } }
+        ]
+      },
+      // 4. Check if the provided end date is within the existing booking's range
+      {
+        [Op.and]: [
+          { startDate: { [Op.lte]: startDate } },
+          { endDate: { [Op.gte]: startDate, [Op.lte]: endDate } }
+        ]
+      },
+      // 5. Same day conflict
+      {
+        [Op.and]: [
+          { startDate: { [Op.eq]: endDate } },
+          { endDate: { [Op.eq]: startDate } }
+        ]
+      },
+      // 6. End date before start date
+      {
+        [Op.and]: [
+          { startDate: { [Op.gte]: endDate } },
+          { endDate: { [Op.lte]: startDate } }
+        ]
+      },
+      // 7. Start date on existing start date
+      {
+        [Op.and]: [
+          { startDate: { [Op.eq]: startDate } },
+          { endDate: { [Op.eq]: startDate } }
+        ]
+      },
+      // 8. Start date on existing end date
+      {
+        [Op.and]: [
           {
-            startDate: {
-              [Op.between]: [startDate, endDate]
-            }
+            // Existing booking's endDate is greater than or equal to the provided startDate
+            startDate: { [Op.eq]: endDate }
+
           },
           {
-            endDate: {
-              [Op.between]: [startDate, endDate]
-            }
+            // Existing booking's startDate is less than or equal to the provided endDate
+            endDate: { [Op.gte]: endDate }
+
           }
         ]
-      }
+
+      },
+      // 9. End date on existing start date
+      {
+        [Op.and]: [
+          { startDate: { [Op.eq]: startDate } },
+          { endDate: { [Op.eq]: startDate } }
+        ]
+      },
+      // 10. End date on existing end date
+      {
+        [Op.and]: [
+          { startDate: { [Op.eq]: endDate } },
+          { endDate: { [Op.eq]: endDate } }
+        ]
+      },
+      // 11. Start date during existing booking
+      {
+        [Op.and]: [
+          { startDate: { [Op.gte]: startDate } },
+          { endDate: { [Op.lte]: endDate } }
+        ]
+      },
+      // 12. End date during existing booking
+      {
+        [Op.and]: [
+          { startDate: { [Op.lte]: startDate } },
+          { endDate: { [Op.gte]: endDate } }
+        ]
+      },
+      // 13. Dates within existing booking
+      {
+        [Op.and]: [
+          { startDate: { [Op.gte]: startDate } },
+          { endDate: { [Op.lte]: endDate } }
+        ]
+      },
+      // 14. Dates surround existing booking
+      {
+        [Op.and]: [
+          { startDate: { [Op.lt]: startDate } },
+          { endDate: { [Op.gt]: endDate } }
+        ]
+      },
+      // Add other conditions as needed...
+    ]
+  }
   });
 
   if (bookingConflict) {
