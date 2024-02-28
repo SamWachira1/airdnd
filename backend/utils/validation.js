@@ -86,6 +86,7 @@ async function checkBookingConflicts(req, res, next) {
       [Op.or]: [
         //Within
         { endDate: { [Op.between]: [startDate, endDate] } },
+        
         {
           [Op.and]: [
           //startDate in conflict, endDate not in conflict
