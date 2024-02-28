@@ -44,7 +44,7 @@ router.get('/current', requireAuth, async (req, res) => {
         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
 
-        const spots = await Spot.findOne({
+        const spot = await Spot.findOne({
             where: { id: review.spotId },
             attributes: [
                 'id',
@@ -62,26 +62,32 @@ router.get('/current', requireAuth, async (req, res) => {
 
         })
 
-        const image = await Image.findOne({
-            where: { imageableType: 'Spot' },
+        const spotImage = await Image.findOne({
+            where: { imageableType: 'Spot', imageableId: spot.id },
         })
 
-        let spotImages = image.dataValues
+        //  console.log("\n\n\n",spotImage , "\n\n\n")
 
-        if (spotImages.preview !== true) {
-            spotImages.url = 'No preview image'
+
+
+        if (spotImage.preview !== true) {
+            spotImage.url = 'No preview image'
         }
 
         let reviewImages = await Image.findOne({
-            where: { imageableType: 'Review' }
+            where: { imageableType: 'Review', imageableId: spot.id }
         })
 
-        reviewImages = reviewImages.dataValues
+
+        // reviewImages = reviewImages.dataValues
 
         let removePreview = {
             id: reviewImages.id,
             url: reviewImages.url
         }
+
+
+        
 
         const formattedReview = {
             ...review.toJSON(),
@@ -89,17 +95,17 @@ router.get('/current', requireAuth, async (req, res) => {
             updatedAt: upadatedAtDate,
             User: user,
             Spot: {
-                id: spots.id,
-                ownerId: spots.ownerId,
-                address: spots.address,
-                city: spots.city,
-                state: spots.state,
-                country: spots.country,
-                lat: spots.lat,
-                lng: spots.lng,
-                name: spots.name,
-                price: spots.price,
-                previewImage: spotImages.url
+                id: spot.id,
+                ownerId: spot.ownerId,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                price: spot.price,
+                previewImage: spotImage.url
             },
 
             ReviewImages: removePreview,
@@ -139,9 +145,12 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
     let findAllImages = await Image.findAll({
         where: {
             imageableType: 'Review',
-            // imageableId: reviewId,
+            imageableId: review.id,
         }
     })
+
+      console.log("\n\n\n",findAllImages.length, "\n\n\n")
+
 
     if (findAllImages.length > 10 ){
        return  res.status(403).json({

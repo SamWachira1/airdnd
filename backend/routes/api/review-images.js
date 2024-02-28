@@ -10,53 +10,40 @@ const { handleValidationErrors, handleValidationErrorsUsers, handleValidationErr
 const router = express.Router();
 
 
-
 router.delete('/:imageId', requireAuth, async (req, res)=>{
-
-    let user = req.user 
-
     let {imageId} = req.params 
+    let currUser = req.user 
 
-    let image = await Image.findByPk(imageId)
 
-    //   console.log("\n\n\n",image , "\n\n\n")
-
+    let image = await Image.findOne({
+        where: {
+            imageableType: 'Review',
+            imageableId: imageId
+        }
+    })
 
     if (!image){
-        res.status(404).json({message: "Spot Image couldn't be found" })
+        return res.status(404).json({message: "Review Image couldn't be found"})
     }
 
-    if (image.imageableType === 'Spot'){
-        let spotBelongsUser = await Spot.findOne({
-            where: {
-                id: image.imageableId,
-                ownerId: user.id 
-            }
-
+    if (image.imageableType === 'Review'){
+        let reviewBelongsUser = await Spot.findOne({
+            id: image.imageableId,
+            ownerId: currUser.id 
         })
 
-        // console.log("\n\n\n", spotBelongsUser, "\n\n\n")
 
-
-        if (!spotBelongsUser){
+        if(!reviewBelongsUser){
             return res.status(404).json({message: 'Forbidden'})
         }else {
-            await image.destroy();
+            await image.destroy()
 
             return res.status(200).json({message: "Successfully deleted"})
-
-
         }
-
     }
-
-    // return res.status(200).json({message: "Successfully "})
 
 
 })
-
-
-
 
 
 module.exports = router;
