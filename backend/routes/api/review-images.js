@@ -29,10 +29,10 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
     if (image.imageableType === 'Review'){
         let reviewBelongsUser = await Review.findOne({
             id: image.imageableId,
-            ownerId: currUser.id 
+            userId: currUser.id 
         })
 
-        // console.log("\n\n\n", reviewBelongsUser[0].ownerId, "\n\n\n")
+        // console.log("\n\n\n", reviewBelongsUser, "\n\n\n")
 
         if(!reviewBelongsUser){
             return res.status(404).json({message: 'Forbidden'})
@@ -40,6 +40,8 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
             await image.destroy()
 
             return res.status(200).json({message: "Successfully deleted"})
+
+            // return res.status(200).json(reviewBelongsUser)
         }
     }
 
