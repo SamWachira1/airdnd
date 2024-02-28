@@ -455,6 +455,9 @@ router.get('/current', requireAuth, async (req, res) => {
 
     for (const spot of getAllSpots) {
 
+        // console.log("\n\n\n", spot , "\n\n\n")
+
+
         const reviews = await Review.findAll({
             where: { spotId: spot.id },
             attributes: ['stars'],
@@ -469,7 +472,7 @@ router.get('/current', requireAuth, async (req, res) => {
              totalStars += review.stars
         }
 
-        let avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+        let avgRating = reviews.length > 0 ? totalStars / reviews.length : null;
         let avgFloat = parseFloat(avgRating)
 
         let createdAtDate = new Date(spot.createdAt);
@@ -483,43 +486,39 @@ router.get('/current', requireAuth, async (req, res) => {
         });
 
 
-         for (let image of spotImages){
-
-            // console.log("\n\n\n", image.url , "\n\n\n")
-
-
-            const formattedSpot = {
-                id: spot.id,
-                ownerId: spot.id,
-                address: spot.address,
-                city: spot.city,
-                state: spot.state,
-                country: spot.country,
-                lat: spot.lat,
-                lng: spot.lng,
-                name: spot.name,
-                description: spot.description,
-                price: spot.price,
-                createdAt: createdAtDate,
-                updatedAt: upadatedAtDate,
-                avgRating: avgFloat,
-                previewImage: spotImages.length > 0 ? image.url : null,
-            };
-    
-            formattedSpots.push(formattedSpot);
-
+        let imageUrl;
+         for (let i of spotImages){
+            imageUrl = i.url
          }
 
+        // console.log("\n\n\n", imageUrl , "\n\n\n")
+
+
+         const formattedSpot = {
+            id: spot.id,
+            ownerId: spot.id,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: spot.lat,
+            lng: spot.lng,
+            name: spot.name,
+            description: spot.description,
+            price: spot.price,
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate,
+            avgRating: avgFloat,
+            previewImage: spotImages.length > 0 ? imageUrl : null,
+        };
+
+        formattedSpots.push(formattedSpot);
 
  
     }
 
-    const response = {
-        Spots: formattedSpots,
-    };
 
-
-    return res.status(200).json(response);
+    return res.status(200).json({Spots: formattedSpots});
 
 })
 
@@ -543,13 +542,6 @@ router.get('/:id', async (req, res) => {
     })
 
 
-
-    // let spotImages = images.map((image) => ({
-    //     id: image.id,
-    //     url: image.url,
-    //     preview: image.preview,
-    // }));
-    
     for (let image of images){
         
         //load Owner details 
@@ -572,15 +564,12 @@ router.get('/:id', async (req, res) => {
 
         for (let review of reviews){
              
-        //  totalStars = review.reduce((sum, review) => sum + review.stars, 0);
-        totalStars += review.stars 
-    
-
-         avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
-    
+            totalStars += review.stars 
+        
         }
 
-            
+        avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+  
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
     
@@ -636,6 +625,9 @@ router.get('/', async (req, res) => {
 
     const getAllSpots = await Spot.findAll();
 
+    //   console.log("\n\n\n", getAllSpots , "\n\n\n")
+
+
     const formattedSpots = [];
 
     for (const spot of getAllSpots) {
@@ -647,8 +639,12 @@ router.get('/', async (req, res) => {
 
         });
 
-        const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
-        const avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+        let totalStars = 0 
+        for (let review of reviews){
+            totalStars += review.stars 
+        }
+
+        const avgRating = reviews.length > 0 ? totalStars / reviews.length : null;
 
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
@@ -661,43 +657,44 @@ router.get('/', async (req, res) => {
         });
 
 
-
-        for (let image of images){
-
-            const formattedSpot = {
-
-                id: spot.id,
-                ownerId: spot.id,
-                address: spot.address,
-                city: spot.city,
-                state: spot.state,
-                country: spot.country,
-                lat: spot.lat,
-                lng: spot.lng,
-                name: spot.name,
-                description: spot.description,
-                price: spot.price,
-                createdAt: createdAtDate,
-                updatedAt: upadatedAtDate,
-                avgRating: avgRating,
-                previewImage: images[0].url,
-            };
-    
-            formattedSpots.push(formattedSpot);
-
+      
+        let imgUrl;
+        for (let i of images){
+            imgUrl = i.url
         }
+
+
+        const formattedSpot = {
+
+            id: spot.id,
+            ownerId: spot.id,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: spot.lat,
+            lng: spot.lng,
+            name: spot.name,
+            description: spot.description,
+            price: spot.price,
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate,
+            avgRating: avgRating,
+            previewImage: imgUrl,
+        };
+
+
+        formattedSpots.push(formattedSpot)
+
 
       
     }
 
-    const response = {
-        Spots: formattedSpots,
-    };
+  
 
 
+    return res.status(200).json({Spots: formattedSpots});
 
-
-    return res.status(200).json(response);
 
 
 })

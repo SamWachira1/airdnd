@@ -32,7 +32,11 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
                 id: image.imageableId,
                 ownerId: user.id 
             }
+
         })
+
+        console.log("\n\n\n", spotBelongsUser, "\n\n\n")
+
 
         if (!spotBelongsUser){
             return res.status(404).json({message: 'Forbidden'})

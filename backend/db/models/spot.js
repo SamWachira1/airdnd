@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
           imageableType: 'Spot'
         },
 
-        // as: 'SpotImages'
+        as: 'SpotImages'
       })
 
       Spot.hasMany(models.Review,{
