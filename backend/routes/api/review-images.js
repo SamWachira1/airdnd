@@ -28,8 +28,10 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
 
     if (image.imageableType === 'Review'){
         let reviewBelongsUser = await Review.findOne({
-            id: image.imageableId,
-            userId: currUser.id 
+            where: {
+                id: image.imageableId,
+                userId: currUser.id 
+            }
         })
 
         // console.log("\n\n\n", reviewBelongsUser, "\n\n\n")
