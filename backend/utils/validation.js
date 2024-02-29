@@ -106,8 +106,6 @@ async function checkBookingConflicts(req, res, next) {
           ],
         },
 
-
-
         {
           [Op.and]: [
             //Surrounding

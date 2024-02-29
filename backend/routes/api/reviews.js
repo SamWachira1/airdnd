@@ -158,7 +158,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
         }
     })
 
-      console.log("\n\n\n",findAllImages.length, "\n\n\n")
+    //   console.log("\n\n\n",findAllImages.length, "\n\n\n")
 
 
     if (findAllImages.length > 10 ){

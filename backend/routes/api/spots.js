@@ -2,9 +2,10 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, User, Image, Review, Booking } = require('../../db/models');
-const { check } = require('express-validator');
+const { check, query } = require('express-validator');
 const { handleValidationErrors, handleValidationErrorsSpots, checkBookingConflicts } = require('../../utils/validation');
-const Sequelize = require('sequelize');
+const {Sequelize, Op} = require('sequelize');
+
 
 const router = express.Router();
 
@@ -80,7 +81,6 @@ const validateReview = [
     check('endDate')
       .notEmpty()
       .custom((value, { req }) => {
-        // Add your custom validation logic for endDate
         const startDate = new Date(req.body.startDate);
         const endDate = new Date(value);
   
@@ -94,6 +94,56 @@ const validateReview = [
       checkBookingConflicts
 
   ]
+
+
+  const validateQueryParams = [
+  query('page')
+    .optional()
+    .isInt({ min: 1, max: 10 })
+    .withMessage('Page must be an integer between 1 and 10'),
+
+  query('size')
+    .optional()
+    .isInt({ min: 1, max: 20 })
+    .withMessage('Size must be an integer between 1 and 20'),
+
+  query('minLat')
+    .isFloat({min: -90, max: 90})
+    .optional()
+    .isDecimal()
+    .withMessage('Minimum latitude is invalid'),
+
+  query('maxLat')
+    .isFloat({min: -90, max: 90})
+    .optional()
+    .isDecimal()
+    .withMessage('Maximum latitude is invalid'),
+
+  query('minLng')
+    .isFloat({min: -180, max: 180})
+    .optional()
+    .isDecimal()
+    .withMessage('Minimum longitude is invalid'),
+
+  query('maxLng')
+    .isFloat({min: -180, max: 180})
+    .optional()
+    .isDecimal()
+    .withMessage('Maximum longitude is invalid'),
+
+  query('minPrice')
+    .optional()
+    .isDecimal({ min: 0 })
+    .withMessage('Minimum price must be greater than or equal to 0'),
+
+  query('maxPrice')
+    .optional()
+    .isDecimal({ min: 0 })
+    .withMessage('Maximum price must be greater than or equal to 0'),
+
+    handleValidationErrors,
+
+];
 
  router.get('/:spotId/bookings', requireAuth, async (req, res)=>{
     let currUser = req.user 
@@ -626,12 +676,80 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 })
 
 
-router.get('/', async (req, res) => {
+router.get('/', validateQueryParams, async (req, res) => {
 
 
-    const getAllSpots = await Spot.findAll();
+    let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
 
-    //   console.log("\n\n\n", getAllSpots , "\n\n\n")
+    page = isNaN(page) ? 1 : Number(page);
+    size = isNaN(size) ? 20 : Number(size);
+
+    let limit;
+    let offset;
+    
+    if (!isNaN(page) && !isNaN(size) && page > 0 && size > 0) {
+        limit = size 
+        offset = size * (page - 1)
+
+    }
+
+
+
+    // let limit = size 
+    // let offset = size * (page - 1)
+
+
+    const query = {
+
+        where: {},
+        limit,
+        offset
+    }
+
+       console.log("\n\n\n", query , "\n\n\n")
+
+    if (minLat){
+        query.where.lat = {
+            [Op.gte]: parseFloat(minLat)
+        }
+    }
+
+    if (maxLat){
+        query.where.lat = {
+            [Op.lte]: parseFloat(maxLat)
+        }
+    }
+
+    if (minLng){
+         query.where.lng = {
+            [Op.gte]: parseFloat(minLng)
+        }
+    }
+
+    if (maxLng){
+         query.where.lng = {
+            [Op.lte]: parseFloat(maxLng)
+        }
+    }
+
+    if (minPrice){
+        query.where.price = {
+            [Op.gte]: parseFloat(minPrice)
+        }
+    }
+
+    if (maxPrice){
+        query.where.price = {
+            [Op.lte]: parseFloat(maxPrice)
+        }
+    }
+
+
+    const getAllSpots = await Spot.findAll({
+        ...query 
+    });
+
+    // console.log("\n\n\n",getAllSpots , "\n\n\n")
 
 
     const formattedSpots = [];
@@ -699,7 +817,7 @@ router.get('/', async (req, res) => {
   
 
 
-    return res.status(200).json({Spots: formattedSpots});
+    return res.status(200).json({Spots: formattedSpots, page: offset, size: limit});
 
 
 
