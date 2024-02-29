@@ -509,6 +509,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
     })
 
+
     const formattedSpots = [];
 
     for (const spot of getAllSpots) {
