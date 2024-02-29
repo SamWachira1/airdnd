@@ -259,7 +259,7 @@ router.get('/:spotId/reviews', async (req, res)=>{
             urlResponse = image.url
         }
 
-        console.log("\n\n\n", images , "\n\n\n")
+        // console.log("\n\n\n", images , "\n\n\n")
 
 
         let formattedReview = {
@@ -338,7 +338,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res)=
 
         return res.status(200).json(formattedReponse)
     }else {
-        return res.status(404).json('Cannot book your own spot')
+        return res.status(404).json({message: 'Forbidden'})
     }
 
 
@@ -493,7 +493,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
         return res.status(200).json(responseEdit)
 
     } else {
-        return res.status(404).json({ message: "Spot couldn't be found" });
+        return res.status(404).json({ message: "Forbidden" });
 
     }
 
