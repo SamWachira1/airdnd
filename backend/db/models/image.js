@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       Image.belongsTo(models.Spot,{
         foreignKey: 'imageableId',
         constraints: false,
-        as: 'SpotImages',
+        // as: 'Spot',
         scope: {
           imageableType: 'Spot'
         }
@@ -43,13 +43,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false 
     },
     imageableType: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [['User', 'Spot', 'Review']]
+        isIn: ['User', 'Spot', 'Review']
       }
     },
-    imageableId: {
+    imageableId: { 
       type: DataTypes.INTEGER,
       allowNull: false,
       onDelete: 'CASCADE'

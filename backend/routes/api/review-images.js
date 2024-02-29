@@ -37,7 +37,7 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
         // console.log("\n\n\n", reviewBelongsUser, "\n\n\n")
 
         if(!reviewBelongsUser){
-            return res.status(404).json({message: 'Forbidden'})
+            return res.status(403).json({message: 'Forbidden'})
         }else {
             await image.destroy()
 

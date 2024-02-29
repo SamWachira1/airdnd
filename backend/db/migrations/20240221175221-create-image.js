@@ -25,7 +25,7 @@ module.exports = {
         allowNull: false,
       },
       imageableType: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       imageableId: {
