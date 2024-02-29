@@ -158,10 +158,10 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
         }
     })
 
-    //   console.log("\n\n\n",findAllImages.length, "\n\n\n")
+      console.log("\n\n\n",findAllImages.length, "\n\n\n")
 
 
-    if (findAllImages.length > 10 ){
+    if (findAllImages.length >= 10 ){
        return  res.status(403).json({
             message: "Maximum number of images for this resource was reached"
           })
@@ -236,7 +236,11 @@ router.delete('/:reviewId', requireAuth, async (req, res)=> {
 
     let {reviewId} = req.params
 
-    let review = await Review.findByPk(reviewId)
+    let review = await Review.findByPk(reviewId, {
+        where: {
+            userId: user.id 
+        }
+    })
 
     if (!review){
         return res.status(404).json({message: "Review couldn't be found"})

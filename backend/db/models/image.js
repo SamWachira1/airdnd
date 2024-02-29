@@ -5,11 +5,11 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
 
-    getImageable(options) {
-      if (!this.imageableType) return Promise.resolve(null);
-      const mixinMethodName = `get${this.imageableType}`;
-      return this[mixinMethodName](options);
-    }
+    // getImageable(options) {
+    //   if (!this.imageableType) return Promise.resolve(null);
+    //   const mixinMethodName = `get${this.imageableType}`;
+    //   return this[mixinMethodName](options);
+    // }
 
     static associate(models) {
       // define association here

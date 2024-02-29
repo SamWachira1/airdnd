@@ -658,7 +658,11 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     let currUser = req.user
     let { spotId } = req.params
 
-    let spot = await Spot.findOne({ where: { id: spotId } })
+    let spot = await Spot.findByPk(spotId, {
+        where: {
+            ownerId: currUser.id 
+        }
+    })
 
     if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });

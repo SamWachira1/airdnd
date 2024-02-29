@@ -115,12 +115,12 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
     
     if (booking.userId === currUser.id){
 
-        await booking.update({ startDate, endDate });
+        // await booking.update({ startDate, endDate });
 
-        // booking.startDate = startDate
-        // booking.endDate = endDate
+        booking.startDate = startDate
+        booking.endDate = endDate
     
-        // await booking.save()
+        await booking.save()
 
         let createdAtDate = new Date(booking.createdAt);
         let upadatedAtDate = new Date(booking.updatedAt)
@@ -155,7 +155,12 @@ router.delete('/:bookingId', requireAuth, async (req, res) =>{
     let currUser = req.user 
     let {bookingId} = req.params
 
-    let booking = await Booking.findByPk(bookingId)
+    let booking = await Booking.findByPk(bookingId, {
+        where: {
+            userId: currUser.id 
+        }
+    })
+
     let spotId = booking.spotId
 
     let spot = await Spot.findByPk(spotId)
@@ -178,6 +183,8 @@ router.delete('/:bookingId', requireAuth, async (req, res) =>{
         await booking.destroy()
 
         return res.status(200).json({message: "Successfully deleted"})
+    }else {
+        return res.status(403).json({message: 'Forbidden'})
     }
 })
 

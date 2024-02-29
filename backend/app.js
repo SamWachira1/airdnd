@@ -76,7 +76,9 @@ app.use((err, _req, res, _next) => {
     console.error(err);
     if (isProduction) {
       if (err.message === "Authentication required" || err.message === "Invalid credentials") {
-        return res.json({ message: err.message });
+        return res.json({ 
+          message: err.message
+        });
       }
       return res.json({
         message: err.message,
