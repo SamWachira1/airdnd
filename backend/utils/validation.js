@@ -84,12 +84,12 @@ async function checkBookingConflicts(req, res, next) {
     where: {
       spotId: req.params.spotId, 
       [Op.or]: [
-        //Within
+
         { endDate: { [Op.between]: [startDate, endDate] } },
         
         {
           [Op.and]: [
-          //startDate in conflict, endDate not in conflict
+
             { startDate: { [Op.lte]: startDate } },
 
             {endDate:{[Op.gte]:startDate}}
@@ -98,7 +98,6 @@ async function checkBookingConflicts(req, res, next) {
 
         {
           [Op.and]: [
-            //endDate in conflict, startDate not in conflict
 
             { startDate: { [Op.lte]: endDate } },
 
@@ -108,12 +107,10 @@ async function checkBookingConflicts(req, res, next) {
 
         {
           [Op.and]: [
-            //Surrounding
             { startDate: { [Op.lte]: startDate } },
             { endDate: { [Op.gte]: endDate } },
           ],
         },
-        //Same day conflict
 
         {endDate: {[Op.eq]: new Date(startDate)}}
       ],
