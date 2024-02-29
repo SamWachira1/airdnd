@@ -24,7 +24,7 @@ module.exports = {
         lng: -122.4730327,
         name: "App Academy",
         description: "Place where web developers are created",
-        price: 123,
+        price: 23534.34,
         numReviews: 5,
         avgStarRating: 4.5,
         previewImage: "image url"
@@ -40,7 +40,7 @@ module.exports = {
         lng: -120.4730327,
         name: "App Academy",
         description: "Place where web developers are created",
-        price: 123,
+        price: 30500.23,
         numReviews: 5,
         avgStarRating: 4.8,
         previewImage: "image url"

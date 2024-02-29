@@ -681,8 +681,14 @@ router.get('/', validateQueryParams, async (req, res) => {
 
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
 
-    page = isNaN(page) ? 1 : Number(page);
-    size = isNaN(size) ? 20 : Number(size);
+    // console.log("\n\n\n", size , "\n\n\n")
+
+
+    page = parseInt(page) || 1;
+    size = parseInt(size) || 20;
+
+
+
 
     let limit;
     let offset;
@@ -706,7 +712,19 @@ router.get('/', validateQueryParams, async (req, res) => {
         offset
     }
 
-       console.log("\n\n\n", query , "\n\n\n")
+    //    console.log("\n\n\n", query , "\n\n\n")
+
+    if (minLat && maxLat) {
+        query.where.lat = {
+            [Op.between]: [parseFloat(minLat), parseFloat(maxLat)],
+        };
+    }
+    
+    if (minLng && maxLng) {
+        query.where.lng = {
+            [Op.between]: [parseFloat(minLng), parseFloat(maxLng)],
+        };
+    }
 
     if (minLat){
         query.where.lat = {
@@ -743,6 +761,14 @@ router.get('/', validateQueryParams, async (req, res) => {
             [Op.lte]: parseFloat(maxPrice)
         }
     }
+
+
+    if (minPrice && maxPrice) {
+        query.where.price = {
+            [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)],
+        };
+    }
+    
 
 
     const getAllSpots = await Spot.findAll({
@@ -817,7 +843,7 @@ router.get('/', validateQueryParams, async (req, res) => {
   
 
 
-    return res.status(200).json({Spots: formattedSpots, page: offset, size: limit});
+    return res.status(200).json({Spots: formattedSpots, page, size});
 
 
 
