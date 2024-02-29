@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: ['User', 'Spot', 'Review']
+        isIn: [['User', 'Spot', 'Review']]
       }
     },
     imageableId: { 
