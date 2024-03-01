@@ -164,9 +164,11 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
         }
     })
 
-
-    if (findAllImages.length <= 10 ){
-
+    if (findAllImages.length > 10){
+        return  res.status(403).json({
+            message: "Maximum number of images for this resource was reached"
+        })
+    }else {
         let newImage = await Image.create({
             url: url,
             preview: true,
@@ -182,20 +184,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
 
         return res.status(200).json(safeResponse)
 
-     
-    }else {
-        return  res.status(403).json({
-            message: "Maximum number of images for this resource was reached"
-        })
     }
-
-  
-
-
-
-
-
-
 
 
 })

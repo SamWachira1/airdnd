@@ -285,11 +285,11 @@ async function checkBookingConflictsbookings(req, res, next) {
         ],
       },
       
-      {
-        id: {
-          [Op.ne]: req.params.bookingId, // Exclude the current booking
-        },
-      },
+      // {
+      //   id: {
+      //     [Op.ne]: req.params.bookingId, // Exclude the current booking
+      //   },
+      // },
       
     ]
   }
@@ -334,38 +334,55 @@ async function checkBookingConflictsUpdates(req, res, next){
       where: {
         spotId: spotId,
         id: {
-          [Op.ne]: req.params.bookingId, // Exclude the current booking
+          [Op.ne]: bookingId, // Exclude the current booking
         },
 
         [Op.or]: [
-          // Surround existing booking
-          {
+          //between
+          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
+
+           {
             [Op.and]: [
-              { startDate: { [Op.lt]: startDate } },
-              { endDate: { [Op.gt]: endDate } },
+              //startDate in conflict, endDate not in conflict
+              { startDate: { [Op.lte]: startDate } },
+
+              { endDate: { [Op.gte]: startDate } },
+            ],
+           },
+
+           {
+            [Op.and]: [
+              //Surrounding
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
-          // Overlap start
+
+          { endDate: { [Op.eq]: new Date(startDate) } },
+
           {
             [Op.and]: [
-              { startDate: { [Op.lt]: endDate } }, // Start date before existing end
-              { startDate: { [Op.gte]: startDate } }, // Start date after or on existing start
+              //endDate in conflict, startDate not in conflict
+
+              { startDate: { [Op.lte]: endDate } },
+
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
-          // Overlap end
+
           {
             [Op.and]: [
-              { endDate: { [Op.gt]: startDate } }, // End date after new start
-              { endDate: { [Op.lte]: endDate } }, // End date before or on existing end
+              //Surrounding
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
             ],
           },
-          // Fully contained within existing booking
-          {
-            [Op.and]: [
-              { startDate: { [Op.gte]: startDate } },
-              { endDate: { [Op.lte]: endDate } },
-            ],
-          },
+          //Same day conflict
+          { startDate: startDate },
+
+
+
         ],
       },
     })
