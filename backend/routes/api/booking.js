@@ -39,9 +39,19 @@ router.get('/current', requireAuth, async (req, res) => {
 
     let user = req.user 
 
+//    console.log("\n\n\n",user.id , "\n\n\n")
+
+
+
      const bookings = await Booking.findAll({
         where: {userId: user.id}
     })
+
+    if (!bookings){
+        return res.status(404).json({message: 'Bookings could not be found'})
+    }
+
+
 
     for (let booking of bookings) {
         
@@ -113,7 +123,13 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
 
     let booking = await Booking.findByPk(Number(bookingId))
 
+    if (!booking){
+        return res.status(404).json({message: 'Booking could not be found'})
+    }
+
+
     let queriedEndTime = new Date (booking.endDate).getTime()
+
 
     if (!booking){
         return res.status(404).json({message: 'Booking could not be found'})
@@ -156,11 +172,12 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
            (startBookingDate === endingDateOtherBooking || endBookingDate === startDateOtherBooking)) {
             hasConflict = true;
 
-            conflicts.startDate = "Start date conflicts with another booking";
-            conflicts.endDate = "End date conflicts with another booking";
-            
-            // Break out of the loop since we found a conflict, no need to check further
-            break;
+            if (startBookingDate <= endingDateOtherBooking) {
+                conflicts.startDate = "Start date conflicts with another booking";
+            }
+            if (endBookingDate >= startDateOtherBooking) {
+                conflicts.endDate = "End date conflicts with another booking";
+            }
         }
 
     } 

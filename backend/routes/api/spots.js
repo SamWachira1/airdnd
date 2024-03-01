@@ -161,6 +161,7 @@ const validateReview = [
         }
     })
 
+
     // console.log("\n\n\n",bookings, "\n\n\n")
     for (let booking of bookings){
         
