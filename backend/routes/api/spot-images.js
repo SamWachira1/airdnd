@@ -17,11 +17,20 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
 
     let {imageId} = req.params 
 
-    let image = await Image.findByPk(imageId)
+    let image = await Image.findOne({
+        where: {
+            id: imageId,
+            imageableType: 'Spot'
+        }
+    })
+
+
+
+    console.log("\n\n\n", image, "\n\n\n")
 
 
     if (!image){
-        res.status(404).json({message: "Spot Image couldn't be found" })
+        return res.status(404).json({message: "Spot Image couldn't be found" })
     }
 
 
@@ -35,9 +44,7 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
 
         })
 
-        console.log("\n\n\n", spotBelongsUser, "\n\n\n")
-
-
+        // console.log("\n\n\n", spotBelongsUser, "\n\n\n")
 
 
         if (!spotBelongsUser){
@@ -50,9 +57,9 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
 
         }
 
+    }else {
+        return res.status(404).json({message: "Spot Image couldn't be found" })
     }
-
-    // return res.status(200).json({message: "Successfully "})
 
 
 })

@@ -18,7 +18,7 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
     let image = await Image.findOne({
         where: {
             imageableType: 'Review',
-            imageableId: imageId
+            id: imageId
         }
     })
 
