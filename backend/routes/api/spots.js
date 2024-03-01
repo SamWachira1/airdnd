@@ -537,7 +537,7 @@ router.get('/current', requireAuth, async (req, res) => {
              totalStars += review.stars
         }
 
-        let avgRating = reviews.length > 0 ? parseFloat(totalStars / reviews.length.toFixed(1)) : null;
+        let avgRating = reviews.length > 0 ? parseFloat(totalStars / reviews.length.toFixed(1)) : 0;
 
 
 
@@ -592,10 +592,13 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:id', async (req, res) => {
 
     let { id } = req.params
-    let spotId = Number(id)
+    // let spotId = Number(id)
 
     //load spot 
-    let spot = await Spot.findByPk(spotId)
+    let spot = await Spot.findByPk(id)
+
+
+
 
     if (!spot) {
         return res.status(404).json({ message: "Spot couldn't be found" });
@@ -607,9 +610,17 @@ router.get('/:id', async (req, res) => {
         attributes:  ['id', 'url', 'preview']
     })
 
+ 
+        let image;
+        if (images.length < 1){
+            image = [] 
+        }else {
+            image.forEach(i => {
+                image = i 
+            })
+        }
+    
 
-    for (let image of images){
-        
         //load Owner details 
         let owner = await User.findByPk(spot.ownerId, {
             attributes: ['id', 'firstName', 'lastName'],
@@ -622,7 +633,6 @@ router.get('/:id', async (req, res) => {
             attributes: ['stars']
         })
 
-    //    console.log("\n\n\n", reviews , "\n\n\n")
 
 
         let totalStars = 0;
@@ -657,7 +667,7 @@ router.get('/:id', async (req, res) => {
           return res.status(200).json(formattedResponse)
     
    
-    }
+    
 
 
 })
@@ -711,7 +721,6 @@ router.get('/', validateQueryParams, async (req, res) => {
         offset = size * (page - 1)
 
     }
-
 
 
     // let limit = size 
@@ -809,6 +818,8 @@ router.get('/', validateQueryParams, async (req, res) => {
 
         const avgRating = reviews.length > 0 ? totalStars / reviews.length : null;
 
+
+
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
 
@@ -819,20 +830,11 @@ router.get('/', validateQueryParams, async (req, res) => {
             where: { imageableType: 'Spot', imageableId: spot.id},
         });
         
-    //  console.log("\n\n\n",images, "\n\n\n")
-
-
-
-      
+    
         let imgUrl;
         for (let i of images){
             imgUrl = i.url
         }
-
-        let priceFloat = parseFloat(spot.price.toFixed(1));
-        let avgRatingFloat = parseFloat(avgRating.toFixed(1))
-
-        //  console.log("\n\n\n",priceFloat, "\n\n\n")
 
 
 
@@ -848,24 +850,20 @@ router.get('/', validateQueryParams, async (req, res) => {
             lng: spot.lng,
             name: spot.name,
             description: spot.description,
-            price: priceFloat,
+            price: spot.price,
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate,
-            avgRating: avgRatingFloat,
+            avgRating: avgRating,
             previewImage: imgUrl,
         };
 
-        console.log("\n\n\n",formattedSpot, "\n\n\n")
+        // console.log("\n\n\n",formattedSpot, "\n\n\n")
 
 
 
         formattedSpots.push(formattedSpot)
 
-
-      
     }
-
-  
 
 
     return res.status(200).json({Spots: formattedSpots, page, size});

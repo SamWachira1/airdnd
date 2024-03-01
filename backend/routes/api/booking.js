@@ -21,7 +21,7 @@ const validateBooking = [
     check('endDate')
       .notEmpty()
       .custom((value, { req }) => {
-        // Add your custom validation logic for endDate
+
         const startDate = new Date(req.body.startDate);
         const endDate = new Date(value);
   
@@ -38,10 +38,6 @@ const validateBooking = [
 router.get('/current', requireAuth, async (req, res) => {
 
     let user = req.user 
-
-//    console.log("\n\n\n",user.id , "\n\n\n")
-
-
 
      const bookings = await Booking.findAll({
         where: {userId: user.id}
@@ -160,8 +156,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
         }
     })
 
-    let conflicts = {};
-    let hasConflict = false;
+ 
 
     for (let otherBooking of excludingCurrentBooking){
 
@@ -170,24 +165,16 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
       
         if ((startBookingDate < endingDateOtherBooking && endBookingDate > startDateOtherBooking) || 
            (startBookingDate === endingDateOtherBooking || endBookingDate === startDateOtherBooking)) {
-            hasConflict = true;
 
-            if (startBookingDate <= endingDateOtherBooking) {
-                conflicts.startDate = "Start date conflicts with another booking";
-            }
-            if (endBookingDate >= startDateOtherBooking) {
-                conflicts.endDate = "End date conflicts with another booking";
-            }
+
+            return res.status(403).json({
+                message: "This spot is already booked for the specified dates",
+            });
         }
 
     } 
 
-    if (hasConflict) {
-        return res.status(403).json({
-            message: "Sorry, this spot is already booked for the specified dates",
-            errors: conflicts,
-        });
-    }
+
 
 
     
