@@ -615,7 +615,7 @@ router.get('/:id', async (req, res) => {
         if (images.length < 1){
             image = [] 
         }else {
-            image.forEach(i => {
+            images.forEach(i => {
                 image = i 
             })
         }
