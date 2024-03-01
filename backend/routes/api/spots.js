@@ -476,6 +476,10 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
 
         const createddate = new Date(spot.createdAt).toISOString().replace('T', ' ').split('.')[0];
         const updateddate = new Date(spot.updatedAt).toISOString().replace('T', ' ').split('.')[0];
+
+        let priceFloat = parseFloat(spot.price.toFixed(1))
+
+
         const responseEdit = {
             id: spot.id,
             ownerId: spot.ownerId,
@@ -487,7 +491,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
             lng: spot.lng,
             name: spot.name,
             description: spot.description,
-            price: spot.price,
+            price: priceFloat,
             createdAt: createddate,
             updatedAt: updateddate,
         };
@@ -533,8 +537,9 @@ router.get('/current', requireAuth, async (req, res) => {
              totalStars += review.stars
         }
 
-        let avgRating = reviews.length > 0 ? totalStars / reviews.length : null;
-        let avgFloat = parseFloat(avgRating)
+        let avgRating = reviews.length > 0 ? parseFloat(totalStars / reviews.length.toFixed(1)) : null;
+
+
 
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
@@ -569,7 +574,7 @@ router.get('/current', requireAuth, async (req, res) => {
             price: spot.price,
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate,
-            avgRating: avgFloat,
+            avgRating: avgRating,
             previewImage: spotImages.length > 0 ? imageUrl : null,
         };
 
@@ -630,6 +635,7 @@ router.get('/:id', async (req, res) => {
         }
 
         avgRating = reviews.length > 0 ? parseFloat((totalStars / reviews.length).toFixed(1)) : 0;
+        
   
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
@@ -823,6 +829,12 @@ router.get('/', validateQueryParams, async (req, res) => {
             imgUrl = i.url
         }
 
+        let priceFloat = parseFloat(spot.price.toFixed(1));
+        let avgRatingFloat = parseFloat(avgRating.toFixed(1))
+
+        //  console.log("\n\n\n",priceFloat, "\n\n\n")
+
+
 
         const formattedSpot = {
 
@@ -836,12 +848,15 @@ router.get('/', validateQueryParams, async (req, res) => {
             lng: spot.lng,
             name: spot.name,
             description: spot.description,
-            price: spot.price,
+            price: priceFloat,
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate,
-            avgRating: avgRating,
+            avgRating: avgRatingFloat,
             previewImage: imgUrl,
         };
+
+        console.log("\n\n\n",formattedSpot, "\n\n\n")
+
 
 
         formattedSpots.push(formattedSpot)
@@ -891,6 +906,8 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
         createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
+        let priceFloat = parseFloat(newSpot.price.toFixed(1))
+
         const safeSpot = {
             id: newSpot.id,
             ownerId: newSpot.ownerId,
@@ -902,7 +919,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
             lng: newSpot.lng,
             name: newSpot.name,
             description: newSpot.description,
-            price: newSpot.price,
+            price: priceFloat,
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate
 

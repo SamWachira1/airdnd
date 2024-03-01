@@ -97,6 +97,8 @@ router.get('/current', requireAuth, async (req, res) => {
             url: reviewImageUrl
         }
 
+        let priceFloat = parseFloat(spot.price.toFixed(1))
+
 
         const formattedReview = {
             ...review.toJSON(),
@@ -113,7 +115,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 lat: spot.lat,
                 lng: spot.lng,
                 name: spot.name,
-                price: spot.price,
+                price: priceFloat,
                 previewImage: spotImage.url
             },
 

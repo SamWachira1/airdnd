@@ -77,7 +77,7 @@ router.get('/current', requireAuth, async (req, res) => {
         let bookingStartDate = booking.startDate.toISOString().split('T')[0];
         let bookingEndDate = booking.endDate.toISOString().split('T')[0];
 
-        
+        let floatPrice = parseFloat(spot.price.toFixed(1))
     
           const formattedSpot = {
                 id: booking.id,
@@ -93,7 +93,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 lng: spot.lng,
                 name: spot.name,
                 description: spot.description,
-                price: spot.price,
+                price: floatPrice,
                 previewImage: spotImage[0].url 
                 },
                 userId: booking.userId,
