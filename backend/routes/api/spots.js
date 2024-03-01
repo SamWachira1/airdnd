@@ -64,7 +64,7 @@ const validateReview = [
       .notEmpty()
       .withMessage('Review text is required'),
     check('stars')
-      .isInt({ min: 1, max: 5 })
+      .isFloat({ min: 1.0, max: 5.0 })
       .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors,
   ];
@@ -432,6 +432,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
 
         const safeResponse = {
+            id: newImage.id, 
             url: newImage.url,
             preview: newImage.preview
         }
@@ -627,7 +628,7 @@ router.get('/:id', async (req, res) => {
         
         }
 
-        avgRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+        avgRating = reviews.length > 0 ? parseFloat((totalStars / reviews.length).toFixed(1)) : 0;
   
         let createdAtDate = new Date(spot.createdAt);
         let upadatedAtDate = new Date(spot.updatedAt)
@@ -810,6 +811,9 @@ router.get('/', validateQueryParams, async (req, res) => {
         let images = await Image.findAll({
             where: { imageableType: 'Spot', imageableId: spot.id},
         });
+        
+    //  console.log("\n\n\n",images, "\n\n\n")
+
 
 
       
@@ -880,6 +884,12 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
         })
 
+        let createdAtDate = new Date(newSpot.createdAt);
+        let upadatedAtDate = new Date(newSpot.updatedAt)
+
+        createdAtDate = createdAtDate.toISOString().replace('T', ' ').split('.')[0];
+        upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
+
         const safeSpot = {
             id: newSpot.id,
             ownerId: newSpot.ownerId,
@@ -891,7 +901,10 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
             lng: newSpot.lng,
             name: newSpot.name,
             description: newSpot.description,
-            price: newSpot.price
+            price: newSpot.price,
+            createdAt: createdAtDate,
+            updatedAt: upadatedAtDate
+
 
         }
 

@@ -112,7 +112,8 @@ async function checkBookingConflicts(req, res, next) {
           ],
         },
 
-        {endDate: {[Op.eq]: new Date(startDate)}}
+        {endDate: {[Op.eq]: new Date(startDate)}},
+       
       ],
     }
   });
@@ -283,7 +284,12 @@ async function checkBookingConflictsbookings(req, res, next) {
           { endDate: { [Op.gte]: endDate } },
         ],
       },
-
+      
+      {
+        id: {
+          [Op.ne]: req.params.bookingId, // Exclude the current booking
+        },
+      },
       
     ]
   }
@@ -302,7 +308,83 @@ async function checkBookingConflictsbookings(req, res, next) {
   next();
 }
 
+async function checkBookingConflictsUpdates(req, res, next){
+  const { startDate, endDate } = req.body;
+  const {bookingId} = req.params 
+
+
+    let booking = await Booking.findByPk(bookingId)
+    if (!booking){
+      return res.status(404).json({
+        message: "Booking couldn't be found"
+      });
+    }
+
+
+    const currentDate = new Date();
+    if (booking.endDate < currentDate) {
+      return res.status(403).json({
+        message: "Past bookings can't be modified"
+      });
+    }
+
+    const spotId = booking.spotId;
+
+    const bookingConflict = await Booking.findOne({
+      where: {
+        spotId: spotId,
+        id: {
+          [Op.ne]: req.params.bookingId, // Exclude the current booking
+        },
+
+        [Op.or]: [
+          // Surround existing booking
+          {
+            [Op.and]: [
+              { startDate: { [Op.lt]: startDate } },
+              { endDate: { [Op.gt]: endDate } },
+            ],
+          },
+          // Overlap start
+          {
+            [Op.and]: [
+              { startDate: { [Op.lt]: endDate } }, // Start date before existing end
+              { startDate: { [Op.gte]: startDate } }, // Start date after or on existing start
+            ],
+          },
+          // Overlap end
+          {
+            [Op.and]: [
+              { endDate: { [Op.gt]: startDate } }, // End date after new start
+              { endDate: { [Op.lte]: endDate } }, // End date before or on existing end
+            ],
+          },
+          // Fully contained within existing booking
+          {
+            [Op.and]: [
+              { startDate: { [Op.gte]: startDate } },
+              { endDate: { [Op.lte]: endDate } },
+            ],
+          },
+        ],
+      },
+    })
+
+
+  if (bookingConflict) {
+    return res.status(403).json({
+      message: 'Sorry, this spot is already booked for the specified dates',
+      errors: {
+        startDate: 'Start date conflicts with an existing booking',
+        endDate: 'End date conflicts with an existing booking'
+      }
+    });
+  }
+
+  next();
+}
+
 
 module.exports = {
-  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots, checkBookingConflicts, checkBookingConflictsbookings
+  handleValidationErrors, handleValidationErrorsUsers, handleValidationErrorsSpots, checkBookingConflicts, checkBookingConflictsbookings,checkBookingConflictsUpdates
 };

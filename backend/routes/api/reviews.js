@@ -141,7 +141,13 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
     let {reviewId} = req.params
     let {url} = req.body
 
+    if (!url){
+        return res.status(404).json({message: 'image is required '})
+    }
+
     let review = await Review.findByPk(reviewId)
+
+
 
     if (!review){
         return res.status(404).json({ message: "Review couldn't be found"})
@@ -158,29 +164,37 @@ router.post('/:reviewId/images', requireAuth, async (req, res)=> {
         }
     })
 
-      console.log("\n\n\n",findAllImages.length, "\n\n\n")
 
+    if (findAllImages.length <= 10 ){
 
-    if (findAllImages.length >= 10 ){
-       return  res.status(403).json({
+        let newImage = await Image.create({
+            url: url,
+            preview: true,
+            imageableId: review.id,
+            imageableType: 'Review',
+    
+        })
+
+        let safeResponse = {
+            id: newImage.id,
+            url: newImage.url
+        }
+
+        return res.status(200).json(safeResponse)
+
+     
+    }else {
+        return  res.status(403).json({
             message: "Maximum number of images for this resource was reached"
-          })
+        })
     }
 
-    let newImage = await Image.create({
-        url,
-        preview: true,
-        imageableId: review.id,
-        imageableType: 'Review',
-
-    })
-
-    let safeResponse = {
-        url: newImage.url
-    }
+  
 
 
-    return res.status(200).json(safeResponse)
+
+
+
 
 
 
