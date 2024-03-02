@@ -120,16 +120,12 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res)=> {
     let booking = await Booking.findByPk(Number(bookingId))
 
     if (!booking){
-        return res.status(404).json({message: 'Booking could not be found'})
+        return res.status(404).json({message: "Booking couldn't be found"})
     }
 
 
     let queriedEndTime = new Date (booking.endDate).getTime()
 
-
-    if (!booking){
-        return res.status(404).json({message: 'Booking could not be found'})
-    }
 
     if (booking.userId !== currUser.id){
         return res.status(403).json({message: 'Forbidden'})
