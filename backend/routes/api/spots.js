@@ -95,51 +95,75 @@ const validateReview = [
 
   ]
 
+  const setDefaultValues = (req, res, next) => {
+    if (!req.query.page) {
+      req.query.page = 1; 
+    }
+  
+    if (!req.query.size) {
+      req.query.size = 20; 
+    }
+  
+    next();
+  };
+  
+
 
   const validateQueryParams = [
-  query('page')
-    .optional()
-    .isInt({ min: 1, max: 10 })
-    .withMessage('Page must be an integer between 1 and 10'),
+    setDefaultValues,
 
-  query('size')
-    .optional()
-    .isInt({ min: 1, max: 20 })
-    .withMessage('Size must be an integer between 1 and 20'),
+    query('page')
+        .optional()
+        .isInt({ min: 1, max: 10 })
+        .withMessage('Page must be an integer between 1 and 10'),
 
-  query('minLat')
-    .isFloat({min: -90, max: 90})
-    .optional()
-    .isDecimal()
-    .withMessage('Minimum latitude is invalid'),
+    query('size')
+        .optional()
+        .isInt({ min: 1, max: 20 })
+        .withMessage('Size must be an integer between 1 and 20'),
 
-  query('maxLat')
-    .isFloat({min: -90, max: 90})
-    .optional()
-    .isDecimal()
-    .withMessage('Maximum latitude is invalid'),
+    query('minLat')
+        .if((value) => value !== '')
+        .isFloat({min: -90, max: 90})
+        .optional()
+        .isDecimal()
+        .withMessage('Minimum latitude is invalid'),
 
-  query('minLng')
-    .isFloat({min: -180, max: 180})
-    .optional()
-    .isDecimal()
-    .withMessage('Minimum longitude is invalid'),
+    query('maxLat')
+        .if((value) => value !== '')
 
-  query('maxLng')
-    .isFloat({min: -180, max: 180})
-    .optional()
-    .isDecimal()
-    .withMessage('Maximum longitude is invalid'),
+        .isFloat({min: -90, max: 90})
+        .optional()
+        .isDecimal()
+        .withMessage('Maximum latitude is invalid'),
 
-  query('minPrice')
-    .optional()
-    .isDecimal({ min: 0 })
-    .withMessage('Minimum price must be greater than or equal to 0'),
+    query('minLng')
+        .if((value) => value !== '')
 
-  query('maxPrice')
-    .optional()
-    .isDecimal({ min: 0 })
-    .withMessage('Maximum price must be greater than or equal to 0'),
+        .isFloat({min: -180, max: 180})
+        .optional()
+        .isDecimal()
+        .withMessage('Minimum longitude is invalid'),
+
+    query('maxLng')
+        .if((value) => value !== '')
+
+        .isFloat({min: -180, max: 180})
+        .optional()
+        .isDecimal()
+        .withMessage('Maximum longitude is invalid'),
+
+    query('minPrice')
+        .if((value) => value !== '')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage('Minimum price must be greater than or equal to 0'),
+
+    query('maxPrice')
+        .if((value) => value !== '')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage('Maximum price must be greater than or equal to 0'),
 
     handleValidationErrors,
 
@@ -499,7 +523,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
         return res.status(200).json(responseEdit)
 
     } else {
-        return res.status(404).json({ message: "Forbidden" });
+        return res.status(403).json({ message: "Forbidden" });
 
     }
 
@@ -537,7 +561,7 @@ router.get('/current', requireAuth, async (req, res) => {
              totalStars += review.stars
         }
 
-        let avgRating = reviews.length > 0 ? parseFloat(totalStars / reviews.length.toFixed(1)) : 0;
+        let avgRating = reviews.length > 0 ? parseFloat(totalStars / reviews.length.toFixed(1)) : null;
 
 
 
@@ -644,7 +668,7 @@ router.get('/:id', async (req, res) => {
         
         }
 
-        avgRating = reviews.length > 0 ? parseFloat((totalStars / reviews.length).toFixed(1)) : 0;
+        avgRating = reviews.length > 0 ? parseFloat((totalStars / reviews.length).toFixed(1)) : null;
         
   
         let createdAtDate = new Date(spot.createdAt);
@@ -704,13 +728,9 @@ router.get('/', validateQueryParams, async (req, res) => {
 
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
 
-    // console.log("\n\n\n", size , "\n\n\n")
 
-
-    page = parseInt(page) || 1;
-    size = parseInt(size) || 20;
-
-
+    page = parseInt(page) 
+    size = parseInt(size) 
 
 
     let limit;
@@ -723,18 +743,12 @@ router.get('/', validateQueryParams, async (req, res) => {
     }
 
 
-    // let limit = size 
-    // let offset = size * (page - 1)
-
-
     const query = {
 
         where: {},
         limit,
         offset
     }
-
-    //    console.log("\n\n\n", query , "\n\n\n")
 
     if (minLat && maxLat) {
         query.where.lat = {
