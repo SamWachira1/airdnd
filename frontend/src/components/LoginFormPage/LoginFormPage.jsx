@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { loginThunk } from "../../store/session"
 import { Navigate } from 'react-router-dom';
+import styles from './LoginForm.module.css'
 
 const LoginFormPage = () => {
     const [credential, setCredential] = useState("")
@@ -19,7 +20,7 @@ const LoginFormPage = () => {
         setErrors({});
         setSubmitted(true)
         const user = {credential, password}
-        setErrors({});
+   
         return dispatch(loginThunk({ user})).catch(
           async (res) => {
             const data = await res.json();
@@ -33,29 +34,38 @@ const LoginFormPage = () => {
 
       return (
         <>
-          <h1>Log In</h1>
+        <div className={styles.container}>
+        <h1>Log In</h1>
           <form onSubmit={handleSubmit}>
+          {errors.credential && submitted && <p>{errors.credential}</p>}
             <label>
-              Username or Email
+  
               <input
                 type="text"
                 value={credential}
                 onChange={(e) => setCredential(e.target.value)}
                 required
+                placeholder="Username or Email"
               />
             </label>
             <label>
-              Password
+       
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                placeholder="password"
+
               />
             </label>
-            {errors.credential && submitted && <p>{errors.credential}</p>}
+            
             <button type="submit">Log In</button>
           </form>
+
+
+        </div>
+       
         </>
       );
 

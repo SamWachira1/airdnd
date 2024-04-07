@@ -19,10 +19,13 @@ const removeSessionUser = ()=>{
 }
 
 
-export const loginThunk =  ({user}) => async (dispatch) => {
+export const loginThunk = ({user}) => async (dispatch) => {
     const { credential, password } = user;
     const response = await csrfFetch("/api/session", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+         },
       body: JSON.stringify({
         credential,
         password
@@ -33,6 +36,28 @@ export const loginThunk =  ({user}) => async (dispatch) => {
     return response;
   };
   
+export const restoreUserThunk = ()=> async(dispatch)=>{
+    const response = await csrfFetch("/api/session")
+    const data = await response.json()
+    dispatch(setSessionUser(data.user))
+    return response 
+}
+
+export const signUpThunk = ({user})=> async (dispatch)=>{
+    const {username, firstName, lastName, email, password} = user 
+
+    const response = await csrfFetch("/api/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username, firstName, lastName, email, password})
+    })
+
+    const data = await response.json()
+    dispatch(setSessionUser(data.user))
+    return response
+}
 
 const initialState = { user: null }
 
