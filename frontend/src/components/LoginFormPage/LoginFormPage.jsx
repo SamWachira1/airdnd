@@ -60,7 +60,7 @@ const LoginFormPage = () => {
               />
             </label>
             
-            <button type="submit">Log In</button>
+            <button className={styles.buttonLoginForm} type="submit">Log In</button>
           </form>
 
 

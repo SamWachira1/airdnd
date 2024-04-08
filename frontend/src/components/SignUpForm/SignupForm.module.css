@@ -20,7 +20,7 @@
     border-radius: 3px;
   }
   
-  .button {
+  .buttonSignUpForm {
     width: 100%;
     padding: 10px;
     background-color: orangered;
@@ -37,4 +37,8 @@
   
   .error {
     color: red;
+  }
+
+  .homeLink {
+    border: 2px solid black;
   }

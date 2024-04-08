@@ -135,7 +135,7 @@ const SignupFormPage = () => {
                         />
                     </label>
 
-                    <button className={styles.button} type="submit">Sign Up!</button>
+                    <button className={styles.buttonSignUpForm} type="submit">Sign Up!</button>
 
                 </form>
 
