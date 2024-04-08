@@ -4,6 +4,7 @@ import SignupFormPage from "./components/SignUpForm";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { restoreUserThunk } from "./store/session";
+import Navigation from "./components/Navigation";
 
 function Layout() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -18,6 +19,7 @@ function Layout() {
 
   return (
     <>
+      <Navigation isLoaded={isLoaded}/>
       {isLoaded && <Outlet />}
 
     </>
