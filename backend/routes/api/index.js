@@ -47,6 +47,10 @@ router.use('/review-images', reviewImagesRouter)
 //     setTokenCookie(res, user);
 //     return res.json({ user: user });
 //   });
+
+// router.post('/test', async(req, res)=>{
+//     res.json(req.body)
+// })
   
 
 
