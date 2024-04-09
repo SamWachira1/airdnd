@@ -1,4 +1,6 @@
 import { FaUserCircle } from "react-icons/fa";
+import { VscThreeBars } from "react-icons/vsc";
+
 import { useDispatch } from "react-redux";
 import { logoutThunk } from "../../store/session";
 import { useEffect, useState, useRef} from "react";
@@ -34,16 +36,16 @@ const ProfileButton = ({user})=> {
         return () => document.removeEventListener('click', closeMenu);
     },[showMenu])
 
-    const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden")
 
     return (
 
         <>
-        <div className={styles.profileButtonContainer}>
+  
             <button className={styles.profileButton} onClick={toggleMenu}>
+                <VscThreeBars size={'2em'}/>
                 <FaUserCircle size={'2em'}/>
             </button>
-            <ul className={`${ulClassName} ${showMenu ? '' : styles.hidden}`} ref={ulRef}>
+            <ul className={showMenu ? styles.profileDropdown: styles.hidden} ref={ulRef}>
                 <li>{user.username}</li>
                 <li>{user.firstName} {user.lastName}</li>
                 <li>{user.email}</li>
@@ -51,9 +53,8 @@ const ProfileButton = ({user})=> {
                     <button onClick={handleLogout}>Log Out</button>
                 </li>
             </ul>
-        </div>
-      
 
+    
         </>
 
     )
