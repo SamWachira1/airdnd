@@ -1,6 +1,4 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-// import LoginFormPage from "./components/LoginFormPage";
-import SignupFormPage from "./components/SignUpFormModal";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { restoreUserThunk } from "./store/session";

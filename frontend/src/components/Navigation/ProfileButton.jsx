@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { logoutThunk } from "../../store/session";
 import { useEffect, useState, useRef } from "react";
 import styles from './Navigation.module.css';
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import LoginFormModal from "../ LoginFormModal/LoginFormModal"
 import SignupFormModal from "../SignUpFormModal/SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
