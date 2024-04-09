@@ -8,6 +8,7 @@ import { useState } from "react";
 import logo from '../../../public/images/stayScapelogo.png'
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../ LoginFormModal/LoginFormModal';
+import SignupFormModal from "../SignUpFormModal/SignupFormModal";
 
 const Navigation = ({ isLoaded }) => {
     const [showMenu, setShowMenu] = useState(false)
@@ -35,7 +36,10 @@ const Navigation = ({ isLoaded }) => {
                         />
                     </li>
                     <li>
-                        <NavLink className={styles.NavLink} to="/signup">Sign Up</NavLink>
+                         <OpenModalButton
+                            buttonText="Sign Up"
+                            modalComponent={<SignupFormModal />}
+                        />
                     </li>
                 </ul>
 
