@@ -19,12 +19,28 @@ const SignupFormModal = () => {
     const dispatch = useDispatch()
 
 
+
+    const isFormValid = () => {
+        return (
+            username.length >= 4 &&
+            password.length >= 6 &&
+            username &&
+            firstName &&
+            lastName &&
+            email &&
+            password &&
+            confirmedPassword
+        );
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         setSubmitted(true)
 
-        if (password === confirmedPassword) {
+
+        if (password === confirmedPassword ) {
             setErrors({})
             const user = { username, firstName, lastName, email, password }
             return dispatch(signUpThunk({ user }))
@@ -33,7 +49,6 @@ const SignupFormModal = () => {
                 async (res) => {
                     const data = await res.json()
                     if (data?.errors) {
-                        console.log(data.errors)
                         setErrors({
                             username: data.errors.username,
                             firstName: data.errors.firstName,
@@ -52,8 +67,6 @@ const SignupFormModal = () => {
                 confirmPassword: "Confirm Password field must be the same as the Password field"
             })
         }
-
-
 
 
     }
@@ -133,7 +146,7 @@ const SignupFormModal = () => {
                         />
                     </label>
 
-                    <button className={styles.buttonSignUpForm} type="submit">Sign Up!</button>
+                    <button disabled={!isFormValid()} className={styles.buttonSignUpForm} type="submit">Sign Up!</button>
 
                 </form>
 

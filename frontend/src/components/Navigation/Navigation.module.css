@@ -7,10 +7,11 @@
 }
 
 .homeLinkContainer {
-    position: relative; /* Change to relative positioning */
+    position: relative;
     display: flex;
     border-bottom: 2px solid lightblue;
     justify-content: space-between;
+    height: 73px;
 }
 
 .logo {
@@ -43,8 +44,8 @@
 
 }
 
-img {
-   height: 5.5em;
+.imgHomeNav {
+    height: 9.5em;
 }
 
 .hidden {

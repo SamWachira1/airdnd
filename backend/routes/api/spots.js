@@ -186,7 +186,6 @@ const validateReview = [
     })
 
 
-    // console.log("\n\n\n",bookings, "\n\n\n")
     for (let booking of bookings){
         
         if (user.id !== spot.ownerId){
@@ -284,7 +283,6 @@ router.get('/:spotId/reviews', async (req, res)=>{
             urlResponse = image.url
         }
 
-        // console.log("\n\n\n", images , "\n\n\n")
 
 
         let formattedReview = {
@@ -394,7 +392,6 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
         where: {spotId: spotId, userId: user.id}
     })
     
-    // console.log("\n\n\n", reviewExists, "\n\n\n")
 
     if (userReviewExisits){
        return  res.status(500).json({message: "User already has a review for this spot" })

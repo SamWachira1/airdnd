@@ -2,7 +2,6 @@
 const {Spot} = require('../models')
 const bcrypt = require("bcryptjs");
 
-
 // /** @type {import('sequelize-cli').Migration} */
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -27,7 +26,7 @@ module.exports = {
         price: 23534.34,
         numReviews: 5,
         avgStarRating: 4.5,
-        previewImage: "image url"
+        previewImage: "https://media.istockphoto.com/id/1026205392/photo/beautiful-luxury-home-exterior-at-twilight.jpg?s=612x612&w=0&k=20&c=HOCqYY0noIVxnp5uQf1MJJEVpsH_d4WtVQ6-OwVoeDo="
       },
 
       {
@@ -43,6 +42,52 @@ module.exports = {
         price: 30500.23,
         numReviews: 5,
         avgStarRating: 4.8,
+        previewImage: "image url"
+      },
+      {
+        ownerId: 1,
+        address: "44 BullDog St.",
+        city: "San Bernardino",
+        state: "California",
+        country: "United States of America",
+        lat: 40.7645358,
+        lng: -121.4730327,
+        name: "App Academy",
+        description: "Place where web developers are created",
+        price: 30000.00,
+        numReviews: 5,
+        avgStarRating: 4.2,
+        previewImage: "image url"
+      },
+      {
+        ownerId: 2,
+        address: "12 AirJodan St.",
+        city: "Santa Monica",
+        state: "California",
+        country: "United States of America",
+        lat: 40.7645358,
+        lng: -121.4730327,
+        name: "App Academy",
+        description: "Place where web developers are created",
+        price: 30000.00,
+        numReviews: 5,
+        avgStarRating: 4.9,
+        previewImage: "image url"
+      },
+
+      {
+        ownerId: 2,
+        address: "12 AirJodan St.",
+        city: "Santa Monica",
+        state: "California",
+        country: "United States of America",
+        lat: 40.7645358,
+        lng: -121.4730327,
+        name: "App Academy",
+        description: "Place where web developers are created",
+        price: 30000.00,
+        numReviews: 5,
+        avgStarRating: 4.2,
         previewImage: "image url"
       },
  

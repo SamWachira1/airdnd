@@ -42,6 +42,8 @@ const ProfileButton = ({ user }) => {
         closeMenu()
     }
 
+  
+
     return (
 
         <>
@@ -52,8 +54,8 @@ const ProfileButton = ({ user }) => {
             <ul className={showMenu ? styles.profileDropdown : styles.hidden} ref={ulRef}>
                 {user ? (
                     <>
-                        <li>{user.username}</li>
-                        <li>{user.firstName} {user.lastName}</li>
+                        <li>Hello, {user.firstName}</li>
+                        {/* <li>{user.firstName} {user.lastName}</li> */}
                         <li>{user.email}</li>
                         <li>
                             <button onClick={handleLogout}>Log Out</button>
@@ -73,6 +75,7 @@ const ProfileButton = ({ user }) => {
                 )}
             </ul>
 
+           
 
         </>
 

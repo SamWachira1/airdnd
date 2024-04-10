@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { restoreUserThunk } from "./store/session";
 import Navigation from "./components/Navigation";
-
+import LandingPage from "./components/LandingPage ";
 
 function Layout() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -34,9 +34,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <LandingPage/>
       },
-
       
     ]
 
