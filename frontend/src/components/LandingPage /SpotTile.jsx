@@ -1,19 +1,21 @@
-import image2 from '../../../public/images/stock2.png'
-import image3 from '../../../public/images/stock3.png'
-import image4 from '../../../public/images/stock4.png'
-import image5 from '../../../public/images/stock5.png'
-import image6 from '../../../public/images/stock6.png'
+// import image2 from '../../../public/images/stock2.png'
+// import image3 from '../../../public/images/stock3.png'
+// import image4 from '../../../public/images/stock4.png'
+// import image5 from '../../../public/images/stock5.png'
+// import image6 from '../../../public/images/stock6.png'
 import spotTileStyle from './SpotTile.module.css'
 import { Link } from 'react-router-dom';
 
 const SpotTile = ({ spot }) => {
 
-  const imgArr = [image2, image3, image4, image5, image6]
+  // const imgArr = [image2, image3, image4, image5, image6]
 
-  const spotIndex = spot.id % imgArr.length;
+  // const spotIndex = spot.id % imgArr.length;
 
   // Assign the corresponding image to the spot
-  spot.previewImage = imgArr[spotIndex];
+  // spot.previewImage = imgArr[spotIndex];
+
+  // console.log(spot)
 
   const calculateAvgRating = () => {
     if (!spot.reviews || spot.reviews.length === 0) {

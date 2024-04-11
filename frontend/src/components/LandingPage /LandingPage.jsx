@@ -9,6 +9,8 @@ function LandingPage(){
     const dispatch = useDispatch()
     const spots = useSelector(state => Object.values(state.spots))
 
+    
+
     useEffect(()=>{
         dispatch(getSpotsThunk())
     }, [dispatch])

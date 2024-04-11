@@ -9,6 +9,7 @@ import { ModalProvider, Modal} from './context/Modal';
 
 import { loginThunk, restoreUserThunk, signUpThunk, logoutThunk} from './store/session';
 import { getSpotsThunk, getSpotsByIdThunk } from './store/spot';
+import { getSpotReviewsThunk } from './store/review';
 
 const store = configureStore()
 
@@ -23,6 +24,7 @@ if (import.meta.env.MODE !== 'production') {
   window.logoutThunk = logoutThunk
   window.getSpotsThunk = getSpotsThunk
   window.getSpotsByIdThunk = getSpotsByIdThunk
+  window.getSpotReviewsThunk = getSpotReviewsThunk
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

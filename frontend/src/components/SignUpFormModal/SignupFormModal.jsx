@@ -141,7 +141,7 @@ const SignupFormModal = () => {
                             placeholder="password"
                         />
                     </label>
-                    {submitted && errors.confirmPassword &&  <p className={styles.error}>{errors.confirmPassword}</p>}
+                    {submitted && errors.confirmPassword && <p className={styles.error}>{errors.confirmPassword}</p>}
                     <label>
                         Confirm Password
                         <input

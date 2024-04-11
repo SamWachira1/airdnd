@@ -21,7 +21,7 @@ module.exports = {
         country: "United States of America",
         lat: 37.7645358,
         lng: -122.4730327,
-        name: "App Academy",
+        name: "Monterray",
         description: "Place where web developers are created",
         price: 23534.34,
         numReviews: 5,
@@ -37,12 +37,12 @@ module.exports = {
         country: "United States of America",
         lat: 37.7645358,
         lng: -120.4730327,
-        name: "App Academy",
+        name: "Advin",
         description: "Place where web developers are created",
         price: 30500.23,
         numReviews: 5,
         avgStarRating: 4.8,
-        previewImage: "image url"
+        previewImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTfxYbknvusvsZs-aHitIgIQ_Yc2nBTe11w&s"
       },
       {
         ownerId: 1,
@@ -52,12 +52,12 @@ module.exports = {
         country: "United States of America",
         lat: 40.7645358,
         lng: -121.4730327,
-        name: "App Academy",
+        name: "LexAir",
         description: "Place where web developers are created",
         price: 30000.00,
         numReviews: 5,
         avgStarRating: 4.2,
-        previewImage: "image url"
+        previewImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWo9xLU6adbXiT14pNc5BZW4i6qav2l3eHbQ&s"
       },
       {
         ownerId: 2,
@@ -67,12 +67,12 @@ module.exports = {
         country: "United States of America",
         lat: 40.7645358,
         lng: -121.4730327,
-        name: "App Academy",
+        name: "Belmont",
         description: "Place where web developers are created",
         price: 30000.00,
         numReviews: 5,
         avgStarRating: 4.9,
-        previewImage: "image url"
+        previewImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHq_v53szcvJOs-4DI-Dsfqh_XEMOdi27fQA&s"
       },
 
       {
@@ -83,12 +83,12 @@ module.exports = {
         country: "United States of America",
         lat: 40.7645358,
         lng: -121.4730327,
-        name: "App Academy",
+        name: "Andrews",
         description: "Place where web developers are created",
         price: 30000.00,
         numReviews: 5,
         avgStarRating: 4.2,
-        previewImage: "image url"
+        previewImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYeqZ6ZiKEG-9_H3aCxOF0fJvJeK6e_OPecA&s"
       },
  
     ], options, { validate: true });

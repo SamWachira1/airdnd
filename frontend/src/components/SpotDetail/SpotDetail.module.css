@@ -1,0 +1,32 @@
+
+
+.spotName {
+    color:  #20886f;
+}
+
+.spotDetailImages{
+    border: 2px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0; 
+}
+
+.largeImages {
+    flex: 0 0 42%; /* Large image takes up 50% of the container */
+    max-width: 40%; /* Set maximum width to 50% */
+    padding: 3px;
+}
+
+.smallImages {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1; /* Take remaining space */
+    padding: 3px;
+}
+
+.smallImage {
+    flex: 0 0 50%; /* Each small image takes up 50% of the container */
+    max-width: 50%; /* Set maximum width to 50% */
+    margin-bottom: 10px; /* Add some space between small images */
+}

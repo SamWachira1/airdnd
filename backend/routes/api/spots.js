@@ -632,12 +632,12 @@ router.get('/:id', async (req, res) => {
     })
 
  
-        let image;
+        let imageArr = [] 
         if (images.length < 1){
-            image = [] 
+            return imageArr
         }else {
             images.forEach(i => {
-                image = i 
+                imageArr.push(i)
             })
         }
     
@@ -680,7 +680,7 @@ router.get('/:id', async (req, res) => {
             updatedAt: upadatedAtDate,
             numReviews: reviews.length,
             avgStarRating: avgRating,
-            SpotImages: image,
+            SpotImages: imageArr,
             Owner: owner,
           };
 
@@ -842,12 +842,13 @@ router.get('/', validateQueryParams, async (req, res) => {
         });
         
     
-        let imgUrl;
+        
+        let imgUrl = []
         for (let i of images){
-            imgUrl = i.url
+            imgUrl.push(i.url)
         }
 
-
+      
 
         const formattedSpot = {
 

@@ -20,17 +20,17 @@ export const loadSpotsById = (spot)=>{
 
 
 export const getSpotsThunk = ()=> async(dispatch)=>{
-    const response = await csrfFetch("api/spots")
+    const response = await csrfFetch("/api/spots")
     const data = await response.json()
     dispatch(loadSpots(data.Spots))
     return response 
 }
 
-export const getSpotsByIdThunk = (spotsId)=> async(dispatch)=>{
-    const response = await csrfFetch(`api/spots/${spotsId}`)
+export const getSpotsByIdThunk = (id)=> async(dispatch)=>{
+    const response = await csrfFetch(`/api/spots/${id}`)
     const data = await response.json()
     dispatch(loadSpotsById(data))
-    return data 
+    return response 
 }
 
 
@@ -47,7 +47,7 @@ const spotReducer = (state = initialState, action) => {
         }
 
         case LOAD_SPOT:
-            return { ...state, spotDetail: {...action.spot}};
+            return { ...state, [action.payload.id]: action.payload};
 
      
         default:
