@@ -29,17 +29,13 @@
     border-radius: 3px;
     cursor: pointer;
   }
-  
-  .button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
 
   .buttonSignUpForm:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-}
+  }
   
+ 
   .error {
     color: red;
   }

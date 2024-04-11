@@ -21,7 +21,6 @@ const SignupFormModal = () => {
     useEffect(() => {
         const newErrors = {};
 
-        if (submitted) {
 
             if (!username || username.length < 4) {
                 newErrors.username = "Username must be at least 4 characters long";
@@ -47,10 +46,10 @@ const SignupFormModal = () => {
                 newErrors.lastName = 'Last Name is required'
             }
 
-            setSubmitted(true)
+
             setErrors(newErrors);
 
-        }
+        
 
     }, [submitted, username, firstName, lastName, email, password, confirmedPassword])
 
@@ -59,7 +58,8 @@ const SignupFormModal = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-
+        setSubmitted(true)
+        
         if (Object.keys(errors).length === 0 && password === confirmedPassword) {
             setErrors({})
             const user = { username, firstName, lastName, email, password }
@@ -85,7 +85,7 @@ const SignupFormModal = () => {
             <div className={styles.container}>
                 <h1>Sign Up</h1>
                 <form onSubmit={handleSubmit}>
-                    {errors.username && submitted && <p className={styles.error}>{errors.username}</p>}
+                    {submitted && errors.username && <p className={styles.error}>{errors.username}</p>}
                     <label>
                         Username
                         <input
@@ -97,7 +97,7 @@ const SignupFormModal = () => {
                         />
                     </label>
 
-                    {errors.firstName && submitted && <p className={styles.error}>{errors.firstName}</p>}
+                    {submitted && errors.firstName  && <p className={styles.error}>{errors.firstName}</p>}
                     <label>
                         First Name
                         <input
@@ -108,7 +108,7 @@ const SignupFormModal = () => {
                             placeholder="first name"
                         />
                     </label>
-                    {errors.lastName && submitted && <p className={styles.error}>{errors.lastName}</p>}
+                    {submitted && errors.lastName &&  <p className={styles.error}>{errors.lastName}</p>}
                     <label>
                         Last Name
                         <input
@@ -119,7 +119,7 @@ const SignupFormModal = () => {
                             placeholder="last name"
                         />
                     </label>
-                    {errors.email && submitted && <p className={styles.error}>{errors.email}</p>}
+                    {submitted && errors.email && <p className={styles.error}>{errors.email}</p>}
                     <label>
                         Email
                         <input
@@ -130,7 +130,7 @@ const SignupFormModal = () => {
                             placeholder="email"
                         />
                     </label>
-                    {errors.password && submitted && <p className={styles.error}>{errors.password}</p>}
+                    {submitted && errors.password && <p className={styles.error}>{errors.password}</p>}
                     <label>
                         Password
                         <input
@@ -141,7 +141,7 @@ const SignupFormModal = () => {
                             placeholder="password"
                         />
                     </label>
-                    {errors.confirmPassword && submitted && <p className={styles.error}>{errors.confirmPassword}</p>}
+                    {submitted && errors.confirmPassword &&  <p className={styles.error}>{errors.confirmPassword}</p>}
                     <label>
                         Confirm Password
                         <input
@@ -155,11 +155,15 @@ const SignupFormModal = () => {
 
                     <button
                         disabled={Object.values(errors).length > 0}
-                        className={`${styles.buttonSignUpForm} ${Object.values(errors).length > 0 ? styles.buttonSignUpForm : ''}`}
+                        className={styles.buttonSignUpForm}
+                        
                         type="submit"
                     >
                         Sign Up!
+
                     </button>
+
+
 
                 </form>
 

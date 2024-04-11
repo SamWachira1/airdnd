@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { restoreUserThunk } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage ";
+import SpotDetail from "./components/SpotDetail";
 
 function Layout() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
         path: '/',
         element: <LandingPage/>
       },
+
+      {
+        path: '/spots/:spotId',
+        element: <SpotDetail/>
+      }
       
     ]
 
