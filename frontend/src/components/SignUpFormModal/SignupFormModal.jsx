@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { signUpThunk } from "../../store/session"
 import { useModal } from '../../context/Modal';
@@ -18,29 +18,45 @@ const SignupFormModal = () => {
     const [submitted, setSubmitted] = useState(false)
     const dispatch = useDispatch()
 
+    useEffect(()=>{
+        const newErrors = {};
 
+        if (!username || username.length < 4) {
+            newErrors.username = "Username must be at least 4 characters long";
+        }
 
-    const isFormValid = () => {
-        return (
-            username.length >= 4 &&
-            password.length >= 6 &&
-            username &&
-            firstName &&
-            lastName &&
-            email &&
-            password &&
-            confirmedPassword
-        );
-    };
+        if (!password || password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters long";
+        }
+        
+        if (password !== confirmedPassword){
+             newErrors.confirmPassword = 'Passwords must match'
+        }
 
+        if (!email) {
+            newErrors.email = "Email is required";
+        }
+
+        if(!firstName){
+            newErrors.firstName = 'First Name is required'
+        }
+
+        if (!lastName){
+            newErrors.lastName = 'Last Name is required'
+        }
+
+        setErrors(newErrors);
+      
+    },[submitted, username, firstName, lastName, email, password, confirmedPassword])
+
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         setSubmitted(true)
 
-
-        if (password === confirmedPassword ) {
+        if (Object.keys(errors).length === 0 && password === confirmedPassword) {
             setErrors({})
             const user = { username, firstName, lastName, email, password }
             return dispatch(signUpThunk({ user }))
@@ -49,28 +65,15 @@ const SignupFormModal = () => {
                 async (res) => {
                     const data = await res.json()
                     if (data?.errors) {
-                        setErrors({
-                            username: data.errors.username,
-                            firstName: data.errors.firstName,
-                            email: data.errors.email,
-                            lastName: data.errors.lastName,
-                            password: data.errors.password
-                        })
+                        setErrors(data.errors);
                     }
 
                 }
 
             )
 
-        } else {
-            setErrors({
-                confirmPassword: "Confirm Password field must be the same as the Password field"
-            })
-        }
-
-
+        } 
     }
-
 
 
     return (
@@ -146,7 +149,7 @@ const SignupFormModal = () => {
                         />
                     </label>
 
-                    <button disabled={!isFormValid()} className={styles.buttonSignUpForm} type="submit">Sign Up!</button>
+                    <button disabled={submitted && Object.values(errors).length > 0} className={styles.buttonSignUpForm} type="submit">Sign Up!</button>
 
                 </form>
 
