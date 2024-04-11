@@ -18,61 +18,65 @@ const SignupFormModal = () => {
     const [submitted, setSubmitted] = useState(false)
     const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         const newErrors = {};
 
-        if (!username || username.length < 4) {
-            newErrors.username = "Username must be at least 4 characters long";
+        if (submitted) {
+
+            if (!username || username.length < 4) {
+                newErrors.username = "Username must be at least 4 characters long";
+            }
+
+            if (!password || password.length < 6) {
+                newErrors.password = "Password must be at least 6 characters long";
+            }
+
+            if (password !== confirmedPassword) {
+                newErrors.confirmPassword = 'Passwords must match'
+            }
+
+            if (!email) {
+                newErrors.email = "Email is required";
+            }
+
+            if (!firstName) {
+                newErrors.firstName = 'First Name is required'
+            }
+
+            if (!lastName) {
+                newErrors.lastName = 'Last Name is required'
+            }
+
+            setSubmitted(true)
+            setErrors(newErrors);
+
         }
 
-        if (!password || password.length < 6) {
-            newErrors.password = "Password must be at least 6 characters long";
-        }
-        
-        if (password !== confirmedPassword){
-             newErrors.confirmPassword = 'Passwords must match'
-        }
+    }, [submitted, username, firstName, lastName, email, password, confirmedPassword])
 
-        if (!email) {
-            newErrors.email = "Email is required";
-        }
 
-        if(!firstName){
-            newErrors.firstName = 'First Name is required'
-        }
-
-        if (!lastName){
-            newErrors.lastName = 'Last Name is required'
-        }
-
-        setErrors(newErrors);
-      
-    },[submitted, username, firstName, lastName, email, password, confirmedPassword])
-
-   
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        setSubmitted(true)
 
         if (Object.keys(errors).length === 0 && password === confirmedPassword) {
             setErrors({})
             const user = { username, firstName, lastName, email, password }
             return dispatch(signUpThunk({ user }))
-            .then(closeModal)
-            .catch(
-                async (res) => {
-                    const data = await res.json()
-                    if (data?.errors) {
-                        setErrors(data.errors);
+                .then(closeModal)
+                .catch(
+                    async (res) => {
+                        const data = await res.json()
+                        if (data?.errors) {
+                            setErrors(data.errors);
+                        }
+
                     }
 
-                }
+                )
 
-            )
-
-        } 
+        }
     }
 
 
@@ -149,7 +153,13 @@ const SignupFormModal = () => {
                         />
                     </label>
 
-                    <button disabled={submitted && Object.values(errors).length > 0} className={styles.buttonSignUpForm} type="submit">Sign Up!</button>
+                    <button
+                        disabled={Object.values(errors).length > 0}
+                        className={`${styles.buttonSignUpForm} ${Object.values(errors).length > 0 ? styles.buttonSignUpForm : ''}`}
+                        type="submit"
+                    >
+                        Sign Up!
+                    </button>
 
                 </form>
 
