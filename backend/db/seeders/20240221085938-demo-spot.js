@@ -45,7 +45,7 @@ module.exports = {
         previewImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTfxYbknvusvsZs-aHitIgIQ_Yc2nBTe11w&s"
       },
       {
-        ownerId: 1,
+        ownerId: 3,
         address: "44 BullDog St.",
         city: "San Bernardino",
         state: "California",
@@ -60,7 +60,7 @@ module.exports = {
         previewImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWo9xLU6adbXiT14pNc5BZW4i6qav2l3eHbQ&s"
       },
       {
-        ownerId: 2,
+        ownerId: 4,
         address: "12 AirJodan St.",
         city: "Santa Monica",
         state: "California",
@@ -76,7 +76,7 @@ module.exports = {
       },
 
       {
-        ownerId: 2,
+        ownerId: 5,
         address: "12 AirJodan St.",
         city: "Santa Monica",
         state: "California",

@@ -8,11 +8,12 @@
 
 .imgTile{
     height: 14em;
+    width: 421px;
 }
 
 .spotTile{
-    width: 17em;
-    height: 22em;
+    width: 27em;
+    height: 24em;
     box-sizing: border-box;
     border: 2px solid black;
     padding: 3px;

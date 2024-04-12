@@ -30,3 +30,37 @@
     max-width: 50%; /* Set maximum width to 50% */
     margin-bottom: 10px; /* Add some space between small images */
 }
+
+.hostInfoCallOutContainer{
+    display: flex;
+    /* border: 2px solid black; */
+    padding: 5px;
+
+}
+
+.callout {
+    height: 11em;
+    border: 2px solid black;
+    display: flex;
+    justify-self: end;
+    flex-direction: column;
+    width: 22%;
+    border-radius: 1em;
+    padding: 23px;
+}
+
+.hostInfo{
+    border: 2px solid black;
+    width: 48em;
+    border-radius: 7px;
+    display: flex;
+    padding: 5px;
+    margin-right: 1em;
+}
+
+
+.reviews {
+    border: 2px solid black;
+    margin-bottom: 2em;
+    height: 12em;
+}

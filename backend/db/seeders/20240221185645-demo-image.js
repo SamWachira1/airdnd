@@ -21,19 +21,19 @@ module.exports = {
 
       {
         url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWgJif1DJ8n0deBaF7RNBzbyvv041506ZEqw&s",
-        preview: true,
+        preview: false,
         imageableType: 'Spot',
         imageableId: 1  
       },
       {
         url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3qP3mkMqgvpkBRDTqWebE0QQOaFgtdiV4fg&s",
-        preview: true,
+        preview: false,
         imageableType: 'Spot',
         imageableId: 1  
       },
       {
         url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKtkUeHX73lO1GVmOVZU_oNP_NB2IITf_9Jg&s",
-        preview: true,
+        preview: false,
         imageableType: 'Spot',
         imageableId: 1  
       },
@@ -45,6 +45,24 @@ module.exports = {
         imageableType: 'Spot',
         imageableId: 2
       },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWgJif1DJ8n0deBaF7RNBzbyvv041506ZEqw&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 2  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3qP3mkMqgvpkBRDTqWebE0QQOaFgtdiV4fg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 2  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKtkUeHX73lO1GVmOVZU_oNP_NB2IITf_9Jg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 2 
+      },
 
 
       {
@@ -53,6 +71,24 @@ module.exports = {
         imageableType: 'Spot',
         imageableId: 3
       },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWgJif1DJ8n0deBaF7RNBzbyvv041506ZEqw&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 3  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3qP3mkMqgvpkBRDTqWebE0QQOaFgtdiV4fg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 3  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKtkUeHX73lO1GVmOVZU_oNP_NB2IITf_9Jg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 3 
+      },
 
       {
         url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHq_v53szcvJOs-4DI-Dsfqh_XEMOdi27fQA&s",
@@ -60,6 +96,25 @@ module.exports = {
         imageableType: 'Spot',
         imageableId: 4
       },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWgJif1DJ8n0deBaF7RNBzbyvv041506ZEqw&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 4  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3qP3mkMqgvpkBRDTqWebE0QQOaFgtdiV4fg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 4  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKtkUeHX73lO1GVmOVZU_oNP_NB2IITf_9Jg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 4
+      },
+
 
       {
         url:  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYeqZ6ZiKEG-9_H3aCxOF0fJvJeK6e_OPecA&s",
@@ -67,11 +122,29 @@ module.exports = {
         imageableType: 'Spot',
         imageableId: 5
       },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWgJif1DJ8n0deBaF7RNBzbyvv041506ZEqw&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 4  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3qP3mkMqgvpkBRDTqWebE0QQOaFgtdiV4fg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 4  
+      },
+      {
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKtkUeHX73lO1GVmOVZU_oNP_NB2IITf_9Jg&s",
+        preview: false,
+        imageableType: 'Spot',
+        imageableId: 4
+      },
 
 
       {
         url: 'image url',
-        preview: false,
+        preview: true,
         imageableType: 'Review',
         imageableId: 1 
       },

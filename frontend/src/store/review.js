@@ -40,7 +40,7 @@ const reviewReducer = (state = initialState, action)=>{
         }
 
         case LOAD_REVIEW: {
-            return {...state, [action.review.id]: action.review}
+            return {...state, [action.payload.id]: action.payload}
         }
 
         default: 
