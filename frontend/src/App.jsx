@@ -5,6 +5,7 @@ import { restoreUserThunk } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage ";
 import SpotDetail from "./components/SpotDetail";
+import SpotForm from "./components/NewSpot/NewSpotForm";
 
 function Layout() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
       {
         path: '/spots/:spotId',
         element: <SpotDetail/>
+      },
+
+      {
+        path: '/spots/new',
+        element: <SpotForm/>
       }
       
     ]

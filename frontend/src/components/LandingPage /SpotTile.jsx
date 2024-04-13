@@ -1,5 +1,5 @@
 import spotTileStyle from './SpotTile.module.css'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getSpotReviewsThunk } from '../../store/review';
 import { useNavigate } from "react-router-dom";

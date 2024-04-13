@@ -9,6 +9,7 @@ import logo from '../../../public/images/stayScapelogo.png'
 
 const Navigation = ({ isLoaded }) => {
     const sessionUser = useSelector(state => state.session.user)
+    const userLoggedIn = !!sessionUser;
 
 
     return (
@@ -19,6 +20,14 @@ const Navigation = ({ isLoaded }) => {
                     <img className={stylesNavigation.imgHomeNav} src={logo} alt="Logo" />
                 </NavLink>
             </li>
+            {userLoggedIn && (
+                <div className={stylesNavigation.list}>
+                <li >
+                    <NavLink to="/spots/new">Create a New Spot</NavLink>
+                </li>
+
+                </div>
+            )}
             {isLoaded && (
                 <li>
                     <ProfileButton user={sessionUser} />

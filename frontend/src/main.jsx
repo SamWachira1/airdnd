@@ -8,7 +8,7 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import { ModalProvider, Modal} from './context/Modal';
 
 import { loginThunk, restoreUserThunk, signUpThunk, logoutThunk} from './store/session';
-import { getSpotsThunk, getSpotsByIdThunk } from './store/spot';
+import { getSpotsThunk, getSpotsByIdThunk , createSpotThunk} from './store/spot';
 import { getSpotReviewsThunk } from './store/review';
 
 const store = configureStore()
@@ -25,6 +25,7 @@ if (import.meta.env.MODE !== 'production') {
   window.getSpotsThunk = getSpotsThunk
   window.getSpotsByIdThunk = getSpotsByIdThunk
   window.getSpotReviewsThunk = getSpotReviewsThunk
+  window.createSpotThunk = createSpotThunk 
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

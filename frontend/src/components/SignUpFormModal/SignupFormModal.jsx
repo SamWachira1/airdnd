@@ -154,7 +154,6 @@ const SignupFormModal = () => {
                     </label>
 
                     <button
-                        disabled={Object.values(errors).length > 0}
                         className={styles.buttonSignUpForm}
                         
                         type="submit"

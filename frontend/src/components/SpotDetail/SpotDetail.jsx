@@ -17,8 +17,6 @@ function SpotDetail() {
     const dispatch = useDispatch()
 
 
-
-
     useEffect(() => {
         dispatch(getSpotsByIdThunk(Number(spotId)))
         dispatch(getSpotReviewsThunk(Number(spotId)))
@@ -51,23 +49,33 @@ function SpotDetail() {
 
     const userLoggedIn = !!sessionUser;
 
-    console.log(userIsOwner)
 
+    let hasImages = false;
+    let largeImage = "";
+    const otherImages = [];
+  
+    if (spot.SpotImages.length) {
+      hasImages = true;
+      spot.SpotImages.forEach((img) => {
+        if (img.preview) {
+          largeImage = img.url;
+        } else {
+            otherImages.push(img.url);
+        }
+      });
+    }
 
     return (
         <div>
             <h1 className={SpotDetailsStyles.spotName}>{spot.name}</h1>
             <p className="location">Location: {spot.city}, {spot.state}, {spot.country}</p>
+
+
             <div className={SpotDetailsStyles.spotDetailImages}>
-
-
-
-                <img className={SpotDetailsStyles.largeImages} src={spot.SpotImages[0].url} alt="Large Image" />
-
-
+                {hasImages && <img className={SpotDetailsStyles.largeImages} src={largeImage} alt="Large Image" />}
                 <div className={SpotDetailsStyles.smallImages}>
-                    {spot.SpotImages.map((spot, index) => (
-                        <img key={index} src={spot.url} alt={`Small Image ${index + 1}`} className={SpotDetailsStyles.smallImages} />
+                    {otherImages.map((url, index) => (
+                        <img key={index} src={url} alt={`Small Image ${index + 1}`} className={SpotDetailsStyles.smallImages} />
                     ))}
                 </div>
             </div>
