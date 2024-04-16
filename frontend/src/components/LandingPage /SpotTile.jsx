@@ -21,6 +21,7 @@ const SpotTile = ({ spot }) => {
     }, [dispatch, spot.id])
 
 
+    const formattedPrice = spot.price ? `$${spot.price.toFixed(2)}` : 'Price not available';
 
 
   return (
@@ -29,14 +30,8 @@ const SpotTile = ({ spot }) => {
         <img className={spotTileStyle.imgTile} src={spot.previewImage} alt={spot.name} title={spot.name} />
         <div className="spot-details">
           <p>{spot.city}, {spot.state}</p>
-          {/* <p>Rating: {avgRating}</p> */}
 
-            {/* {review.avgRating !== undefined && (
-                            <li>Average Rating: {spot.avgRating.toFixed(1)}</li>
-                        )} */}
-
-
-          <p>Price: ${spot.price.toFixed(2)} per night</p>
+          <p>Price: {formattedPrice} per night</p>
 
         </div>
       </div>

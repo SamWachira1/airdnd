@@ -49,8 +49,10 @@ const handleValidationErrorsUsers = (req, _res, next) => {
 
 
 const handleValidationErrorsSpots = (req, _res, next) => {
+  
   const validationErrors = validationResult(req);
-
+  console.log(validationErrors)
+  
   if (!validationErrors.isEmpty()) { 
     // const errors = {};
     // validationErrors

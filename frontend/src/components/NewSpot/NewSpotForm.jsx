@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector} from "react-redux"
-import { createSpotThunk, createImage } from "../../store/spot"
+import { createSpotThunk } from "../../store/spot"
 import NewSpotStyles from './NewSpot.module.css'
 import { useNavigate } from 'react-router-dom';
 
@@ -12,12 +12,12 @@ const SpotForm = () => {
     const [address, setAddress] = useState("")
     const [city, setCity] = useState("")
     const [state, setState] = useState("")
-    const [lat, setLatitude] = useState("")
-    const [lng, setLongitude] = useState("")
+    const [lat, setLatitude] = useState(1)
+    const [lng, setLongitude] = useState(1)
     const [description, setDescription] = useState("");
     const [name, setSpotName] = useState("");
     const [price, setPrice] = useState("")
-    const [previewImageUrl, setPreviewImageUrl] = useState(""); // New state for the preview image URL
+    const [previewImage, setPreviewImage] = useState(""); 
     const [img1, setImg1] = useState("")
     const [img2, setImg2] = useState("")
     const [img3, setImg3] = useState("")
@@ -30,9 +30,9 @@ const SpotForm = () => {
 
     const sessionUser = useSelector(state => state.session)
     const isLoggedIn = !!sessionUser
+    const spotData = useSelector(state => Object.values(state.spots))
 
-
-
+   
 
     useEffect(() => {
         const newErrors = {};
@@ -57,17 +57,20 @@ const SpotForm = () => {
         if (!price.trim()) {
             newErrors.price = "Price per night is required";
         }
-        if (!previewImageUrl.trim()) {
-            newErrors.previewImageUrl = "Preview Image URL is required";
+        if (!previewImage.trim()) {
+            newErrors.previewImage = "Preview Image URL is required";
         }
         setErrors(newErrors);
-    }, [country, address, city, state, name, description, price, previewImageUrl]);
+    }, [country, address, city, state, name, description, price, previewImage]);
 
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    
+    try{
+         e.preventDefault();
         setSubmitted(true);
+
 
         if (isLoggedIn && Object.values(errors).length === 0) {
             setErrors({});
@@ -81,18 +84,29 @@ const SpotForm = () => {
                 name,
                 description,
                 price,
-                previewImageUrl,
-                imageUrls: [img1, img2, img3, img4], 
             }
 
-            const newSpot = await dispatch(createSpotThunk(spot));
+
+            const spotImages = [
+                { url: previewImage, preview: true},
+                { url: img1, preview: false },
+                { url: img2, preview: false },
+                { url: img3, preview: false },
+                { url: img4, preview: false },
+              ];
+
+
+
+             const newSpot =  await dispatch(createSpotThunk(spot, spotImages));
+              
+             if (newSpot)  nav(`/spots/${newSpot.id}`)
+            
     
 
-            if (newSpot) {
-                nav(`/spots/${newSpot.id}`);
-            } else {
-                console.log("Error creating spot");
-            }
+        }
+
+        }catch(e){
+            console.log(e)
         }
     };
 
@@ -169,11 +183,11 @@ const SpotForm = () => {
                     <section className={NewSpotStyles.imagesUrl}>
                         <h2>Liven up your spot with photos</h2>
                         <p>Submit a link to at least one photo to publish your spot.</p>
-                        {submitted && errors.previewImageUrl && <p className={NewSpotStyles.error}>{errors.previewImageUrl}</p>}
+                        {submitted && errors.previewImage && <p className={NewSpotStyles.error}>{errors.previewImage}</p>}
 
                         <label >
                             Preview Image URL:
-                            <input type="text" name="previewImageUrl" value={previewImageUrl} onChange={(e)=> setPreviewImageUrl(e.target.value)} placeholder="Preview Image URL" />
+                            <input type="text" name="previewImage" value={previewImage} onChange={(e)=> setPreviewImage(e.target.value)} placeholder="Preview Image URL" />
                         </label>
                         <label>
                             Image URL 1:

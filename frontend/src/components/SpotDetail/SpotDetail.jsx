@@ -2,10 +2,11 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpotsByIdThunk } from '../../store/spot';
 import { getSpotReviewsThunk } from '../../store/review';
-
 import { useEffect } from 'react';
 import SpotDetailsStyles from './SpotDetail.module.css'
 import IoStar from '../StarIcons';
+import OpenModalReview from './OpenModelReview';
+import PostReviewModel from './PostReviewModel'
 
 
 function SpotDetail() {
@@ -13,13 +14,16 @@ function SpotDetail() {
     const { spotId } = useParams()
     const spot = useSelector(state => state.spots[spotId])
     const reviews = useSelector(state => Object.values(state.reviews)); // Change this line
-    const sessionUser = useSelector(state => Object.values(state.session))
+    const sessionUser = useSelector(state => state.session.user)
     const dispatch = useDispatch()
+
+    console.log(reviews)
 
 
     useEffect(() => {
         dispatch(getSpotsByIdThunk(Number(spotId)))
         dispatch(getSpotReviewsThunk(Number(spotId)))
+
 
     }, [dispatch, spotId])
 
@@ -35,6 +39,10 @@ function SpotDetail() {
     }
 
 
+
+
+
+
     const { firstName, lastName } = spot.Owner
 
     const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0);
@@ -45,25 +53,34 @@ function SpotDetail() {
 
     const sortedReviews = [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    const userIsOwner = sessionUser && sessionUser.id === spot.id;
+
+    const userIsOwner = sessionUser && sessionUser.id === spot.ownerId;
 
     const userLoggedIn = !!sessionUser;
+    const userHasReviewed = reviews.some(review => review.userId === sessionUser?.id);
+ 
+
+
 
 
     let hasImages = false;
     let largeImage = "";
     const otherImages = [];
-  
+
+
+
     if (spot.SpotImages.length) {
-      hasImages = true;
-      spot.SpotImages.forEach((img) => {
-        if (img.preview) {
-          largeImage = img.url;
-        } else {
-            otherImages.push(img.url);
-        }
-      });
+        hasImages = true;
+        spot.SpotImages.forEach((img) => {
+            if (img.preview) {
+                largeImage = img.url;
+            } else {
+                otherImages.push(img.url);
+            }
+        });
     }
+
+
 
     return (
         <div>
@@ -75,7 +92,7 @@ function SpotDetail() {
                 {hasImages && <img className={SpotDetailsStyles.largeImages} src={largeImage} alt="Large Image" />}
                 <div className={SpotDetailsStyles.smallImages}>
                     {otherImages.map((url, index) => (
-                        <img key={index} src={url} alt={`Small Image ${index + 1}`} className={SpotDetailsStyles.smallImages} />
+                        <img key={index} src={url} alt={`Small Image ${index + 1}`} className={SpotDetailsStyles.img} />
                     ))}
                 </div>
             </div>
@@ -92,20 +109,14 @@ function SpotDetail() {
                     <p>Price: ${spot.price} per night</p>
                     <div>
                         <IoStar size={19} color="gold" />
-                        {avgRating !== 'New' && (
+                        {avgRating && (
                             <p>Average Rating: {avgRating} {reviewCountText && `· ${reviewCountText}`}</p>
                         )}
 
                     </div>
                     <button className="reserve-button" onClick={() => alert("Feature coming soon")}>Reserve</button>
 
-                    {!userIsOwner && userLoggedIn && reviewCount === 0 && (
-                        <p>Be the first to post a review!</p>
-                    )}
-
                 </div>
-
-
 
             </section>
 
@@ -125,7 +136,7 @@ function SpotDetail() {
                     <h2>Reviews</h2>
                     {sortedReviews.map((review, index) => (
                         <div key={index} className={SpotDetailsStyles.reviews}>
-                            <p>{review.User.firstName}</p>
+                            <p>{review.firstName}</p>
                             <p>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</p>
                             <p>{review.review}</p>
                             <div>
@@ -134,6 +145,27 @@ function SpotDetail() {
                             </div>
                         </div>
                     ))}
+
+
+                </div>
+
+                <div>
+                    {!userIsOwner && userLoggedIn && !userHasReviewed &&(
+                    
+                    <>
+                        <button className={SpotDetailsStyles.button}>
+                            <ul>
+                                <OpenModalReview className={SpotDetailsStyles.modalContainer }
+                            modalComponent={<PostReviewModel spot={spot}/>}
+                            itemText="Post Your Review" />
+
+                            </ul>
+                
+                        </button>
+                    </>
+
+
+                    )}
                 </div>
 
 

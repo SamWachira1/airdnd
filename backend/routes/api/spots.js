@@ -891,8 +891,12 @@ router.get('/', validateQueryParams, async (req, res) => {
 router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     const currentUser = req.user; // Wait for user data
+    
+    let { address, city, state, country, lat, lng, name, description, price} = req.body
+    
+    // console.log(address, city, state, country, lat, lng, name, description, price, previewImageUrl, imageUrls)
 
-    let { address, city, state, country, lat, lng, name, description, price, previewImageUrl, imageUrls } = req.body
+    price = Number(price)
 
     if (currentUser) {
 
@@ -907,8 +911,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
             name,
             description,
             price,
-            previewImageUrl,
-            imageUrls
+
 
         })
 
@@ -932,8 +935,6 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
             name: newSpot.name,
             description: newSpot.description,
             price: priceFloat,
-            previewImageUrl: newSpot.previewImageUrl,
-            imageUrls: newSpot.imageUrls,
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate
 

@@ -57,7 +57,6 @@ const LoginFormModal = () => {
 
     dispatch(loginThunk({user})).then(()=>{
       closeModal()
-      history.push('/')
     })
   
     

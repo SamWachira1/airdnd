@@ -21,14 +21,18 @@
 .smallImages {
     display: flex;
     flex-wrap: wrap;
-    flex: 1; /* Take remaining space */
-    padding: 3px;
+    flex: 1;
+    padding: 1px;
 }
 
 .smallImage {
     flex: 0 0 50%; /* Each small image takes up 50% of the container */
     max-width: 50%; /* Set maximum width to 50% */
     margin-bottom: 10px; /* Add some space between small images */
+}
+
+.img{
+    padding: 2px;
 }
 
 .hostInfoCallOutContainer{
@@ -63,4 +67,23 @@
     border: 2px solid black;
     margin-bottom: 2em;
     height: 12em;
+}
+
+.button li {
+    text-decoration: none;
+}
+
+.modalContainer {
+    width: 29em;
+    height: 18em;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-evenly;
+    padding: 9px;
+
+
+}
+
+.errors {
+    color: red ;
 }

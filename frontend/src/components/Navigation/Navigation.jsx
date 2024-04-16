@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import stylesNavigation from './Navigation.module.css';
-import logo from '../../../public/images/stayScapelogo.png'
+import logo from '../../images/stayScapelogo.png'
 
 
 
