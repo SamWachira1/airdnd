@@ -6,6 +6,8 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage ";
 import SpotDetail from "./components/SpotDetail";
 import SpotForm from "./components/NewSpot/NewSpotForm";
+import ManageSpots from "./components/ManageSpots";
+import UpdateSpotForm from "./components/UpdateForm";
 
 function Layout() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -47,7 +49,19 @@ const router = createBrowserRouter([
       {
         path: '/spots/new',
         element: <SpotForm/>
-      }
+      },
+
+      {
+        path: '/spots/current',
+        element: <ManageSpots/>
+      },
+
+      {
+        path: '/spots/:spotId/edit',
+        element: <UpdateSpotForm/>
+      },
+
+
       
     ]
 

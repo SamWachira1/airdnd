@@ -3,8 +3,7 @@ import { csrfFetch } from "./csrf"
 const LOAD_SPOTS = 'spot/LOAD_SPOTS'
 const LOAD_SPOT = 'spot/LOAD_SPOT '
 const POST_SPOT = 'spot/POST_SPOT'
-const POST_REVIEW = 'review/POST_REVIEW'
-
+const LOAD_CURRENT_SPOT = 'spot/LOAD_CURRENT_SPOT'
 
 export const loadSpots = (spots)=> {
     return {
@@ -27,6 +26,13 @@ export const createSpot = (spot)=>{
     }
 }
 
+export const loadCurrentSpots = (spots) => {
+    return{
+        type: LOAD_CURRENT_SPOT,
+        payload: spots
+    }
+}
+
 
 
 
@@ -43,6 +49,14 @@ export const getSpotsByIdThunk = (id)=> async(dispatch)=>{
     dispatch(loadSpotsById(data))
     return response 
 }
+
+export const getCurrentSpotUser = ()=> async (dispatch)=>{
+    const response = await csrfFetch(`/api/spots/current`)
+    const data = await response.json()
+    dispatch(loadCurrentSpots(data))
+    return data 
+}
+
 
 export const createSpotThunk = (spot, spotImages)=> async(dispatch)=>{
 
@@ -93,6 +107,7 @@ export const createSpotThunk = (spot, spotImages)=> async(dispatch)=>{
 
 
 
+
 const initialState = {}
 
 const spotReducer = (state = initialState, action) => {
@@ -110,6 +125,10 @@ const spotReducer = (state = initialState, action) => {
 
         case POST_SPOT: 
             return {...state, [action.payload.id]: action.payload}
+
+        case LOAD_CURRENT_SPOT: {
+           return {...state,  ...action.payload}
+        }
 
 
         default:

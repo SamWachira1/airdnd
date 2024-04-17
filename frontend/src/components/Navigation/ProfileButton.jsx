@@ -8,6 +8,7 @@ import styles from './Navigation.module.css';
 import LoginFormModal from "../ LoginFormModal/LoginFormModal"
 import SignupFormModal from "../SignUpFormModal/SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
+import { NavLink } from 'react-router-dom';
 
 
 const ProfileButton = ({ user }) => {
@@ -42,7 +43,6 @@ const ProfileButton = ({ user }) => {
         closeMenu()
     }
 
-  
 
     return (
 
@@ -54,23 +54,42 @@ const ProfileButton = ({ user }) => {
             <ul className={showMenu ? styles.profileDropdown : styles.hidden} ref={ulRef}>
                 {user ? (
                     <>
+                        <div className={styles.menuItem}>
                         <li>Hello, {user.firstName}</li>
-                        {/* <li>{user.firstName} {user.lastName}</li> */}
-                        <li>{user.email}</li>
+                        </div>
+
+                        <div className={styles.menuItem}>
+                            <li>{user.email}</li>
+                        </div>
+
+                        <div className={styles.menuItem}>
+                            <li>
+                                <NavLink className={styles.noUnderline} to={'/spots/current'}>Manage Spots</NavLink>
+                           </li>
+                        </div>
+
                         <li>
                             <button onClick={handleLogout}>Log Out</button>
                         </li>
                     </>
                 ) : (
                     <>
+                        <div className={styles.menuItem}>
+
                         <OpenModalMenuItem  // do not nest under an li
                             itemText="Log In"
                             modalComponent={<LoginFormModal />}
+                          
                         />
+                        </div>
+
+                        <div className={styles.menuItem}>
+
                         <OpenModalMenuItem
                             itemText="Sign Up"
                             modalComponent={<SignupFormModal />}
                         />
+                        </div>
                     </>
                 )}
             </ul>

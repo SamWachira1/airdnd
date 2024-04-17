@@ -17,7 +17,7 @@ function SpotDetail() {
     const sessionUser = useSelector(state => state.session.user)
     const dispatch = useDispatch()
 
-    console.log(reviews)
+
 
 
     useEffect(() => {
