@@ -37,6 +37,48 @@
     left: 0; /* Adjust as needed */
   }
 
+  .updateButtonContainer{
+    width: 24%;
+    height: 2em;
+ }
+
+ .buttonUpdate {
+    background-color: #4e4e4e;
+    color: white;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 15.2);
+    transition: box-shadow 0.3s ease;
+ }
+
+
+ .buttonDelete {
+    background-color: #4e4e4e;
+    color: white;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 15.2);
+    transition: box-shadow 0.3s ease;
+    position: relative;
+    bottom: 2em;
+    left: 8em;
+ }
+
+ .buttonUpdate:hover {
+    /* Increase shadow on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow to bottom */
+  }
+
 @media screen and (min-width: 480px) {
     .spot-tile {
         width: 50%; 

@@ -37,6 +37,16 @@
     left: 0; /* Adjust as needed */
   }
 
+
+  .ratings{
+    position: relative;
+    bottom: 9em;
+    left: 22em;
+    width: 4em;
+  }
+
+
+
 @media screen and (min-width: 480px) {
     .spot-tile {
         width: 50%; 

@@ -7,7 +7,7 @@ import StyleUpdateForm from '../UpdateForm/UpdateForm.module.css'
 
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { getCurrentSpotUser , getSpotsByIdThunk} from "../../store/spot";
+import { updateSpotThunk , getSpotsByIdThunk} from "../../store/spot";
 
 
 
@@ -26,6 +26,8 @@ const UpdateSpotForm = () => {
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
+    const [lat, setLat] = useState(1);
+    const [lng, setLng] = useState(1);
     const [description, setDescription] = useState("");
     const [name, setSpotName] = useState("");
     const [price, setPrice] = useState("");
@@ -79,7 +81,7 @@ const UpdateSpotForm = () => {
         e.preventDefault();
         setSubmitted(true);
 
-        // Validate form fields
+     
         if (Object.values(errors).length === 0) {
             // Dispatch action to update spot
             const updatedSpot = {
@@ -95,7 +97,7 @@ const UpdateSpotForm = () => {
                 price,
             };
 
-            const success = await dispatch(updateSpotThunk(updatedSpot));
+            const success = await dispatch(updateSpotThunk(updatedSpot, spotId));
 
             if (success) {
                 // Navigate to spot details page
@@ -108,7 +110,7 @@ const UpdateSpotForm = () => {
     return (
         <div>
             <h1>Update your Spot</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
             {submitted && errors.country && <p className={StyleUpdateForm.error}>{errors.country}</p>}
                     <label>
                         Country:

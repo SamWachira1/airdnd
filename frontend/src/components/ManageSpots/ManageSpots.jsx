@@ -7,31 +7,42 @@ import { getCurrentSpotUser } from "../../store/spot";
 import SpotTile from "../LandingPage /SpotTile.jsx";
 import StylesManageSpots from './ManageSpots.module.css'
 import IoStar from "../StarIcons";
-import UpdateSpotForm from '../UpdateForm/UpdateForm';
 
 const ManageSpots = () => {
     const nav = useNavigate()
     const dispatch = useDispatch()
-    const currentSpots = useSelector(state => state.spots.Spots)
+    const spots = useSelector(state => Object.values(state.spots))
+    const currentUser = useSelector(state => state.session.user);
 
 
     useEffect(() => {
-        dispatch(getCurrentSpotUser())
-    }, [dispatch])
+        if (currentUser){
+            dispatch(getCurrentSpotUser())
+        }
+    }, [dispatch, currentUser])
 
 
-    const handleEdit = (spotId) => {
-        // Navigate to the update spot form when edit button is clicked
-        nav(`/spots/${spotId}/edit`);
-    };
-
-    if (!currentSpots) {
+    if (!spots || !currentUser) {
         return (
             <>
                 <div>Loading...</div>
             </>
-        )
+        );
     }
+
+    const userSpots = spots.filter(spot => spot.ownerId === currentUser.id);
+
+    console.log(userSpots)
+
+    if (!userSpots){
+        return (
+            <>
+                <div>Loading...</div>
+            </>
+        );
+    }
+
+
 
 
     return (
@@ -40,14 +51,14 @@ const ManageSpots = () => {
             <button onClick={() => nav('/spots/new')}>Create a New Spot</button>
 
             <ul className={StylesManageSpots.spotTileContainer}>
-                {currentSpots.map((spot) => (
+                {userSpots.map((spot) => (
 
                     <li className={StylesManageSpots.spotTile} key={spot.id}>
 
-                        <SpotTile key={spot.id} spot={spot} showButtons={true} onEdit={handleEdit}/>
+                        <SpotTile key={spot.id} spot={spot} showButtons={true} isOwner={true}/>
                
                         {spot.avgRating && (
-                            <div>
+                            <div className={StylesManageSpots.ratings}>
                                 <IoStar size={19} color="gold" />
                                 <span>{parseFloat(spot.avgRating).toFixed(2)}</span>
                             </div>
@@ -57,8 +68,6 @@ const ManageSpots = () => {
 
                     </li>
 
-
-                    
 
                 ))}
 

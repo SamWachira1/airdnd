@@ -10,6 +10,7 @@ const {Sequelize, Op} = require('sequelize');
 const router = express.Router();
 
 const validateSpot = [
+    
     check('address')
         .exists({ checkFalsy: true })
         .notEmpty()
@@ -55,7 +56,7 @@ const validateSpot = [
         .isFloat({ gt: 0 })
         .withMessage("Price per day must be a positive number"),
 
-    handleValidationErrorsSpots
+        handleValidationErrors
 
 ];
 
@@ -894,14 +895,15 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     
     let { address, city, state, country, lat, lng, name, description, price} = req.body
     
-    // console.log(address, city, state, country, lat, lng, name, description, price, previewImageUrl, imageUrls)
+    const ownerId = req.user.id;
+
 
     price = Number(price)
 
     if (currentUser) {
 
         let newSpot = await Spot.create({
-            ownerId: currentUser.id,
+            ownerId,
             address,
             city,
             state,

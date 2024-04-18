@@ -28,11 +28,11 @@ const SpotForm = () => {
     const dispatch = useDispatch()
     const nav = useNavigate()
 
-    const sessionUser = useSelector(state => state.session)
+    const sessionUser = useSelector(state => state.session.user)
     const isLoggedIn = !!sessionUser
     const spotData = useSelector(state => Object.values(state.spots))
 
-   
+
 
     useEffect(() => {
         const newErrors = {};
@@ -75,6 +75,7 @@ const SpotForm = () => {
         if (isLoggedIn && Object.values(errors).length === 0) {
             setErrors({});
             const spot = {
+                ownerId: sessionUser.id,
                 address,
                 city,
                 state,
