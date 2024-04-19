@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { deleteSpotThunk, getCurrentSpotUser, getSpotsByIdThunk, getSpotsThunk} from '../../store/spot';
+import { deleteSpotThunk, getCurrentSpotUser} from '../../store/spot';
 import { useEffect } from "react";
 import { useModal } from '../../context/Modal';
 
@@ -26,7 +26,6 @@ const ConfirmationModal = ({spot}) => {
     };
 
     const onCancel = () => {
-    
         closeModal();
     };
 

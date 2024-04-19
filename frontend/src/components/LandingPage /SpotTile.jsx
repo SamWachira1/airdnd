@@ -1,13 +1,12 @@
 import spotTileStyle from './SpotTile.module.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect} from 'react';
-import { getSpotReviewsThunk } from '../../store/review';
+
 import { useNavigate } from "react-router-dom";
 import OpenModalDelete from './OpenModelDelete';
 import ConfirmationModal from './ConfirmationDelete';
 
 const SpotTile = ({ spot, showButtons = false, isOwner}) => {
-  const dispatch = useDispatch()
+
+
   const nav = useNavigate()
   
 
@@ -21,7 +20,6 @@ const SpotTile = ({ spot, showButtons = false, isOwner}) => {
       nav(`/spots/${spot.id}/edit`);
 
     } else {
-      // Handle the case where the user is not the owner
       alert("You are not authorized to update this spot.");
     }
   };

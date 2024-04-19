@@ -66,7 +66,6 @@ router.get('/current', requireAuth, async (req, res) => {
             where: { imageableType: 'Spot', imageableId: spot.id },
         })
 
-        //  console.log("\n\n\n",spotImage , "\n\n\n")
 
 
 
@@ -89,7 +88,6 @@ router.get('/current', requireAuth, async (req, res) => {
             reviewImageUrl = review.url 
         }
 
-        // console.log("\n\n\n",reviewImages.id , "\n\n\n")
 
 
         let removePreview = {

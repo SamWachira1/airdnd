@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useModal } from '../../context/Modal';
 import { createReviewThunk } from "../../store/review";
 import SpotDetailsStyles from './SpotDetail.module.css'
@@ -14,8 +14,6 @@ const ReviewFormModel = ({spot})=> {
     const { closeModal } = useModal();
     const [submitted, setSubmitted] = useState(false)
     const dispatch = useDispatch()
-    const session = useSelector(state => state.session.user)
-    // const spot = useSelector(state => Object.values(state.spots)).find(spot =>  spot.id)
 
 
 

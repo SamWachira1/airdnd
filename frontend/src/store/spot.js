@@ -104,7 +104,6 @@ export const createSpotThunk = (spot, spotImages)=> async(dispatch)=>{
             return spotWithImagesData; 
         } 
        
-    
 
     } catch (error) {
         console.error("Error in createSpotThunk:", error);
@@ -137,8 +136,7 @@ export const deleteSpotThunk = (spotId)=> async (dispatch)=>{
     })
 
     if (response.ok){
-        const responseData = await response.json()
-        dispatch(removeSpot(responseData))
+        dispatch(removeSpot(spotId))
     }
     
 }
@@ -152,11 +150,12 @@ const initialState = {}
 const spotReducer = (state = initialState, action) => {
     switch(action.type){
         case LOAD_SPOTS: {
-            let newState = {}
-            action.payload.forEach(spot => {
-                newState[spot.id] = spot
-            })
-            return newState
+            const newState = action.payload.reduce((acc, spot) => {
+                acc[spot.id] = spot;
+                return acc;
+              }, {});
+
+            return {...state, ...newState}
         }
 
         case LOAD_SPOT:
@@ -176,7 +175,7 @@ const spotReducer = (state = initialState, action) => {
 
         case DELETE_SPOT: {
             // console.log('Payload in DELETE_SPOT:', action.payload);
-    
+            
             const newState = { ...state };
             delete newState[action.spotId];
             return newState;

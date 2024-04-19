@@ -584,7 +584,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
          const formattedSpot = {
             id: spot.id,
-            ownerId: spot.id,
+            ownerId: spot.ownerId,
             address: spot.address,
             city: spot.city,
             state: spot.state,
@@ -854,7 +854,7 @@ router.get('/', validateQueryParams, async (req, res) => {
         const formattedSpot = {
 
             id: spot.id,
-            ownerId: spot.id,
+            ownerId: spot.ownerId,
             address: spot.address,
             city: spot.city,
             state: spot.state,

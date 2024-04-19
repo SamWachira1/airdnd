@@ -24,7 +24,6 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
         }
     })
 
-    // console.log("\n\n\n", image, "\n\n\n")
 
 
     if (!image){
@@ -42,7 +41,6 @@ router.delete('/:imageId', requireAuth, async (req, res)=>{
 
         })
 
-        // console.log("\n\n\n", spotBelongsUser, "\n\n\n")
 
 
         if (!spotBelongsUser){

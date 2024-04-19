@@ -30,7 +30,6 @@ const SpotForm = () => {
 
     const sessionUser = useSelector(state => state.session.user)
     const isLoggedIn = !!sessionUser
-    const spotData = useSelector(state => Object.values(state.spots))
 
 
 
@@ -118,7 +117,7 @@ const SpotForm = () => {
             <h1>Create a New Spot</h1>
             {/* First section */}
             <section className={NewSpotStyles.mainSectionContainer}>
-                <h2>Where's your place located?</h2>
+            <h2>Where&apos;s your place located?</h2>
                 <p>Guests will only get your exact address once they book a reservation.</p>
                 <form onSubmit={handleSubmit}>
                 {submitted && errors.country && <p className={NewSpotStyles.error}>{errors.country}</p>}
@@ -144,14 +143,16 @@ const SpotForm = () => {
                     </label>
                     {/* Latitude and Longitude inputs (optional) */}
 
-                    {/* <label>
+                    <div style={{ display: "none" }}>
+                     <label>
                         Latitude:
                         <input type="text" name="latitude" value={lat} onChange={(e) => setLatitude(e.target.value)} placeholder="Enter latitude" />
                     </label>
                     <label>
                         Longitude:
                         <input type="text" name="longitude" value={lng} onChange={(e) => setLongitude(e.target.value)} placeholder="Enter longitude" />
-                    </label> */}
+                    </label> 
+                    </div>
 
 
                     {/* Second section */}
@@ -165,7 +166,7 @@ const SpotForm = () => {
                     {/* Third section */}
                     <section>
                         <h2>Create a title for your spot</h2>
-                        <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+                        <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
                         {submitted && errors.name && <p className={NewSpotStyles.error}>{errors.name}</p>}
 
                         <input type="text" name="spotName" value={name} onChange={(e) => setSpotName(e.target.value)} placeholder="Name of your spot" />

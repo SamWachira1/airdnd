@@ -1,6 +1,5 @@
 import { useEffect, } from "react";
 import { useDispatch } from "react-redux";
-// import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentSpotUser } from "../../store/spot";
@@ -33,6 +32,7 @@ const ManageSpots = () => {
     const userSpots = spots.filter(spot => spot.ownerId === currentUser.id);
 
     console.log(userSpots)
+
 
     if (!userSpots){
         return (

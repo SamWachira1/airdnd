@@ -134,14 +134,17 @@ const UpdateSpotForm = () => {
                     </label>
                     {/* Latitude and Longitude inputs (optional) */}
 
-                    {/* <label>
-                        Latitude:
-                        <input type="text" name="latitude" value={lat} onChange={(e) => setLatitude(e.target.value)} placeholder="Enter latitude" />
-                    </label>
-                    <label>
-                        Longitude:
-                        <input type="text" name="longitude" value={lng} onChange={(e) => setLongitude(e.target.value)} placeholder="Enter longitude" />
-                    </label> */}
+                        <div style={{ display: "none" }}>
+                        <label>
+                            Latitude:
+                            <input type="text" name="latitude" value={lat} onChange={(e) => setLat(e.target.value)} placeholder="Enter latitude" />
+                        </label>
+                        <label>
+                            Longitude:
+                            <input type="text" name="longitude" value={lng} onChange={(e) => setLng(e.target.value)} placeholder="Enter longitude" />
+                        </label> 
+
+                        </div>
 
 
                     {/* Second section */}
@@ -155,7 +158,7 @@ const UpdateSpotForm = () => {
                     {/* Third section */}
                     <section>
                         <h2>Create a title for your spot</h2>
-                        <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+                        <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
                         {submitted && errors.name && <p className={StyleUpdateForm.error}>{errors.name}</p>}
 
                         <input type="text" name="spotName" value={name} onChange={(e) => setSpotName(e.target.value)} placeholder="Name of your spot" />

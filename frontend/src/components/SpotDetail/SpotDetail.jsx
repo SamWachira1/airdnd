@@ -6,7 +6,9 @@ import { useEffect } from 'react';
 import SpotDetailsStyles from './SpotDetail.module.css'
 import IoStar from '../StarIcons';
 import OpenModalReview from './OpenModelReview';
+import OpenModalDelete from './OpenModelDelete';
 import PostReviewModel from './PostReviewModel'
+import ConfirmationModalDelete from './ConfirmationModalDelete';
 
 
 function SpotDetail() {
@@ -58,9 +60,10 @@ function SpotDetail() {
 
     const userLoggedIn = !!sessionUser;
     const userHasReviewed = reviews.some(review => review.userId === sessionUser?.id);
- 
 
-
+    const userOwnerReview = reviews.find(review => review.userId === sessionUser?.id)
+    
+    
 
 
     let hasImages = false;
@@ -79,6 +82,9 @@ function SpotDetail() {
             }
         });
     }
+
+
+
 
 
 
@@ -143,26 +149,49 @@ function SpotDetail() {
                                 <IoStar size={19} color="gold" />
                                 <span>{review.stars}</span>
                             </div>
+
+
+                            {userLoggedIn && sessionUser.id === review.userId && (
+                                <>
+
+                                <button className="delete-button">
+                                    <ul>
+                                        <OpenModalDelete
+                                            modalComponent={<ConfirmationModalDelete review={userOwnerReview} />}
+                                            itemText="Delete Review" 
+                                        />
+
+                                    </ul>
+                                    
+                                </button>
+
+                                </>
+                            )}
                         </div>
                     ))}
 
 
                 </div>
 
-                <div>
-                    {!userIsOwner && userLoggedIn && !userHasReviewed &&(
-                    
-                    <>
-                        <button className={SpotDetailsStyles.button}>
-                            <ul>
-                                <OpenModalReview className={SpotDetailsStyles.modalContainer }
-                            modalComponent={<PostReviewModel spot={spot}/>}
-                            itemText="Post Your Review" />
 
-                            </ul>
-                
-                        </button>
-                    </>
+
+
+
+
+                <div>
+                    {!userIsOwner && userLoggedIn && !userHasReviewed && (
+
+                        <>
+                            <button className={SpotDetailsStyles.button}>
+                                <ul>
+                                    <OpenModalReview className={SpotDetailsStyles.modalContainer}
+                                        modalComponent={<PostReviewModel spot={spot} />}
+                                        itemText="Post Your Review" />
+
+                                </ul>
+
+                            </button>
+                        </>
 
 
                     )}
