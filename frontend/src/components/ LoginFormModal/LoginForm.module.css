@@ -9,7 +9,15 @@
 
   h1 {
     text-align: center;
+    border-top: 2px solid lightblue;
+    padding-top: 12px;
   }
+
+  h2 {
+    margin-left: 1em;
+  }
+
+
   
   form {
     display: flex;

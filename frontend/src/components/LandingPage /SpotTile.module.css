@@ -1,5 +1,4 @@
 
-
 .spotTileContainer {
     display: flex;
     flex-wrap: wrap; 
@@ -7,16 +6,22 @@
 }
 
 .imgTile{
-    height: 14em;
-    width: 421px;
+    height: 10em;
+    width: 361px;
+    border-radius: 2em 2em 0em 0em;
+    position: relative;
+    top: 2px;
+    left: 2px;
+ 
 }
 
 .spotTile{
-    width: 27em;
-    height: 24em;
+    width: 23em;
+    height: 18em;
     box-sizing: border-box;
-    border: 2px solid black;
-    padding: 3px;
+    border: 2px solid gray;
+    border-radius: 36px;
+    /* border-color: black; */
     /* padding-bottom: 4px; */
     margin: 10px;
     margin-bottom: 21px;

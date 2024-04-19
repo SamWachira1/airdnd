@@ -13,27 +13,41 @@ const Navigation = ({ isLoaded }) => {
 
 
     return (
+        <nav>
+            <ul className={stylesNavigation.homeLinkContainer}>
+            
+                    <li >
+                        <NavLink to={'/'}>
+                            <div>
+                                 <img className={stylesNavigation.imgHomeNav} src={logo} alt="Logo" />
+                            </div>
+                        </NavLink>
+                    </li>
+            
+         
 
-        <ul className={stylesNavigation.homeLinkContainer}>
-            <li >
-                <NavLink to={'/'}>
-                    <img className={stylesNavigation.imgHomeNav} src={logo} alt="Logo" />
-                </NavLink>
-            </li>
-            {userLoggedIn && (
-                <div className={stylesNavigation.list}>
-                <li >
-                    <NavLink to="/spots/new">Create a New Spot</NavLink>
-                </li>
+                {userLoggedIn && (
+                  
 
-                </div>
-            )}
-            {isLoaded && (
-                <li>
-                    <ProfileButton user={sessionUser} />
-                </li>
-            )}
-        </ul>
+                    <li className={stylesNavigation.list}>
+                        <NavLink className={stylesNavigation.link} to="/spots/new">Create a New Spot</NavLink>
+                    </li>
+
+                 
+
+                )}
+
+                 {isLoaded && (
+                    <li >
+                        <ProfileButton user={sessionUser} />
+                    </li>
+                        
+                
+                )}
+         
+          </ul>
+
+        </nav>
 
     )
 

@@ -47,10 +47,13 @@ const ProfileButton = ({ user }) => {
     return (
 
         <>
-            <button className={styles.profileButton} onClick={toggleMenu}>
+            <nav className={styles.mainContainer}>
+            <button className={styles.loginIcons} onClick={toggleMenu}>
                 <VscThreeBars size={'2em'} />
                 <FaUserCircle size={'2em'} />
             </button>
+
+          
             <ul className={showMenu ? styles.profileDropdown : styles.hidden} ref={ulRef}>
                 {user ? (
                     <>
@@ -94,7 +97,7 @@ const ProfileButton = ({ user }) => {
                 )}
             </ul>
 
-           
+           </nav>
 
         </>
 
