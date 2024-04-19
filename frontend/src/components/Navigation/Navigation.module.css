@@ -16,6 +16,7 @@
     flex-direction: row;
     padding: 0 20px; /* Add padding to the sides */
     justify-content: space-between;
+    background-color: lightgrey
 }
 
 
@@ -50,6 +51,10 @@
     padding-right: 20px; /* Add padding to the right */
 }
 
+.link:hover {
+    color: white;
+}
+
 .profileDropdown {
     position: absolute;
     top: 6em;
@@ -57,7 +62,7 @@
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
     display: flex;
     flex-direction: column;
     padding: 3px;
@@ -77,10 +82,14 @@
     height: 5em;
     border-radius: 35px;
     /* border-color: gray; */
-    border: 2px solid lightgrey;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+
+    color: white;
 }
 
-
+.loginIcons:hover{
+    box-shadow: 0 0 10px rgb(255, 255, 255); 
+}
 
 
 .menuItem{
@@ -102,8 +111,18 @@
 }
 
 .imgHomeNav {
-    height: 9.5em;
+    height: 7.5em;
+    position: relative;
+    top: 9px;
+    border-radius: 4em 0em 4em 0em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: transform 2.3s ease;
 }
+
+.imgHomeNav:hover {
+    transform: rotateY(180deg);
+}
+
 
 .hidden {
     display: none;

@@ -31,11 +31,13 @@ const SpotTile = ({ spot, showButtons = false, isOwner}) => {
 
     <>
 
-      <div className="spot-tile" onClick={() => nav(`/spots/${spot.id}`)}>
+      <div  onClick={() => nav(`/spots/${spot.id}`)}>
         <img className={spotTileStyle.imgTile} src={spot.previewImage} alt={spot.name} title={spot.name} />
-        <div className="spot-details">
+        <div >
           <p>{spot.city}, {spot.state}</p>
-          <p>{formattedPrice}/night</p>
+          <p className={spotTileStyle.price}>
+           <span style={{ fontWeight: 550 }}>{formattedPrice} </span>night
+        </p>
 
         </div>
       </div>

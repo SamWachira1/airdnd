@@ -38,7 +38,7 @@ function LandingPage(){
 
                     {spot.avgRating && (
             
-                             <div>
+                             <div className={spotTileStyle.rating}>
                                  <IoStar size={19} color="gold" />
                                  <span>{parseFloat(spot.avgRating).toFixed(2)}</span>
                              </div>

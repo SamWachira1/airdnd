@@ -1,53 +1,44 @@
-
 .spotTileContainer {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 
 }
 
-.imgTile{
+.imgTile {
     height: 10em;
-    width: 361px;
+    width: 406px;
     border-radius: 2em 2em 0em 0em;
     position: relative;
     top: 2px;
     left: 2px;
- 
+
 }
+
+
 
 .spotTile{
     width: 23em;
     height: 18em;
-    box-sizing: border-box;
-    border: 2px solid gray;
+    box-shadow: 0 0 10px rgb(50 50 50 / 35%);
     border-radius: 36px;
-    /* border-color: black; */
-    /* padding-bottom: 4px; */
     margin: 10px;
     margin-bottom: 21px;
     cursor: pointer;
+    transition: box-shadow 0.25s ease;
 }
 
-.spot-tile img:hover {
-    /* Styles for the tooltip on hover */
-    /* For example, you can define the appearance of the tooltip text */
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    /* Adjust the positioning of the tooltip relative to the spot tile */
-    /* For example, you can use the 'top' and 'left' properties */
-    top: -30px; /* Adjust as needed */
-    left: 0; /* Adjust as needed */
-  }
 
-  .updateButtonContainer{
+.spotTile:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+}
+
+
+.updateButtonContainer {
     width: 24%;
     height: 2em;
- }
+}
 
- .buttonUpdate {
+.buttonUpdate {
     background-color: #4e4e4e;
     color: white;
     border: none;
@@ -59,10 +50,10 @@
     cursor: pointer;
     box-shadow: 0 5px 6px rgba(0, 0, 0, 15.2);
     transition: box-shadow 0.3s ease;
- }
+}
 
 
- .buttonDelete {
+.buttonDelete {
     background-color: #4e4e4e;
     color: white;
     border: none;
@@ -77,27 +68,43 @@
     position: relative;
     bottom: 2em;
     left: 8em;
- }
+}
 
- .buttonUpdate:hover {
+.buttonUpdate:hover {
     /* Increase shadow on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow to bottom */
-  }
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Add shadow to bottom */
+}
+
+.rating {
+    position: relative;
+    bottom: 45px;
+    left: 85%;
+    width: 18%;
+}
+
+.price{
+    position: relative;
+    top: 12px;
+}
+
+
+
 
 @media screen and (min-width: 480px) {
     .spot-tile {
-        width: 50%; 
+        width: 50%;
     }
 }
 
 @media screen and (min-width: 768px) {
     .spot-tile {
-        width: 33.33%; 
+        width: 33.33%;
     }
 }
 
 @media screen and (min-width: 1024px) {
     .spot-tile {
-        width: 25%; 
+        width: 25%;
     }
 }

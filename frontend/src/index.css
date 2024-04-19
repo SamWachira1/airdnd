@@ -12,6 +12,7 @@ body {
     font-size: 16px;
     background-color: #FBFBFB;
     margin: 0 auto;
+    font-size: 18px;
 }
 
 h1, h2 {
@@ -40,4 +41,13 @@ button, input[type="submit"], input[type="reset"] {
 
 textarea {
     font-family: inherit;
+}
+
+
+
+.montserrat-font{
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
