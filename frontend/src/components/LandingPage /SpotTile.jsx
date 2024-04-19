@@ -35,7 +35,7 @@ const SpotTile = ({ spot, showButtons = false, isOwner}) => {
         <img className={spotTileStyle.imgTile} src={spot.previewImage} alt={spot.name} title={spot.name} />
         <div className="spot-details">
           <p>{spot.city}, {spot.state}</p>
-          <p>Price: {formattedPrice} per night</p>
+          <p>{formattedPrice}/night</p>
 
         </div>
       </div>

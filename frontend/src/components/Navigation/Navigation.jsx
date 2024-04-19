@@ -26,8 +26,11 @@ const Navigation = ({ isLoaded }) => {
             
          
 
+                <div className={stylesNavigation.container} >
+
                 {userLoggedIn && (
-                  
+                   
+                   
 
                     <li className={stylesNavigation.list}>
                         <NavLink className={stylesNavigation.link} to="/spots/new">Create a New Spot</NavLink>
@@ -44,6 +47,8 @@ const Navigation = ({ isLoaded }) => {
                         
                 
                 )}
+                    
+                </div>
          
           </ul>
 

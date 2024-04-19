@@ -1,11 +1,6 @@
-/* .mainContainer {
-    position: relative;
-    left: 52em;
-    top: 2em;
-    height: 4em;
-    width: 103px;
-    background-color: #FBFBFB;
-} */
+.container {
+  display: flex;
+}
 
 .profileButtonContainer {
     display: flex;
@@ -14,11 +9,12 @@
    
 }
 
-.homeLinkContainer{
+.homeLinkContainer {
     position: relative;
     display: flex;
-    height: 131px;
+    height: 155px; /* Adjust height as needed */
     flex-direction: row;
+    padding: 0 20px; /* Add padding to the sides */
     justify-content: space-between;
 }
 
@@ -40,24 +36,24 @@
 
 .list {
     display: flex;
-    /* border: 2px solid black; */
-    /* margin-left: 80em; */
-    box-sizing: border-box;
-    margin-top: 41px;
+    margin-top: -1em;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
 
 }
 
 .link{
-    position: relative;
-    left: 43em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto; /* Move Create a New Spot link to the right */
+    padding-right: 20px; /* Add padding to the right */
 }
 
 .profileDropdown {
     position: absolute;
-    top: 5em;
-    right: 0px;
+    top: 6em;
+    right: 2em;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -74,14 +70,14 @@
 
 .loginIcons {
        /* width: 94%; */
-       position: relative;
-       top: 16px;
-       width: 9em;
-       height: 5em;
-       border-radius: 35px;
-       border-color: lightgrey;
-       background: white;
-       outline: none;
+         /* width: 94%; */
+    position: relative;
+    top: 16px;
+    width: 9em;
+    height: 5em;
+    border-radius: 35px;
+    /* border-color: gray; */
+    border: 2px solid lightgrey;
 }
 
 
