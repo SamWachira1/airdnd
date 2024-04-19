@@ -12,25 +12,31 @@ const LoginFormModal = () => {
   const dispatch = useDispatch()
   const { closeModal } = useModal();
   const [submitted, setSubmitted] = useState(false)
+  const disabled = credential.length < 4 || password.length < 6;
+
 
 
   useEffect(() => {
     if (submitted) {
       const newErrors = {};
-      if (credential.length < 4) {
+      if (credential === ""){
+        newErrors.credential = "Please provide username or email"
+      }
+
+      if (credential.length < 4 ) {
         newErrors.credential = "Username or email must be at least 4 characters long";
       }
-      if (password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters long";
-      }
+
+
+
       setErrors(newErrors);
     }
-  }, [credential, password, submitted]);
+  }, [credential, submitted]);
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
+
     setSubmitted(true)
 
     const user = { credential, password }
@@ -69,7 +75,7 @@ const LoginFormModal = () => {
       <div className={styles.container}>
         <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
-          {errors.credential && submitted && <p>{errors.credential}</p>}
+          { submitted && errors.credential && <p className={styles.errors}>{errors.credential}</p>}
           <label>
 
             <input
@@ -80,6 +86,7 @@ const LoginFormModal = () => {
               placeholder="Username or Email"
             />
           </label>
+ 
           <label>
 
             <input
@@ -92,9 +99,9 @@ const LoginFormModal = () => {
             />
           </label>
 
-          <button disabled={submitted && Object.values(errors).length > 0} className={styles.buttonLoginForm} type="submit">Log In</button>
+          <button disabled={disabled} className={styles.buttonLoginForm} type="submit">Log In</button>
           <button
-            className={styles.buttonLoginForm}
+            className={styles.demoButton}
             onClick={handleDemoUser}
           >
             Demo Login

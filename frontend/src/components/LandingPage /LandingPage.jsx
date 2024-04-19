@@ -27,7 +27,7 @@ function LandingPage(){
 
     return (
         <>
-        <h1>Welcome!</h1>
+        <h1 className={spotTileStyle.h1}>Welcome!</h1>
         <h2>Spots</h2>
         <ul className={spotTileStyle.spotTileContainer}>    
             {spots.map((spot) => (

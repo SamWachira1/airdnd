@@ -14,7 +14,11 @@
 
 }
 
-
+.h1 {
+    text-align: center;
+    border-top: 2px solid lightblue;
+    padding-top: 12px;
+}
 
 .spotTile{
     width: 23em;
@@ -30,6 +34,8 @@
 
 .spotTile:hover {
     box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-5px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
 }
 
 
