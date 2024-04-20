@@ -106,12 +106,30 @@
     flex-direction: column;
     flex-wrap: nowrap;
     align-content: stretch;
-    justify-content: flex-end
+    justify-content: flex-end;
+    border-radius: 6px;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
-.button li {
-    text-decoration: none;
+.buttonPostReview {
+     text-decoration: none;
+    margin-top: 12px;
+    padding: 6px;
+    /* border: 2px solid gray; */
+    border-radius: 4px;
+    height: 3em;
+    background-color: #080849;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 11.2);
+    color: white;
+    position: relative;
 }
+
+.buttonPostReview:hover{
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-5px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+}
+
 
 .modalContainer {
     width: 29em;
@@ -151,12 +169,12 @@
 
 
 .ratingContainer {
-       box-sizing: border-box;
-    width: 42%;
+    box-sizing: border-box;
+    width: 44%;
     /* border: 2px solid black; */
     position: relative;
     bottom: 23px;
-    left: 13em;
+    left: 12em;
     display: flex;
     /* display: inline-block; */
     justify-content: space-evenly;
@@ -168,13 +186,14 @@
 
   .rating {
     border-bottom: 2px solid black;
+    
   }
 
   .headingBeforeReviews {
     margin-top: 1em;
     display: flex;
     flex-direction: row;
-    margin-bottom: 0em;
+    margin-bottom: 1em;
   }
 
   .deleteButton {

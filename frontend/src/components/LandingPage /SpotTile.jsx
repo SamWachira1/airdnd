@@ -31,7 +31,7 @@ const SpotTile = ({ spot, showButtons = false, isOwner}) => {
 
     <>
 
-      <div  onClick={() => nav(`/spots/${spot.id}`)}>
+      <div onClick={() => nav(`/spots/${spot.id}`)}>
         <img className={spotTileStyle.imgTile} src={spot.previewImage} alt={spot.name} title={spot.name} />
         <div >
           <p>{spot.city}, {spot.state}</p>
@@ -42,25 +42,23 @@ const SpotTile = ({ spot, showButtons = false, isOwner}) => {
         </div>
       </div>
 
-      <div>
+      <div className={spotTileStyle.spotTileContainer}>
 
         {showButtons && isOwner && (
           <div className={spotTileStyle.updateButtonContainer}>
-            <button className={spotTileStyle.buttonUpdate} onClick={handleUpdate}>Update Spot</button>
+            <button className={spotTileStyle.buttonUpdate} onClick={handleUpdate}>Update</button>
           </div>
 
         )}
 
-      </div>
 
 
-      <div>
         {showButtons && isOwner && (
-          <ul className={spotTileStyle.updateButtonContainer}>
+          <ul className={spotTileStyle.deleteButtonContainer}>
             {/* Use OpenModalDelete component to open the confirmation modal */}
             <OpenModalDelete 
               modalComponent={<ConfirmationModal spot={spot} />} // Pass the confirmation modal component
-              itemText="Delete Spot" // Text of the menu item that opens the modal
+              itemText="Delete" // Text of the menu item that opens the modal
             />
           </ul>
         )}

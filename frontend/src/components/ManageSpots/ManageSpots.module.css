@@ -2,25 +2,32 @@
 
 .spotTileContainer {
     display: flex;
-    flex-wrap: wrap; 
-
+    flex-wrap: wrap;
+    margin-left: 1em;
 }
 
 .imgTile{
-    height: 14em;
-    width: 421px;
+    height: 10em;
+    width: 404px;
+    border-radius: 2em 2em 0em 0em;
+    position: relative;
+    top: 2px;
+    left: 2px;
 }
 
 .spotTile{
-    width: 27em;
-    height: 24em;
+    width: 22em;
+    height: 21em;
     box-sizing: border-box;
-    border: 2px solid black;
+    /* border: 2px solid black; */
+    border-radius: 3em 2em 0em 0em;
     padding: 3px;
     /* padding-bottom: 4px; */
     margin: 10px;
     margin-bottom: 21px;
     cursor: pointer;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 1.2);
+
 }
 
 .spot-tile img:hover {
@@ -40,11 +47,38 @@
 
   .ratings{
     position: relative;
-    bottom: 9em;
-    left: 22em;
+    bottom: 6em;
+    left: 18em;
     width: 4em;
   }
 
+  .h1 {
+    position: relative;
+
+    font-weight: 400;
+    margin-top: 1em;
+    margin-left: 1em;
+  }
+
+  .createButtonSpot {
+    border: 2px solid gray;
+    margin-top: 1em;
+    margin-left: 2em;
+    height: 3em;
+    border-radius: 7px;
+    width: 11em;
+    color: white;
+    background-color: #080849;
+    box-shadow: 0 0 10px rgb(50 50 50 / 83%);
+  }
+
+  .createButtonSpot:hover{
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+  }
+
+  
 
 
 @media screen and (min-width: 480px) {

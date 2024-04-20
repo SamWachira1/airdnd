@@ -64,7 +64,7 @@ function SpotDetail() {
     const userHasReviewed = reviews.some(review => review.userId === sessionUser?.id);
 
 
-  
+
 
 
     let hasImages = false;
@@ -134,22 +134,42 @@ function SpotDetail() {
                 <div >
                     <div className={SpotDetailsStyles.headingBeforeReviews}>
                         <IoStar size={24} color="gold" />
-
-                        {avgRating !== 'New' && reviewCountText && (
-                            <p>Average Rating: {avgRating} · {reviewCountText}</p>
+                        {avgRating !== 'New' && reviewCountText ? (
+                            <p>{avgRating} · {reviewCountText}</p>
+                        ) : (
+                            <p>New</p>
                         )}
                     </div>
+                </div>
+                
+                <div>
+                    {!userIsOwner && userLoggedIn && !userHasReviewed && (
+
+                        <>
+                            <button className={SpotDetailsStyles.buttonPostReview}>
+                                <ul>
+                                    <OpenModalReview className={SpotDetailsStyles.modalContainer}
+                                        modalComponent={<PostReviewModel spot={spot} />}
+                                        itemText="Post Your Review" />
+
+                                </ul>
+
+                            </button>
+                        </>
+
+
+                    )}
                 </div>
 
                 <div className="reviews">
                     {sortedReviews.map((review, index) => (
-                       
+
                         <div key={index} className={SpotDetailsStyles.reviews}>
-                            <p style={{fontWeight: 550}}>{review.firstName}</p>
-                            <p style={{fontWeight: 500, color: "grey"}}>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })} </p>
+                            <p style={{ fontWeight: 550 }}>{review.firstName}</p>
+                            <p style={{ fontWeight: 500, color: "grey" }}>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })} </p>
                             <p>{review.review}</p>
                             <div >
-                                <IoStar size={20} color="gold"/>
+                                <IoStar size={20} color="gold" />
                                 <span>{review.stars}</span>
                             </div>
 
@@ -181,24 +201,7 @@ function SpotDetail() {
 
 
 
-                <div>
-                    {!userIsOwner && userLoggedIn && !userHasReviewed && (
-
-                        <>
-                            <button className={SpotDetailsStyles.button}>
-                                <ul>
-                                    <OpenModalReview className={SpotDetailsStyles.modalContainer}
-                                        modalComponent={<PostReviewModel spot={spot} />}
-                                        itemText="Post Your Review" />
-
-                                </ul>
-
-                            </button>
-                        </>
-
-
-                    )}
-                </div>
+                
 
 
 

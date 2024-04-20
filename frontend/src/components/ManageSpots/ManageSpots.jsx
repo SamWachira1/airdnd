@@ -47,8 +47,8 @@ const ManageSpots = () => {
 
     return (
         <>
-            <h1>Manage Your Spots</h1>
-            <button onClick={() => nav('/spots/new')}>Create a New Spot</button>
+            <h1 className={StylesManageSpots.h1} >Manage Your Spots</h1>
+            <button className={StylesManageSpots.createButtonSpot}onClick={() => nav('/spots/new')}>Create a New Spot</button>
 
             <ul className={StylesManageSpots.spotTileContainer}>
                 {userSpots.map((spot) => (
