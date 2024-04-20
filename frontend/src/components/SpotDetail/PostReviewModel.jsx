@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useModal } from '../../context/Modal';
 import { createReviewThunk } from "../../store/review";
 import SpotDetailsStyles from './SpotDetail.module.css'
@@ -14,6 +14,9 @@ const ReviewFormModel = ({spot})=> {
     const { closeModal } = useModal();
     const [submitted, setSubmitted] = useState(false)
     const dispatch = useDispatch()
+    const user = useSelector(state => Object.values(state.session))
+
+    // console.log('Line 19',user)
 
 
 
@@ -43,7 +46,7 @@ const ReviewFormModel = ({spot})=> {
 
         if(Object.keys(errors).length === 0){
           let newReview = {review, stars}
-            return dispatch(createReviewThunk(spot, newReview))
+            return dispatch(createReviewThunk(spot, newReview, user))
                 .then(closeModal)
                 .catch(
                     async (res) => {

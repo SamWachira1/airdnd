@@ -15,7 +15,11 @@ body {
     font-size: 18px;
 }
 
-h1, h2 {
+h1 {
+    color:  #080849;
+}
+
+ h2{
   color:  #656d79;
 }
 

@@ -1,11 +1,17 @@
-
-
-.spotName {
-    color:  #20886f;
+.mainContainer {
+    width: 1000px;
+    margin: 0 auto;
 }
 
+.spotName {
+    color:  #080849;
+    margin-top: 1em;
+    margin-bottom: 12px;
+}
+
+
+
 .spotDetailImages{
-    border: 2px solid black;
     display: flex;
     flex-wrap: wrap;
     max-width: 1000px;
@@ -13,15 +19,16 @@
 }
 
 .largeImages {
-    flex: 0 0 42%; /* Large image takes up 50% of the container */
-    max-width: 40%; /* Set maximum width to 50% */
+    flex: 0 0 50%; /* Large image takes up 50% of the container */
+    max-width: 50%; /* Set maximum width to 50% */
     padding: 3px;
 }
 
 .smallImages {
+     flex: 0 0 50%; /* Small images container takes up 50% of the container */
+    max-width: 50%; /* Set maximum width to 50% */
     display: flex;
     flex-wrap: wrap;
-    flex: 1;
     padding: 1px;
 }
 
@@ -32,41 +39,74 @@
 }
 
 .img{
-    padding: 2px;
+    max-width: 49.5%;
+    margin-bottom: 1px;
+    padding: 4px;
 }
 
 .hostInfoCallOutContainer{
     display: flex;
     /* border: 2px solid black; */
     padding: 5px;
+    border-bottom: 2px solid black;
+    padding: 21px;
 
+}
+
+.hostTitle{
+
+    font-size: 24px;
+    margin-right: 2em;
+    margin-bottom: 1em;
+    font-weight: 500;
+}
+.hostName {
+    font-size: 18px;
+}
+
+.firstName {
+    font-weight: 400;
 }
 
 .callout {
-    height: 11em;
-    border: 2px solid black;
+    height: 9em;
+    /* border: 5px solid lightgray; */
     display: flex;
     justify-self: end;
     flex-direction: column;
-    width: 22%;
+    width: 67%;
     border-radius: 1em;
     padding: 23px;
+    box-shadow: 0 0 10px rgb(50 50 50 / 83%);
 }
 
+
+.price{
+    font-weight: 550;
+  }
+
+
 .hostInfo{
-    border: 2px solid black;
     width: 48em;
     border-radius: 7px;
     display: flex;
     padding: 5px;
     margin-right: 1em;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
 }
 
 
 .reviews {
-    border: 2px solid black;
-    margin-bottom: 2em;
-    height: 12em;
+    margin-bottom: 1em;
+    height: 7em;
+    padding: 1px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    justify-content: flex-end
 }
 
 .button li {
@@ -86,4 +126,141 @@
 
 .errors {
     color: red ;
+}
+
+.location {
+    margin-bottom: 1em;
+}
+
+.reserverButton{
+    border-radius: 7px;
+    position: relative;
+    width: 21em;
+    height: 48px;
+    background-color: red;
+    box-shadow: 0 0 10px rgb(50 50 50 / 83%);
+    color: white;
+    font-weight: 400;
+}
+
+.reserverButton:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+}
+
+
+.ratingContainer {
+       box-sizing: border-box;
+    width: 42%;
+    /* border: 2px solid black; */
+    position: relative;
+    bottom: 23px;
+    left: 13em;
+    display: flex;
+    /* display: inline-block; */
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    align-items: stretch;
+  }
+
+  .rating {
+    border-bottom: 2px solid black;
+  }
+
+  .headingBeforeReviews {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0em;
+  }
+
+  .deleteButton {
+       /* border: 2px solid grey; */
+       border-radius: 0px;
+       width: 14%;
+       height: 2em;
+       padding: 3px;
+       background-color: lightgrey;
+       box-shadow: 0 0 10px rgb(50 50 50 / 50%);
+
+  }
+
+  .deleteButton:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+    background-color: darkgrey;
+    color: white;
+  }
+
+
+  .confirmationModal {
+    width: 28em;
+    height: 15em;
+    border: 2px solid black;
+    padding: 0;
+    margin: 0 auto;
+    /* margin: 0 auto; */
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+   
+  }
+
+  .confirmDeleteHeader{
+    position: relative;
+    display: flex;
+    /* left: 1em; */
+    justify-content: space-around;
+    flex-direction: row;
+    padding: 3px;
+    margin-top: 17px;
+    color: #080849;
+  }
+
+  .confirmDeleteText {
+    padding-left: 23px;
+    height: 3em;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+  }
+
+  .deleteButtonReview{
+         border-radius: 8px;
+         width: 44%;
+         height: 4em;
+         padding: 3px;
+         background-color: red;
+         color: white;
+         box-shadow: 0 0 28px rgb(50 50 50 / 50%);
+  }
+
+.deleteButtonReview:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+ 
+}
+
+.cancelButtonReview {
+    box-shadow: 0 0 3px rgba(50, 50, 50, 5.9);
+    height: 4em;
+    background-color: darkgrey;
+    color: white;
+    border-radius: 6px;
+    width: 11em;
+}
+
+.cancelButtonReview:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
 }

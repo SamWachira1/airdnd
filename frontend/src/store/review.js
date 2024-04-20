@@ -8,28 +8,31 @@ const DELETE_REVIEW = 'review/DELETE_REVIEW'
 
 
 
-export const loadReviews= (reviews)=> {
+export const loadReviews = (reviews) => {
     return {
         type: LOAD_REVIEWS,
-        payload: reviews 
+        payload: reviews
     }
 }
 
-export const loadReview = (review)=> {
+export const loadReview = (review) => {
     return {
         type: LOAD_REVIEW,
-        payload: review 
+        payload: review
     }
 }
 
-export const createReview = (review)=> {
+export const createReview = (review, user) => {
     return {
         type: POST_REVIEW,
-        payload: review 
+        payload: {
+            review,
+            user
+        }
     }
 }
 
-export const deleteReview = (reviewId)=> {
+export const deleteReview = (reviewId) => {
     return {
         type: DELETE_REVIEW,
         reviewId
@@ -39,16 +42,16 @@ export const deleteReview = (reviewId)=> {
 
 
 
-export const getSpotReviewsThunk = (spotId) => async (dispatch)=> {
+export const getSpotReviewsThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
     const data = await response.json()
     dispatch(loadReviews(data.Reviews))
     return data
 }
 
-export const createReviewThunk = (spot, review)=> async (dispatch)=>{
+export const createReviewThunk = (spot, review, user) => async (dispatch) => {
 
-    try{
+    try {
         const reviewResponse = await csrfFetch(`/api/spots/${spot.id}/reviews`, {
             method: "POST",
             headers: {
@@ -57,61 +60,78 @@ export const createReviewThunk = (spot, review)=> async (dispatch)=>{
             body: JSON.stringify(review)
         })
 
-        if (reviewResponse.ok){
+        if (reviewResponse.ok) {
             const reviewData = await reviewResponse.json()
-            dispatch(createReview(reviewData))
+            dispatch(createReview(reviewData, user))
             return reviewData
         }
 
-    }catch(e){
+    } catch (e) {
         console.log(e)
-      
+
     }
 
 }
 
-export const deleteReviewThunk = (reviewId) => async(dispatch)=>{
-    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
-        method: "DELETE"
-    })
+export const deleteReviewThunk = (reviewId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+            method: "DELETE"
+        });
 
-    if(response.ok){
-        dispatch(deleteReview(reviewId))
+        if (response.ok) {
+            await response.json(); // No need to store response data if not using it
+            dispatch(deleteReview(reviewId));
+            return { success: true };
+        } else {
+            const errorData = await response.json(); // Get error data from response body
+            return { error: errorData.message || 'Failed to delete review' };
+        }
+    } catch (error) {
+        console.error('Error deleting review:', error);
+        return { error: 'An error occurred while deleting review' };
     }
 }
+
 
 
 
 
 const initialState = {}
-const reviewReducer = (state = initialState, action)=>{
-    switch(action.type){
+const reviewReducer = (state = initialState, action) => {
+    switch (action.type) {
         case LOAD_REVIEWS: {
-            let newState = {}
+            const newState = {}
             action.payload.forEach(review => {
-                newState[review.id] = review 
-            })
 
+                 const { User, ...reviewData } = review; // Destructure User information from review
+                 newState[reviewData.id] = { ...User, ...reviewData, }; // Spread User information along with other review properties
+            })
             return newState
         }
 
         case LOAD_REVIEW: {
-            return {...state, [action.payload.id]: action.payload}
+            return { ...state, [action.payload.id]: action.payload }
         }
 
         case POST_REVIEW: {
-            return {...state, [action.payload.id]: action.payload}
+            const { review } = action.payload;
+            const {firstName} = action.payload.user[0] 
+
+            return {...state, [review.id]: {firstName, ...review}}
+
+
         }
 
         case DELETE_REVIEW: {
-            const newState = {...state}
+            const newState = { ...state }
             delete newState[action.reviewId]
             return newState
         }
 
-       
-        default: 
-            return state 
+
+        default:
+            return state
     }
 }
 

@@ -2,6 +2,7 @@
 import { useDispatch } from 'react-redux';
 import { deleteReviewThunk } from '../../store/review';
 import { useModal } from '../../context/Modal';
+import SpotDetailStyles from './SpotDetail.module.css'
 
 
 
@@ -10,14 +11,14 @@ const ConfirmationModalDelete = ({review})=> {
     const dispatch = useDispatch()
     const { closeModal } = useModal();
 
-
-
-    const handleDelete = async(e) => {
-        // Call the onDeleteReview function to delete the review
-     e.preventDefault()
+ 
+    const handleDelete = async() => {    
         try {
+           
             await dispatch(deleteReviewThunk(review.id))
-            closeModal()
+            .then(()=> closeModal())
+
+
         }catch(e){
             console.error('Error deleting review', e)
         }
@@ -30,12 +31,12 @@ const ConfirmationModalDelete = ({review})=> {
     };
 
     return (
-        <div className="confirmation-modal">
-            <h2>Confirm Delete</h2>
-            <p>Are you sure you want to delete this review?</p>
-            <div className="button-container">
-                <button className="delete-button" onClick={handleDelete}>Yes (Delete Review)</button>
-                <button className="keep-button"onClick={onCancel}>No (Keep Review)</button>
+        <div className={SpotDetailStyles.confirmationModal}>
+            <h2 className={SpotDetailStyles.confirmDeleteHeader}>Confirm Delete</h2>
+            <p className={SpotDetailStyles.confirmDeleteText}>Are you sure you want to delete this review?</p>
+            <div className={SpotDetailStyles.buttonContainer}>
+                <button className={SpotDetailStyles.deleteButtonReview} onClick={handleDelete}>Yes (Delete Review)</button>
+                <button className={SpotDetailStyles.cancelButtonReview }onClick={onCancel}>No (Keep Review)</button>
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 .container {
-    max-width: 400px;
+    width: 31em;
+    height: 42em;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -23,15 +24,16 @@
   .buttonSignUpForm {
     width: 100%;
     padding: 10px;
+    color: white;
+    box-shadow: 0 0 10px rgb(50 50 50 / 35%);
     background-color: #080849;
-    color: #fff;
-    border: none;
     border-radius: 3px;
     cursor: pointer;
   }
 
   .buttonSignUpForm:disabled {
-    background-color: #ccc;
+    background-color: lightgrey;
+    opacity: 15.7;
     cursor: not-allowed;
   }
   

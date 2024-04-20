@@ -6,13 +6,14 @@
 
 .imgTile {
     height: 10em;
-    width: 406px;
+    width: 391px;
     border-radius: 2em 2em 0em 0em;
     position: relative;
     top: 2px;
     left: 2px;
-
 }
+
+
 
 .h1 {
     text-align: center;
@@ -21,7 +22,7 @@
 }
 
 .spotTile{
-    width: 23em;
+    width: 22em;
     height: 18em;
     box-shadow: 0 0 10px rgb(50 50 50 / 35%);
     border-radius: 36px;

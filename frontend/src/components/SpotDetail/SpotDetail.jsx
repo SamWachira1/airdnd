@@ -22,6 +22,8 @@ function SpotDetail() {
 
 
 
+
+
     useEffect(() => {
         dispatch(getSpotsByIdThunk(Number(spotId)))
         dispatch(getSpotReviewsThunk(Number(spotId)))
@@ -61,9 +63,8 @@ function SpotDetail() {
     const userLoggedIn = !!sessionUser;
     const userHasReviewed = reviews.some(review => review.userId === sessionUser?.id);
 
-    const userOwnerReview = reviews.find(review => review.userId === sessionUser?.id)
-    
-    
+
+  
 
 
     let hasImages = false;
@@ -89,9 +90,9 @@ function SpotDetail() {
 
 
     return (
-        <div>
+        <div className={SpotDetailsStyles.mainContainer}>
             <h1 className={SpotDetailsStyles.spotName}>{spot.name}</h1>
-            <p className="location">Location: {spot.city}, {spot.state}, {spot.country}</p>
+            <p className={SpotDetailsStyles.location}>Location: {spot.city}, {spot.state}, {spot.country}</p>
 
 
             <div className={SpotDetailsStyles.spotDetailImages}>
@@ -106,21 +107,23 @@ function SpotDetail() {
             <section className={SpotDetailsStyles.hostInfoCallOutContainer}>
 
                 <div className={SpotDetailsStyles.hostInfo}>
-                    <p>Hosted by <span className="host-name">{firstName} {lastName}</span></p>
+                    <p className={SpotDetailsStyles.hostTitle}>Hosted by <span className={SpotDetailsStyles.hostName}>{firstName} {lastName}</span></p>
                     <p>{spot.description}</p>
                 </div>
 
 
                 <div className={SpotDetailsStyles.callout}>
-                    <p>Price: ${spot.price} per night</p>
-                    <div>
+                    <span>
+                        <span className={SpotDetailsStyles.price}>${spot.price}</span> night
+                    </span>
+                    <div className={SpotDetailsStyles.ratingContainer}>
                         <IoStar size={19} color="gold" />
                         {avgRating && (
-                            <p>Average Rating: {avgRating} {reviewCountText && `· ${reviewCountText}`}</p>
+                            <p >{avgRating} {reviewCountText && `· ${reviewCountText}`}</p>
                         )}
 
                     </div>
-                    <button className="reserve-button" onClick={() => alert("Feature coming soon")}>Reserve</button>
+                    <button className={SpotDetailsStyles.reserverButton} onClick={() => alert("Feature coming soon")}>Reserve</button>
 
                 </div>
 
@@ -128,9 +131,9 @@ function SpotDetail() {
 
             <section>
 
-                <div className="heading-before-reviews">
-                    <div>
-                        <IoStar size={19} color="gold" />
+                <div >
+                    <div className={SpotDetailsStyles.headingBeforeReviews}>
+                        <IoStar size={24} color="gold" />
 
                         {avgRating !== 'New' && reviewCountText && (
                             <p>Average Rating: {avgRating} · {reviewCountText}</p>
@@ -139,14 +142,14 @@ function SpotDetail() {
                 </div>
 
                 <div className="reviews">
-                    <h2>Reviews</h2>
                     {sortedReviews.map((review, index) => (
+                       
                         <div key={index} className={SpotDetailsStyles.reviews}>
-                            <p>{review.firstName}</p>
-                            <p>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</p>
+                            <p style={{fontWeight: 550}}>{review.firstName}</p>
+                            <p style={{fontWeight: 500, color: "grey"}}>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })} </p>
                             <p>{review.review}</p>
-                            <div>
-                                <IoStar size={19} color="gold" />
+                            <div >
+                                <IoStar size={20} color="gold"/>
                                 <span>{review.stars}</span>
                             </div>
 
@@ -154,16 +157,16 @@ function SpotDetail() {
                             {userLoggedIn && sessionUser.id === review.userId && (
                                 <>
 
-                                <button className="delete-button">
-                                    <ul>
-                                        <OpenModalDelete
-                                            modalComponent={<ConfirmationModalDelete review={userOwnerReview} />}
-                                            itemText="Delete Review" 
-                                        />
+                                    <button className={SpotDetailsStyles.deleteButton}>
+                                        <ul>
+                                            <OpenModalDelete
+                                                modalComponent={<ConfirmationModalDelete review={review} />}
+                                                itemText="Delete Review"
+                                            />
 
-                                    </ul>
-                                    
-                                </button>
+                                        </ul>
+
+                                    </button>
 
                                 </>
                             )}

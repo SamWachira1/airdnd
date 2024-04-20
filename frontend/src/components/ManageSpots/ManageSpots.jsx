@@ -31,7 +31,7 @@ const ManageSpots = () => {
 
     const userSpots = spots.filter(spot => spot.ownerId === currentUser.id);
 
-    console.log(userSpots)
+  
 
 
     if (!userSpots){
