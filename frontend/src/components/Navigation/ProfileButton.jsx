@@ -8,11 +8,12 @@ import styles from './Navigation.module.css';
 import LoginFormModal from "../ LoginFormModal/LoginFormModal"
 import SignupFormModal from "../SignUpFormModal/SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
-import { NavLink } from 'react-router-dom';
-
+import { NavLink} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const ProfileButton = ({ user }) => {
     const dispatch = useDispatch()
+    const nav = useNavigate()
     const [showMenu, setShowMenu] = useState(false)
     const ulRef = useRef();
 
@@ -41,6 +42,8 @@ const ProfileButton = ({ user }) => {
         e.preventDefault()
         dispatch(logoutThunk())
         closeMenu()
+
+       nav('/')
     }
 
 
@@ -57,22 +60,22 @@ const ProfileButton = ({ user }) => {
             <ul className={showMenu ? styles.profileDropdown : styles.hidden} ref={ulRef}>
                 {user ? (
                     <>
-                        <div className={styles.menuItem}>
+                        <div className={styles.menuItem1}>
                         <li>Hello, {user.firstName}</li>
                         </div>
 
-                        <div className={styles.menuItem}>
+                        <div className={styles.menuItem2}>
                             <li>{user.email}</li>
                         </div>
 
-                        <div className={styles.menuItem}>
+                        <div className={styles.menuItem3}>
                             <li>
-                                <NavLink className={styles.noUnderline} to={'/spots/current'}>Manage Spots</NavLink>
+                                <NavLink className={styles.manageSpotTitle} to={'/spots/current'}>Manage Spots</NavLink>
                            </li>
                         </div>
 
-                        <li>
-                            <button onClick={handleLogout}>Log Out</button>
+                        <li >
+                            <button className={styles.buttonContainer}  onClick={handleLogout}>Log Out</button>
                         </li>
                     </>
                 ) : (

@@ -114,7 +114,7 @@ function SpotDetail() {
 
                 <div className={SpotDetailsStyles.callout}>
                     <span>
-                        <span className={SpotDetailsStyles.price}>${spot.price}</span> night
+                        <span className={SpotDetailsStyles.price}>${spot.price.toFixed(2)}</span> night
                     </span>
                     <div className={SpotDetailsStyles.ratingContainer}>
                         <IoStar size={19} color="gold" />

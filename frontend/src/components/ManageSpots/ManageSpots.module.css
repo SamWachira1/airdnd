@@ -9,12 +9,12 @@
 }
 
 .imgTile{
-    height: 10em;
-    width: 404px;
-    border-radius: 2em 2em 0em 0em;
-    position: relative;
-    top: 2px;
-    left: 2px;
+  height: 11em;
+  width: 395px;
+  border-radius: 3em 2em 0em 0em;
+  position: relative;
+  top: -3px;
+  left: -1px;
 }
 
 .spotTile{

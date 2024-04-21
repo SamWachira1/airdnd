@@ -10,6 +10,7 @@ import IoStar from "../StarIcons";
 const ManageSpots = () => {
     const nav = useNavigate()
     const dispatch = useDispatch()
+
     const spots = useSelector(state => Object.values(state.spots))
     const currentUser = useSelector(state => state.session.user);
 
@@ -20,6 +21,8 @@ const ManageSpots = () => {
             dispatch(getCurrentSpotUser())
         }
     }, [dispatch, currentUser])
+
+
 
 
     if (!spots || !currentUser) {
