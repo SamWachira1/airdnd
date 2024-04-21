@@ -33,7 +33,7 @@ function LandingPage() {
             <h2 className={spotTileStyle.h2}>Spots</h2>
             <ul className={spotTileStyle.spotTileContainer}>
                 {spots.map((spot) => (
-                     <NavLink to={`/spots/${spot.id}`}>
+                     <NavLink key={spot.id} to={`/spots/${spot.id}`}>
                     <li className={spotTileStyle.spotTile} key={spot.id}>
 
                         <SpotTile key={spot.id} spot={spot} />
