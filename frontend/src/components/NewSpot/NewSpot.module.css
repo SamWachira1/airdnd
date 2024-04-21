@@ -4,15 +4,88 @@
     color: red;
 }
 
-.mainSectionContainer {
-    box-sizing: border-box;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
 .imagesUrl {
-    border: 2px solid black;
-    width: 33em;
+    width: 40em;
+    border-bottom: 2px solid gray;
+    padding-bottom: 1em;
+}
+
+.header {
+    width: 33%;
+    margin: 0 auto;
+}
+
+.h1 {
+    font-weight: 400;
+    margin-top: 1em;
+
+}
+
+
+.h2 {
+    font-weight: 400;
+    margin-top: 1em;
+    color: #080849;
+    margin-bottom: 1em;
+
+}
+
+.mainSectionContainer{
+    width: 33%;
+    margin: 0 auto;
+}
+
+.cityStateContainer{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid gray;
+    margin-bottom: 1em;
+}
+
+.city {
+    width: 27em;
+}
+
+.guestDescription{
+    margin-bottom: 1em;
+    font-weight: 400;
+    color: #080849;
+
+}
+
+.textbox {
+    border-bottom: 2px solid gray;
+    padding-bottom: 2em;
+    margin-bottom: 1em;
+}
+
+.descriptionText{
+    margin-bottom: 1em;
+}
+
+.guestDescripContainer{
+    border-top: 2px solid gray;
+    padding-top: 2em;
+    margin-top: 1em;
+    border-bottom: 2px solid gray;
+    padding-bottom: 2em;
+}
+
+.submitButton{
+    margin-top: 1em;
+    border-radius: 31px solid gray;
+    height: 3em;
+    background-color: red;
+    color: white;
+    font-size: 30px;
+    border-radius: 16px;
+    box-shadow: 0 -1px 18px rgba(0, 0, 0, 0.2);
+}
+
+
+.submitButton:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-5px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
 }

@@ -3,6 +3,8 @@ import { getSpotsThunk } from "../../store/spot";
 import { useEffect } from "react";
 import SpotTile from "./SpotTile";
 import spotTileStyle from './SpotTile.module.css'
+import { NavLink } from "react-router-dom";
+
 
 import IoStar from "../StarIcons";
 
@@ -31,7 +33,7 @@ function LandingPage() {
             <h2 className={spotTileStyle.h2}>Spots</h2>
             <ul className={spotTileStyle.spotTileContainer}>
                 {spots.map((spot) => (
-
+                     <NavLink to={`/spots/${spot.id}`}>
                     <li className={spotTileStyle.spotTile} key={spot.id}>
 
                         <SpotTile key={spot.id} spot={spot} />
@@ -53,6 +55,7 @@ function LandingPage() {
             
 
                     </li>
+                 </NavLink>
 
                 ))}
             </ul>

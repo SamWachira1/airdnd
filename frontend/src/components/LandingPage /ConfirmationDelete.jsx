@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { deleteSpotThunk, getCurrentSpotUser} from '../../store/spot';
 import { useEffect } from "react";
 import { useModal } from '../../context/Modal';
+import SpotTileStyles from './SpotTile.module.css'
 
 const ConfirmationModal = ({spot}) => {
     const dispatch = useDispatch()
@@ -31,12 +32,12 @@ const ConfirmationModal = ({spot}) => {
 
 
     return (
-      <div className="confirmation-modal">
-        <h2>Confirm Delete</h2>
-        <p>Are you sure you want to remove this spot?</p>
-        <div className="button-container">
-          <button className="delete-button" onClick={handleDelete}>Yes (Delete Spot)</button>
-          <button className="cancel-button" onClick={onCancel}>No (Keep Spot)</button>
+      <div className={SpotTileStyles.confirmationModal}>
+        <h2 className={SpotTileStyles.confirmDeleteHeader}>Confirm Delete</h2>
+        <p className={SpotTileStyles.confirmDeleteText}>Are you sure you want to remove this spot?</p>
+        <div className={SpotTileStyles.buttonContainer}>
+          <button  className={SpotTileStyles.deleteButtonReview} onClick={handleDelete}>Yes (Delete Spot)</button>
+          <button  className={SpotTileStyles.cancelButtonReview}onClick={onCancel}>No (Keep Spot)</button>
         </div>
       </div>
     );

@@ -1,9 +1,11 @@
 
 
 .spotTileContainer {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 1em;
+  display: flex;
+  margin-top: 1em;
+  flex-wrap: wrap;
+  margin-left: 1em;
+  margin-top: 1em;
 }
 
 .imgTile{
@@ -47,8 +49,8 @@
 
   .ratings{
     position: relative;
-    bottom: 6em;
-    left: 18em;
+    bottom: 8em;
+    left: 19em;
     width: 4em;
   }
 

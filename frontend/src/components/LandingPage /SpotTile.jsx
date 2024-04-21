@@ -1,5 +1,4 @@
 import spotTileStyle from './SpotTile.module.css'
-
 import { useNavigate } from "react-router-dom";
 import OpenModalDelete from './OpenModelDelete';
 import ConfirmationModal from './ConfirmationDelete';
@@ -31,7 +30,7 @@ const SpotTile = ({ spot, showButtons = false, isOwner}) => {
 
     <>
 
-      <div onClick={() => nav(`/spots/${spot.id}`)}>
+      <div >
         <img className={spotTileStyle.imgTile} src={spot.previewImage} alt={spot.name} title={spot.name} />
         <div >
           <p>{spot.city}, {spot.state}</p>

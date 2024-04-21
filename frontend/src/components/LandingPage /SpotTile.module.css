@@ -1,6 +1,8 @@
 .spotTileContainer {
     display: flex;
+    margin-top: 1em;
     flex-wrap: wrap;
+    margin-left: 1em;
 
 }
 
@@ -28,13 +30,16 @@
 
 .spotTile{
     width: 22em;
-    height: 18em;
-    box-shadow: 0 0 10px rgb(50 50 50 / 35%);
-    border-radius: 36px;
+    height: 21em;
+    box-sizing: border-box;
+    /* border: 2px solid black; */
+    border-radius: 3em 2em 2em 2em;
+    padding: 3px;
+    /* padding-bottom: 4px; */
     margin: 10px;
     margin-bottom: 21px;
     cursor: pointer;
-    transition: box-shadow 0.25s ease;
+    box-shadow: 0 -1px 18px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -111,7 +116,7 @@
 
 .rating {
     position: relative;
-    bottom: 45px;
+    bottom: 64px;
     left: 83%;
     width: 18%;
 }
@@ -120,6 +125,76 @@
     position: relative;
     top: 12px;
 }
+
+.confirmationModal {
+    width: 28em;
+    height: 18em;
+    border: 2px solid black;
+    padding: 0;
+    margin: 0 auto;
+    /* margin: 0 auto; */
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+   
+  }
+
+  .confirmDeleteHeader{
+    position: relative;
+    display: flex;
+    /* left: 1em; */
+    justify-content: space-around;
+    flex-direction: row;
+    padding: 3px;
+    margin-top: 17px;
+    color: #080849;
+  }
+
+  .confirmDeleteText {
+    padding-left: 23px;
+    height: 3em;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .deleteButtonReview{
+        border-radius: 8px;
+        width: 44%;
+        height: 4em;
+        padding: 3px;
+        background-color: red;
+        color: white;
+        box-shadow: 0 0 28px rgb(50 50 50 / 50%);
+        margin-bottom: 1em;
+  }
+
+.deleteButtonReview:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+ 
+}
+
+.cancelButtonReview {
+    box-shadow: 0 0 3px rgba(50, 50, 50, 5.9);
+    height: 4em;
+    background-color: darkgrey;
+    color: white;
+    border-radius: 6px;
+    width: 12em;
+}
+
+.cancelButtonReview:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+}
+
 
 
 

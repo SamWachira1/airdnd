@@ -14,8 +14,9 @@ const ManageSpots = () => {
     const currentUser = useSelector(state => state.session.user);
 
 
+
     useEffect(() => {
-        if (currentUser){
+        if (currentUser) {
             dispatch(getCurrentSpotUser())
         }
     }, [dispatch, currentUser])
@@ -31,10 +32,10 @@ const ManageSpots = () => {
 
     const userSpots = spots.filter(spot => spot.ownerId === currentUser.id);
 
-  
 
 
-    if (!userSpots){
+
+    if (!userSpots) {
         return (
             <>
                 <div>Loading...</div>
@@ -47,35 +48,29 @@ const ManageSpots = () => {
 
     return (
         <>
-            <h1 className={StylesManageSpots.h1} >Manage Your Spots</h1>
-            <button className={StylesManageSpots.createButtonSpot}onClick={() => nav('/spots/new')}>Create a New Spot</button>
+            <h1 className={StylesManageSpots.h1}>Manage Your Spots</h1>
+            <button className={StylesManageSpots.createButtonSpot} onClick={() => nav('/spots/new')}>Create a New Spot</button>
 
             <ul className={StylesManageSpots.spotTileContainer}>
                 {userSpots.map((spot) => (
-
                     <li className={StylesManageSpots.spotTile} key={spot.id}>
+                        <SpotTile key={spot.id} spot={spot} showButtons={true} isOwner={true} />
 
-                        <SpotTile key={spot.id} spot={spot} showButtons={true} isOwner={true}/>
-               
-                        {spot.avgRating && (
-                            <div className={StylesManageSpots.ratings}>
-                                <IoStar size={19} color="gold" />
-                                <span>{parseFloat(spot.avgRating).toFixed(2)}</span>
-                            </div>
-
-
-                        )}
-
+                        <div className={StylesManageSpots.ratings}>
+                            {spot.avgRating ? (
+                                <>
+                                    <IoStar size={19} color="gold" />
+                                    <span>{parseFloat(spot.avgRating).toFixed(2)}</span>
+                                </>
+                            ) : (
+                                <span>New</span>
+                            )}
+                        </div>
                     </li>
-
-
                 ))}
-
-
             </ul>
-
         </>
-    )
+    );
 }
 
 export default ManageSpots

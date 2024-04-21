@@ -65,7 +65,7 @@ const ReviewFormModel = ({spot})=> {
 
     return (
         <form onSubmit={handleSubmit} className={SpotDetailsStyles.modalContainer}>
-          <h2>How was your stay?</h2>
+          <h2 className={SpotDetailsStyles.h2}>How was your stay?</h2>
           <label htmlFor="comment">Leave your review here...</label>
           {submitted && errors.review && <p className={SpotDetailsStyles.error}>{errors.review}</p>}
 
@@ -74,11 +74,12 @@ const ReviewFormModel = ({spot})=> {
             name="comment"
             value={review}
             onChange={(e)=> setReview(e.target.value)}
-            placeholder="Leave your review here..."
+            placeholder="Just a quick review"
+            style={{ width: '100%', height: '150px' }}
             required
           ></textarea>
-          <div >
-            <label htmlFor="rating">Stars</label>
+          <div className={SpotDetailsStyles.starsContainer}>
+            <label  className={SpotDetailsStyles.stars} htmlFor="rating">Stars</label>
             {submitted && errors.stars && <p className={SpotDetailsStyles.error}>{errors.stars}</p>}
 
             {[1, 2, 3, 4, 5].map((index) => (
@@ -92,7 +93,7 @@ const ReviewFormModel = ({spot})=> {
                     />
                 ))}
           </div>
-          <button disabled={Object.values(errors).length} type="submit">Submit Your Review</button>
+          <button className={SpotDetailsStyles.submitReviewButton} disabled={Object.values(errors).length} type="submit">Submit Your Review</button>
         </form>
       );
 

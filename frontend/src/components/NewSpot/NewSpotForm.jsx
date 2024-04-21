@@ -113,34 +113,45 @@ const SpotForm = () => {
 
 
     return (
-        <div>
-            <h1>Create a New Spot</h1>
-            {/* First section */}
-            <section className={NewSpotStyles.mainSectionContainer}>
-            <h2>Where&apos;s your place located?</h2>
-                <p>Guests will only get your exact address once they book a reservation.</p>
-                <form onSubmit={handleSubmit}>
-                {submitted && errors.country && <p className={NewSpotStyles.error}>{errors.country}</p>}
-                    <label>
-                        Country:
-                        <input type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Enter country" />
-                    </label>
-                    {submitted && errors.address && <p className={NewSpotStyles.error}>{errors.address}</p>}
-                    <label>
-                        Street Address:
-                        <input type="text" name="streetAddress" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter street address" />
-                    </label>
-                    {submitted && errors.city && <p className={NewSpotStyles.error}>{errors.city}</p>}
+        <div>   
+            <div className={NewSpotStyles.header}>
+                <h1 className={NewSpotStyles.h1}>Create a New Spot</h1>
+                <h2 className={NewSpotStyles.h2}>Where&apos;s your place located?</h2>
+                <p className={NewSpotStyles.p}>Guests will only get your exact address once they book a reservation.</p>
 
-                    <label>
-                        City:
-                        <input type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter city" />
-                    </label>
-                    {submitted && errors.state && <p className={NewSpotStyles.error}>{errors.state}</p>}
-                    <label>
-                        State:
-                        <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} placeholder="Enter state" />
-                    </label>
+            </div>
+        
+            <section className={NewSpotStyles.mainSectionContainer}>
+
+                <form className={NewSpotStyles.formContainer} onSubmit={handleSubmit}>
+                {submitted && errors.country && <p className={NewSpotStyles.error}>{errors.country}</p>}
+
+                    <section className={NewSpotStyles.addressContainer}>
+                        <label  className={NewSpotStyles.country}>
+                            Country:
+                            <input type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Enter country" />
+                        </label>
+                        {submitted && errors.address && <p className={NewSpotStyles.error}>{errors.address}</p>}
+                        <label>
+                            Street Address:
+                            <input type="text" name="streetAddress" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter street address" />
+                        </label>
+                        {submitted && errors.city && <p className={NewSpotStyles.error}>{errors.city}</p>}
+
+                        <div className={NewSpotStyles.cityStateContainer}>
+
+                        <label className={NewSpotStyles.city}>
+                            City:
+                            <input type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter city" />
+                        </label>
+                        {submitted && errors.state && <p className={NewSpotStyles.error}>{errors.state}</p>}
+                        <label  className={NewSpotStyles.state}>
+                            State:
+                            <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} placeholder="Enter state" />
+                        </label>
+                        </div>
+
+                    </section>
                     {/* Latitude and Longitude inputs (optional) */}
 
                     <div style={{ display: "none" }}>
@@ -156,26 +167,26 @@ const SpotForm = () => {
 
 
                     {/* Second section */}
-                    <section>
-                        <h2>Describe your place to guests</h2>
-                        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+                    <section className={NewSpotStyles.textbox}>
+                        <h2 className={NewSpotStyles.guestDescription}>Describe your place to guests</h2>
+                        <p className={NewSpotStyles.descriptionText}>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
                         {submitted && errors.description && <p className={NewSpotStyles.error}>{errors.description}</p>}
                         <textarea  style={{ width: "100%", minHeight: "100px" }} name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Please write at least 30 characters"></textarea>
                     </section>
 
                     {/* Third section */}
                     <section>
-                        <h2>Create a title for your spot</h2>
-                        <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+                        <h2  className={NewSpotStyles.guestDescription}>Create a title for your spot</h2>
+                        <p className={NewSpotStyles.p}>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
                         {submitted && errors.name && <p className={NewSpotStyles.error}>{errors.name}</p>}
 
                         <input type="text" name="spotName" value={name} onChange={(e) => setSpotName(e.target.value)} placeholder="Name of your spot" />
                     </section>
 
                     {/* Fourth section */}
-                    <section>
-                        <h2>Set a base price for your spot</h2>
-                        <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+                    <section className={NewSpotStyles.guestDescripContainer}>
+                        <h2  className={NewSpotStyles.guestDescription}>Set a base price for your spot</h2>
+                        <p className={NewSpotStyles.p}>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                         {submitted && errors.price && <p className={NewSpotStyles.error}>{errors.price}</p>}
 
                         <input type="number" name="price" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price per night (USD)" />
@@ -183,8 +194,8 @@ const SpotForm = () => {
 
                     {/* Fifth section */}
                     <section className={NewSpotStyles.imagesUrl}>
-                        <h2>Liven up your spot with photos</h2>
-                        <p>Submit a link to at least one photo to publish your spot.</p>
+                        <h2  className={NewSpotStyles.guestDescription}>Liven up your spot with photos</h2>
+                        <p className={NewSpotStyles.p} >Submit a link to at least one photo to publish your spot.</p>
                         {submitted && errors.previewImage && <p className={NewSpotStyles.error}>{errors.previewImage}</p>}
 
                         <label >
@@ -210,7 +221,7 @@ const SpotForm = () => {
                        
                     </section>
 
-                    <button type="submit">Create Spot</button>
+                    <button  className={NewSpotStyles.submitButton} type="submit">Create Spot</button>
                 </form>
             </section>
 
