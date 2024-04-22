@@ -499,7 +499,8 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
         const createddate = new Date(spot.createdAt).toISOString().replace('T', ' ').split('.')[0];
         const updateddate = new Date(spot.updatedAt).toISOString().replace('T', ' ').split('.')[0];
 
-        let priceFloat = parseFloat(spot.price.toFixed(1))
+        let priceFloat = spot.price
+      
 
 
         const responseEdit = {
