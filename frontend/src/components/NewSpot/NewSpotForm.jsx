@@ -30,24 +30,24 @@ const SpotForm = () => {
     const [img3, setImg3] = useState("");
     const [img4, setImg4] = useState("");
 
-    const handleImageInputChange = (name, value) => {
-        switch (name) {
-            case "img1":
-                setImg1(value);
-                break;
-            case "img2":
-                setImg2(value);
-                break;
-            case "img3":
-                setImg3(value);
-                break;
-            case "img4":
-                setImg4(value);
-                break;
-            default:
-                break;
-        }
-    };
+    // const handleImageInputChange = (name, value) => {
+    //     switch (name) {
+    //         case "img1":
+    //             setImg1(value);
+    //             break;
+    //         case "img2":
+    //             setImg2(value);
+    //             break;
+    //         case "img3":
+    //             setImg3(value);
+    //             break;
+    //         case "img4":
+    //             setImg4(value);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // };
 
     const [submitted, setSubmitted] = useState(false)
     const [errors, setErrors] = useState({})

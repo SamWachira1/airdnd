@@ -2,13 +2,12 @@ import { useEffect, } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentSpotUser, getSpotsThunk } from "../../store/spot";
+import { getCurrentSpotUser } from "../../store/spot";
 import SpotTile from "../LandingPage /SpotTile.jsx";
 import StylesManageSpots from './ManageSpots.module.css'
 import IoStar from "../StarIcons";
 import OpenModalDelete from '../LandingPage /OpenModelDelete';
 import ConfirmationModal from '../LandingPage /ConfirmationDelete';
-import spotTileStyle from '../LandingPage /SpotTile.module.css'
 
 
 const ManageSpots = () => {
