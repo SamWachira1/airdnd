@@ -844,9 +844,12 @@ router.get('/', validateQueryParams, async (req, res) => {
         
     
         
-        let imgUrl = []
+        let imgUrl = ''
         for (let i of images){
-            imgUrl.push(i.url)
+            if(i.preview){
+                imgUrl = i.url
+            }
+            
         }
 
       
@@ -867,7 +870,7 @@ router.get('/', validateQueryParams, async (req, res) => {
             createdAt: createdAtDate,
             updatedAt: upadatedAtDate,
             avgRating: avgRating,
-            previewImage: imgUrl,
+            previewImage: imgUrl ? imgUrl : null,
         };
 
         // console.log("\n\n\n",formattedSpot, "\n\n\n")

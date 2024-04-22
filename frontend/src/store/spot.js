@@ -46,6 +46,7 @@ export const removeSpot = (spotId)=> {
 export const getSpotsThunk = ()=> async(dispatch)=>{
     const response = await csrfFetch("/api/spots")
     const data = await response.json()
+    console.log(data)
     dispatch(loadSpots(data.Spots))
     return response 
 }
@@ -149,15 +150,18 @@ export const deleteSpotThunk = (spotId)=> async (dispatch)=>{
 
 const initialState = {}
 
+
 const spotReducer = (state = initialState, action) => {
     switch(action.type){
         case LOAD_SPOTS: {
+            console.log('line 155', action.payload)
             const newState = action.payload.reduce((acc, spot) => {
+
                 acc[spot.id] = spot;
                 return acc;
               }, {});
 
-            return {...state, ...newState}
+            return {...newState}
         }
 
         case LOAD_SPOT:

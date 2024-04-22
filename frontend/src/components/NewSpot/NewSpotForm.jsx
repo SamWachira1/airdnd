@@ -246,7 +246,7 @@ const SpotForm = () => {
                                 type="text"
                                 name="imageUrl1"
                                 value={img1 || ""}
-                                onChange={(e) => handleImageInputChange("img1", e.target.value)}
+                                onChange={(e) => setImg1(e.target.value)}
                                 placeholder="Image URL 1"
                             />
 
@@ -259,7 +259,8 @@ const SpotForm = () => {
                                 type="text"
                                 name="imageUrl2"
                                 value={img2 || ""}
-                                onChange={(e) => handleImageInputChange("img2", e.target.value)}
+                                onChange={(e) => setImg2(e.target.value)}
+
                                 placeholder="Image URL 2"
                             />
                         </label>
@@ -271,7 +272,7 @@ const SpotForm = () => {
                                 type="text"
                                 name="imageUrl3"
                                 value={img3 ||  ""}
-                                onChange={(e) => handleImageInputChange("img3", e.target.value)}
+                                onChange={(e) => setImg3(e.target.value)}
                                 placeholder="Image URL 3"
                             />
                         </label>
@@ -282,7 +283,7 @@ const SpotForm = () => {
                                 type="text"
                                 name="imageUrl4"
                                 value={img4 ||  ""}
-                                onChange={(e) => handleImageInputChange("img4", e.target.value)}
+                                onChange={(e) => setImg4(e.target.value)}
                                 placeholder="Image URL 4"
                             />
                         </label>

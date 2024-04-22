@@ -85,7 +85,6 @@ const SignupFormModal = () => {
             <div className={styles.container}>
                 <h1>Sign Up</h1>
                 <form onSubmit={handleSubmit}>
-                    {submitted && errors.username && <p className={styles.error}>{errors.username}</p>}
                     <label>
                         Username
                         <input
@@ -97,7 +96,6 @@ const SignupFormModal = () => {
                         />
                     </label>
 
-                    {submitted && errors.firstName  && <p className={styles.error}>{errors.firstName}</p>}
                     <label>
                         First Name
                         <input
@@ -108,7 +106,7 @@ const SignupFormModal = () => {
                             placeholder="first name"
                         />
                     </label>
-                    {submitted && errors.lastName &&  <p className={styles.error}>{errors.lastName}</p>}
+
                     <label>
                         Last Name
                         <input

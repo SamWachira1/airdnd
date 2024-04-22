@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/SamWachira1/Api-Project/issues"
   },
-  "homepage": "https://github.com/SamWachira1/Api-Project#readme"
+  "homepage": "https://github.com/SamWachira1/Api-Project#readme",
+  "dependencies": {
+    "reselect": "^5.1.0"
+  }
 }
