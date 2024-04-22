@@ -2,7 +2,7 @@
     display: flex;
     margin-top: 1em;
     flex-wrap: wrap;
-    margin-left: 1em;
+    margin-left: 5em;
 
 }
 
@@ -24,7 +24,7 @@
 }
 
 .h2 {
-    margin-left: 1em;
+    margin-left: 4em;
     margin-bottom: 1em;
 }
 
@@ -116,8 +116,8 @@
 
 .rating {
     position: relative;
-    bottom: 64px;
-    left: 83%;
+    bottom: 53px;
+    left: 84%;
     width: 18%;
 }
 

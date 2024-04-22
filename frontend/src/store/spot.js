@@ -165,18 +165,25 @@ const spotReducer = (state = initialState, action) => {
         }
 
         case LOAD_SPOT:
-            return { ...state, [action.payload.id]: action.payload};
+            const newState = {[action.payload.id]: action.payload}
+            return {...state, [action.payload.id]: action.payload}
 
         case POST_SPOT: 
             return {...state, [action.payload.id]: action.payload}
 
         case LOAD_CURRENT_SPOT: {
-            const normalizedData = action.payload.Spots.reduce((acc, spot) => {
-                acc[spot.id] = spot;
-                return acc;
-            }, {});
+            // const normalizedData = action.payload.Spots.reduce((acc, spot) => {
+            //     acc[spot.id] = spot;
+            //     return acc;
+            // }, {});
 
-            return { ...state, ...normalizedData };
+            // return {...normalizedData };
+            const newState ={}
+            action.payload.Spots.forEach(spot => {
+                newState[spot.id] = spot
+            });
+
+            return newState
         }
 
         case DELETE_SPOT: {

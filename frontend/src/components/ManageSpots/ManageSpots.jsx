@@ -2,7 +2,7 @@ import { useEffect, } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentSpotUser } from "../../store/spot";
+import { getCurrentSpotUser, getSpotsThunk } from "../../store/spot";
 import SpotTile from "../LandingPage /SpotTile.jsx";
 import StylesManageSpots from './ManageSpots.module.css'
 import IoStar from "../StarIcons";
@@ -25,6 +25,10 @@ const ManageSpots = () => {
             dispatch(getCurrentSpotUser())
         }
     }, [dispatch, currentUser])
+
+    // useEffect(()=>{
+    //     dispatch(getSpotsThunk())
+    // }, [])
 
 
 
@@ -68,32 +72,20 @@ const ManageSpots = () => {
             <button className={StylesManageSpots.createButtonSpot} onClick={() => nav('/spots/new')}>Create a New Spot</button>
 
             <ul className={StylesManageSpots.spotTileContainer}>
-                {userSpots.map((spot) => (
+                {spots.map((spot) => {
+                    if(spot.id === 13){
+
+                        console.log('User spots', spot.previewImage)
+                    }
+
+                    return (
                     <li className={StylesManageSpots.spotTile} key={spot.id}>
                          {/* <SpotTile key={spot.id} spot={spot} showButtons={true} isOwner={true} /> */}
 
                         <SpotTile key={spot.id} spot={spot}/>
 
-                            <div>
-                            <div className={spotTileStyle.updateButtonContainer}>
-                                <button className={spotTileStyle.buttonUpdate} onClick={()=> nav(`/spots/${spot.id}/edit`)}>Update</button>
-                            </div>
 
-                            <div>
-                            <ul className={spotTileStyle.deleteButtonContainer}>
-                                {/* Use OpenModalDelete component to open the confirmation modal */}
-                                <OpenModalDelete
-                                    modalComponent={<ConfirmationModal spot={spot} />} // Pass the confirmation modal component
-                                    itemText="Delete" // Text of the menu item that opens the modal
-                                />
-                            </ul>
-
-                            </div>
-
-                           </div>
-
-
-                            <div className={StylesManageSpots.ratings}>
+                        <div className={StylesManageSpots.ratings}>
                                 {spot.avgRating ? (
                                     <>
                                         <IoStar size={19} color="gold" />
@@ -102,9 +94,29 @@ const ManageSpots = () => {
                                 ) : (
                                     <span>New</span>
                                 )}
-                            </div>
+                         </div>
+
+
+                            <div className={StylesManageSpots.updateDeleteContainer}>
+                                <div className={StylesManageSpots.updateButton}>
+                                    <button onClick={()=> nav(`/spots/${spot.id}/edit`)}>Update</button>
+                                </div>
+
+                         
+                                <ul className={StylesManageSpots.deleteButton}>
+                                    {/* Use OpenModalDelete component to open the confirmation modal */}
+                                    <OpenModalDelete
+                                        modalComponent={<ConfirmationModal spot={spot} />} // Pass the confirmation modal component
+                                        itemText="Delete" // Text of the menu item that opens the modal
+                                    />
+                                </ul>
+
+                    
+                           </div>
+
+
                     </li>
-                ))}
+                )})}
             </ul>
         </>
     );

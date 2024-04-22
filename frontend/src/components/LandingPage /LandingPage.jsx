@@ -31,7 +31,13 @@ function LandingPage() {
             <h1 className={spotTileStyle.h1}>Welcome!</h1>
             <h2 className={spotTileStyle.h2}>Spots</h2>
             <ul className={spotTileStyle.spotTileContainer}>
-                {spots.map((spot) => (
+                {spots.map((spot) => {
+                    if(spot.id === 13){
+
+                        console.log('All spots', spot.previewImage)
+                    }
+                   return(
+                    
                      <NavLink key={spot.id} to={`/spots/${spot.id}`}>
                     <li className={spotTileStyle.spotTile} key={spot.id}>
 
@@ -55,8 +61,9 @@ function LandingPage() {
 
                     </li>
                  </NavLink>
+                   )
 
-                ))}
+                })}
             </ul>
 
         </>

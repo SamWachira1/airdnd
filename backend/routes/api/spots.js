@@ -574,9 +574,11 @@ router.get('/current', requireAuth, async (req, res) => {
         });
 
 
-        let imageUrl;
+        let imageUrl=''
          for (let i of spotImages){
-            imageUrl = i.url
+            if(i.preview){
+                imageUrl = i.url
+            }
          }
 
         // console.log("\n\n\n", imageUrl , "\n\n\n")

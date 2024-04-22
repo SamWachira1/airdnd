@@ -49,10 +49,11 @@
 
   .ratings{
     position: relative;
-    bottom: 8em;
-    left: 19em;
+    bottom: 13%;
+    left: 85%;
     width: 4em;
   }
+  
 
   .h1 {
     position: relative;
@@ -62,8 +63,53 @@
     margin-left: 1em;
   }
 
+  .updateDeleteContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 3em;
+    width: 21em;
+    position: relative;
+    top: 7em;
+    align-items: center;
+  }
+
+  .updateButton{
+    width: 41%;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    background-color: grey;
+    color: white;
+    border-radius: 7px;
+     box-shadow: 0 3px 9px rgba(0, 0, 0, 1.2);
+  }
+
+  .updateButton:hover{
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+  }
+
+  .deleteButton{
+    width: 41%;
+    display: flex;
+    justify-content: center;
+    background-color: grey;
+    height: 100%;
+    align-items: center;
+      color: white;
+    border-radius: 7px;
+     box-shadow: 0 3px 9px rgba(0, 0, 0, 1.2);
+  }
+
+  .deleteButton:hover{
+     box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-3px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+  }
   .createButtonSpot {
-    border: 2px solid gray;
+    border: 2px solid dark gray;
     margin-top: 1em;
     margin-left: 2em;
     height: 3em;
