@@ -4,14 +4,121 @@
 }
 
 .mainSectionContainer {
-    box-sizing: border-box;
+    width: 30%;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    /* border: 2px solid black; */
+    padding: 2em;
+    height: 62em;
 }
+
 
 .imagesUrl {
     border: 2px solid black;
     width: 33em;
+}
+
+
+.header {
+    width: 33%;
+    margin: 0 auto;
+}
+
+.h1 {
+    font-weight: 400;
+    margin-top: 1em;
+    margin-right: 18%;
+    margin-bottom: 13px;
+}
+
+
+.h2 {
+    font-weight: 400;
+    margin-top: 0em;
+    color: #080849;
+    margin-bottom: 10px;
+    border-top: 2px solid black;
+    padding-top: 1em;
+
+}
+
+
+.cityStateContainer{
+    display: flex;
+    flex-direction: row;
+    /* border-bottom: 2px solid gray; */
+    margin-bottom: 1em;
+}
+
+.city {
+    width: 27em;
+}
+
+.guestDescription{
+    margin-bottom: 1em;
+    font-weight: 400;
+    color: #080849;
+
+}
+
+.textbox {
+    padding-bottom: 2em;
+    margin-bottom: 1em;
+}
+
+.descriptionText{
+    margin-bottom: 1em;
+}
+
+.guestDescripContainer{
+    border-top: 2px solid gray;
+    padding-top: 2em;
+    margin-top: 1em;
+    border-bottom: 2px solid gray;
+    padding-bottom: 2em;
+}
+
+.submitButton{
+    margin-top: 1em;
+    border-radius: 31px solid gray;
+    height: 65px;
+    background-color: red;
+    color: white;
+    font-size: 30px;
+    border-radius: 16px;
+    box-shadow: 0 -1px 18px rgba(0, 0, 0, 0.2);
+    width: 8em;
+    margin-bottom: 6em;
+    display: flex;
+    /* text-align: center; */
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5em;
+}
+
+
+.submitButton:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-5px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
+}
+
+
+.updateSubmitButton {
+    position: relative;
+    top: 2em;
+    left: 25%;
+    background-color: red;
+    color: white;
+    width: 12em;
+    height: 3em;
+    border-radius: 9px;
+    box-shadow: 0 -1px 18px rgba(0, 0, 0, 0.2);
+
+}
+
+.updateSubmitButton:hover {
+    box-shadow: 0 0 10px rgba(50, 50, 50, 0.9); /* Darker box shadow color */
+    transform: translateY(-5px); /* Move the spot tile up by 5px on hover */
+    transition: transform 0.3s ease; /* Apply a smooth transition */
 }

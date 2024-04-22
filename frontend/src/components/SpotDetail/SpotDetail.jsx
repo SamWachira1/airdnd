@@ -50,10 +50,14 @@ function SpotDetail() {
     const { firstName, lastName } = spot.Owner
 
     const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0);
-    const avgRating = reviews.length > 0 ? (totalStars / reviews.length).toFixed(1) : 'New';
+    const avgRating = reviews.length > 0 ? (totalStars / reviews.length).toFixed(2) : 'New';
     const reviewCount = reviews.length
 
-    const reviewCountText = reviewCount === 1 ? '1 Review' : `${reviewCount} Reviews`
+
+    const reviewCountText = reviewCount === 0 ? 'Be the first to post a review!' : reviewCount === 1 ? '1 Review' : `${reviewCount} Reviews`;
+
+    // const avgRatingText = avgRating !== 'New' ? `${avgRating} ${reviewCountText && `· ${reviewCountText}`}` : 'New';
+    const avgRatingText = avgRating !== 'New' ? `${avgRating} · ${reviewCountText}` : 'New';
 
     const sortedReviews = [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
@@ -119,7 +123,7 @@ function SpotDetail() {
                     <div className={SpotDetailsStyles.ratingContainer}>
                         <IoStar size={19} color="gold" />
                         {avgRating && (
-                            <p >{avgRating} {reviewCountText && `· ${reviewCountText}`}</p>
+                            <p>{avgRatingText}</p>
                         )}
 
                     </div>
@@ -141,7 +145,13 @@ function SpotDetail() {
                         )}
                     </div>
                 </div>
-                
+
+                <div>
+                    {!userIsOwner && userLoggedIn && reviewCount === 0 && (
+                        <p className={SpotDetailsStyles.noReviewsText}>Be the first to post a review!</p>
+                    )}
+                </div>
+
                 <div>
                     {!userIsOwner && userLoggedIn && !userHasReviewed && (
 
@@ -162,6 +172,8 @@ function SpotDetail() {
                 </div>
 
                 <div className="reviews">
+              
+
                     {sortedReviews.map((review, index) => (
 
                         <div key={index} className={SpotDetailsStyles.reviews}>
@@ -201,7 +213,7 @@ function SpotDetail() {
 
 
 
-                
+
 
 
 

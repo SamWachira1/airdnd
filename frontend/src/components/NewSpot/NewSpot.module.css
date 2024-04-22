@@ -6,9 +6,14 @@
 
 
 .imagesUrl {
-    width: 40em;
+    width: 35em;
     border-bottom: 2px solid gray;
     padding-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .header {
@@ -75,12 +80,20 @@
 .submitButton{
     margin-top: 1em;
     border-radius: 31px solid gray;
-    height: 3em;
+    height: 65px;
     background-color: red;
     color: white;
     font-size: 30px;
     border-radius: 16px;
     box-shadow: 0 -1px 18px rgba(0, 0, 0, 0.2);
+    width: 8em;
+    margin-bottom: 6em;
+    display: flex;
+    /* text-align: center; */
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5em;
 }
 
 

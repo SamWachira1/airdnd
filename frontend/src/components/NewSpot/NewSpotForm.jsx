@@ -30,24 +30,7 @@ const SpotForm = () => {
     const [img3, setImg3] = useState("");
     const [img4, setImg4] = useState("");
 
-    // const handleImageInputChange = (name, value) => {
-    //     switch (name) {
-    //         case "img1":
-    //             setImg1(value);
-    //             break;
-    //         case "img2":
-    //             setImg2(value);
-    //             break;
-    //         case "img3":
-    //             setImg3(value);
-    //             break;
-    //         case "img4":
-    //             setImg4(value);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // };
+
 
     const [submitted, setSubmitted] = useState(false)
     const [errors, setErrors] = useState({})
@@ -112,14 +95,7 @@ const SpotForm = () => {
                 }
 
 
-                // const spotImages = [
-                //     { url: previewImage, preview: true },
-                //     { url: img1, preview: false },
-                //     { url: img2, preview: false },
-                //     { url: img3, preview: false },
-                //     { url: img4, preview: false },
-                // ];
-
+        
                 const spotImages = [
                     { url: previewImage, preview: true },
                     { url: img1 || defaultImageURLs.img1, preview: false },
@@ -221,7 +197,7 @@ const SpotForm = () => {
                         <h2 className={NewSpotStyles.guestDescription}>Set a base price for your spot</h2>
                         <p className={NewSpotStyles.p}>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                         {submitted && errors.price && <p className={NewSpotStyles.error}>{errors.price}</p>}
-
+                        <span>$</span>
                         <input type="number" name="price" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price per night (USD)" />
                     </section>
 

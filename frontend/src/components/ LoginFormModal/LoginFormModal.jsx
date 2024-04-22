@@ -73,7 +73,7 @@ const LoginFormModal = () => {
   return (
     <>
       <div className={styles.container}>
-        <h1>Log In</h1>
+        <h1 className={styles.h1}>Log In</h1>
         <form onSubmit={handleSubmit}>
           { submitted && errors.credential && <p className={styles.errors}>{errors.credential}</p>}
           <label>

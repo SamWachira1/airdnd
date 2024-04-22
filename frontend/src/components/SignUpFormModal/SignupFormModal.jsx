@@ -30,10 +30,6 @@ const SignupFormModal = () => {
                 newErrors.password = "Password must be at least 6 characters long";
             }
 
-            if (password !== confirmedPassword) {
-                newErrors.confirmPassword = 'Passwords must match'
-            }
-
             if (!email) {
                 newErrors.email = "Email is required";
             }
@@ -56,34 +52,63 @@ const SignupFormModal = () => {
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        // e.preventDefault()
 
-        setSubmitted(true)
+        // setSubmitted(true)
         
-        if (Object.keys(errors).length === 0 && password === confirmedPassword) {
-            setErrors({})
-            const user = { username, firstName, lastName, email, password }
-            return dispatch(signUpThunk({ user }))
-                .then(closeModal)
-                .catch(
-                    async (res) => {
-                        const data = await res.json()
-                        if (data?.errors) {
-                            setErrors(data.errors);
-                        }
+        // if (Object.keys(errors).length === 0 && password === confirmedPassword) {
+        //     setErrors({})
+        //     const user = { username, firstName, lastName, email, password }
+        //     return dispatch(signUpThunk({ user }))
+        //         .then(closeModal)
+        //         .catch(
+        //             async (res) => {
+        //                 const data = await res.json()
+        //                 if (data?.errors) {
+        //                     setErrors(data.errors);
+        //                 }
 
-                    }
+        //             }
 
-                )
+        //         )
 
+        // }
+
+        e.preventDefault();
+
+        setSubmitted(true);
+    
+        // Check if all required fields are filled
+        if (!username || !firstName || !lastName || !email || !password || !confirmedPassword) {
+            return;
         }
+    
+        // Check if passwords match
+        if (password !== confirmedPassword) {
+            setErrors({ confirmPassword: "Passwords do not match" });
+            return;
+        }
+    
+        // Reset errors
+        setErrors({});
+    
+        // If all validations pass, dispatch sign up
+        const user = { username, firstName, lastName, email, password };
+        dispatch(signUpThunk({ user }))
+            .then(closeModal)
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data?.errors) {
+                    setErrors(data.errors);
+                }
+            });
     }
 
 
     return (
         <>
             <div className={styles.container}>
-                <h1>Sign Up</h1>
+                <h1 className={styles.h1}>Sign Up</h1>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Username

@@ -1,18 +1,19 @@
 .container {
-    width: 28em;
-    height: 22em;
+      width: 31em;
+    width: 23em;
+    height: 18em;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
   }
-/* 
-  h1 {
-    text-align: center;
-    border-top: 2px solid lightblue;
-    padding-top: 12px;
-  } */
+
+  .h1 {
+  text-align: center;
+    padding-top: -4px;
+    padding-bottom: 15px;
+  }
 
 
 

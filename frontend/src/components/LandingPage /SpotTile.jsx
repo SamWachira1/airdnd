@@ -37,7 +37,6 @@ const SpotTile = ({ spot}) => {
 
     <>
       <NavLink to={`/spots/${spot.id}`}>
-        <div >
           <img className={spotTileStyle.imgTile} src={spot.previewImage} alt={spot.name} title={spot.name} />
           <div >
             <p>{spot.city}, {spot.state}</p>
@@ -46,8 +45,6 @@ const SpotTile = ({ spot}) => {
           </p>
 
           </div>
-        </div>
-        
       </NavLink>
 
       {/* <div className={spotTileStyle.spotTileContainer}>

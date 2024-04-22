@@ -6,7 +6,7 @@ import SpotDetailsStyles from './SpotDetail.module.css'
 import IoStar from '../StarIcons';
 
 
-const ReviewFormModel = ({spot})=> {
+const ReviewFormModel = ({ spot }) => {
 
     const [review, setReview] = useState("")
     const [stars, setStars] = useState(0)
@@ -16,36 +16,33 @@ const ReviewFormModel = ({spot})=> {
     const dispatch = useDispatch()
     const user = useSelector(state => Object.values(state.session))
 
-    // console.log('Line 19',user)
+    const [hoveredStars, setHoveredStars] = useState(0);
 
 
-
-    useEffect(()=> {
+    useEffect(() => {
         const newErrors = {}
-        if (review.trim().length < 10){
+        if (review.trim().length < 10) {
             newErrors.review = 'Minimum of 10 characters are needed'
         }
 
-        if(stars === 0){
+        if (stars === 0) {
             newErrors.stars = 'Minimum of one star is required'
         }
 
         setErrors(newErrors)
     }, [submitted, review, stars])
 
+    const handleStarToggle = (starIndex) => {
+        // Toggle selection based on current state (selected or not)
+        setStars(stars === starIndex ? 0 : starIndex);
+    };
 
-    const handleStarHover = (starIndex) => {
-      if (!submitted) { // Only update stars on hover if form is not submitted
-          setStars(starIndex);
-      }
-  };
-
-    const handleSubmit = (e)=> {
+    const handleSubmit = (e) => {
         e.preventDefault()
         setSubmitted(true)
 
-        if(Object.keys(errors).length === 0){
-          let newReview = {review, stars}
+        if (Object.keys(errors).length === 0) {
+            let newReview = { review, stars }
             return dispatch(createReviewThunk(spot, newReview, user))
                 .then(closeModal)
                 .catch(
@@ -65,37 +62,38 @@ const ReviewFormModel = ({spot})=> {
 
     return (
         <form onSubmit={handleSubmit} className={SpotDetailsStyles.modalContainer}>
-          <h2 className={SpotDetailsStyles.h2}>How was your stay?</h2>
-          <label htmlFor="comment">Leave your review here...</label>
-          {submitted && errors.review && <p className={SpotDetailsStyles.error}>{errors.review}</p>}
+            <h2 className={SpotDetailsStyles.h2}>How was your stay?</h2>
+            <label htmlFor="comment">Leave your review here...</label>
+            {submitted && errors.review && <p className={SpotDetailsStyles.error}>{errors.review}</p>}
 
-          <textarea
-            id="comment"
-            name="comment"
-            value={review}
-            onChange={(e)=> setReview(e.target.value)}
-            placeholder="Just a quick review"
-            style={{ width: '100%', height: '150px' }}
-            required
-          ></textarea>
-          <div className={SpotDetailsStyles.starsContainer}>
-            <label  className={SpotDetailsStyles.stars} htmlFor="rating">Stars</label>
-            {submitted && errors.stars && <p className={SpotDetailsStyles.error}>{errors.stars}</p>}
+            <textarea
+                id="comment"
+                name="comment"
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                placeholder="Leave your review here..."
+                style={{ width: '100%', height: '150px' }}
+                required
+            ></textarea>
+            <div className={SpotDetailsStyles.starsContainer}>
+                <label className={SpotDetailsStyles.stars} htmlFor="rating">Stars</label>
+                {submitted && errors.stars && <p className={SpotDetailsStyles.error}>{errors.stars}</p>}
 
-            {[1, 2, 3, 4, 5].map((index) => (
+               
+                {[1, 2, 3, 4, 5].map((index) => (
                     <IoStar
                         key={index}
                         size={24}
-                        color={index <= stars ? "gold" : "gray"} // Change color based on hover and submitted state
-                        onMouseEnter={() => handleStarHover(index)} // Handle hover effect
-                        onMouseLeave={() => handleStarHover(stars)} // Reset hover effect on mouse leave
-                        onClick={() => setStars(index)} // Update stars on click
+                        color={index <= stars || index <= hoveredStars ? "gold" : "gray"} // Update color based on both stars and hoveredStars
+                        onMouseEnter={() => setHoveredStars(index)} // Update hoveredStars on hover
+                        onMouseLeave={() => setHoveredStars(0)} // Clear hover on leave
+                        onClick={() => handleStarToggle(index)} // Toggle selection on click
                     />
                 ))}
-          </div>
-          <button className={SpotDetailsStyles.submitReviewButton} disabled={Object.values(errors).length} type="submit">Submit Your Review</button>
+            </div>
+            <button className={SpotDetailsStyles.submitReviewButton} disabled={Object.values(errors).length} type="submit">Submit Your Review</button>
         </form>
-      );
+    );
 
 }
 

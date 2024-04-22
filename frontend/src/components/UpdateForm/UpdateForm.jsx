@@ -108,10 +108,12 @@ const UpdateSpotForm = () => {
 
 
     return (
-        <div>
-            <h1>Update your Spot</h1>
+        <div className={StyleUpdateForm.mainSectionContainer}>
+            <h1 className={StyleUpdateForm.h1}>Update your Spot</h1>
             <form onSubmit={handleSubmit}>
             {submitted && errors.country && <p className={StyleUpdateForm.error}>{errors.country}</p>}
+
+                <section >
                     <label>
                         Country:
                         <input type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Enter country" />
@@ -123,7 +125,8 @@ const UpdateSpotForm = () => {
                     </label>
                     {submitted && errors.city && <p className={StyleUpdateForm.error}>{errors.city}</p>}
 
-                    <label>
+                <div className={StyleUpdateForm.cityStateContainer}>
+                    <label className={StyleUpdateForm.city} >
                         City:
                         <input type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter city" />
                     </label>
@@ -132,6 +135,10 @@ const UpdateSpotForm = () => {
                         State:
                         <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} placeholder="Enter state" />
                     </label>
+
+                </div>
+
+                </section>
                     {/* Latitude and Longitude inputs (optional) */}
 
                         <div style={{ display: "none" }}>
@@ -149,15 +156,15 @@ const UpdateSpotForm = () => {
 
                     {/* Second section */}
                     <section>
-                        <h2>Describe your place to guests</h2>
-                        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+                        <h2 className={StyleUpdateForm.h2}>Describe your place to guests</h2>
+                        <p  className={StyleUpdateForm.descriptionText}>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
                         {submitted && errors.description && <p className={StyleUpdateForm.error}>{errors.description}</p>}
-                        <textarea  style={{ width: "100%", minHeight: "100px" }} name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Please write at least 30 characters"></textarea>
+                        <textarea className={StyleUpdateForm.textbox}style={{ width: "100%", minHeight: "100px" }} name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Please write at least 30 characters"></textarea>
                     </section>
 
                     {/* Third section */}
                     <section>
-                        <h2>Create a title for your spot</h2>
+                        <h2 className={StyleUpdateForm.h2}>Create a title for your spot</h2>
                         <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
                         {submitted && errors.name && <p className={StyleUpdateForm.error}>{errors.name}</p>}
 
@@ -166,15 +173,15 @@ const UpdateSpotForm = () => {
 
                     {/* Fourth section */}
                     <section>
-                        <h2>Set a base price for your spot</h2>
+                        <h2 className={StyleUpdateForm.h2}>Set a base price for your spot</h2>
                         <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                         {submitted && errors.price && <p className={StyleUpdateForm.error}>{errors.price}</p>}
-
+                        <span className={StyleUpdateForm.dollarSign}>$</span>
                         <input type="number" name="price" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price per night (USD)" />
                     </section>
 
 
-                <button type="submit">Update your Spot</button>
+                <button className={StyleUpdateForm.updateSubmitButton}type="submit">Update your Spot</button>
             </form>
         </div>
     );

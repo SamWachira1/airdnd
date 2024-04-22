@@ -1,22 +1,23 @@
 .container {
-    width: 31em;
-    height: 42em;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  }
+  width: 25em;
+  height: 31em;
+  margin: 0 auto;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
   
   .label {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     display: block;
   }
   
   .input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
+    width: 95%;
+    padding: 6px;
+    margin-bottom: -1px;
     border: 1px solid #ccc;
     border-radius: 3px;
   }
@@ -45,3 +46,12 @@
   .homeLink {
     border: 2px solid black;
   }
+
+
+  .h1 {
+    text-align: center;
+      padding-top: -4px;
+      padding-bottom: 15px;
+    }
+  
+  

@@ -69,9 +69,28 @@
     font-size: medium;
     cursor: pointer;
     width: 13em;
-    height: 14em;
+    height: 11em;
 
 }
+
+
+/* .profileDropdown {
+    position: absolute;
+    top: 6em;
+    right: 14px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px #000000e6;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    font-size: medium;
+    cursor: pointer;
+    width: 13em;
+    height: 14em;
+
+} */
 
 .loginIcons {
        /* width: 94%; */
@@ -178,7 +197,7 @@ ul {
     height: 3em;
     width: 8em;
     position: relative;
-    left: 8px;
+    left: 24px;
     background-color: #080849;
     color: white;
     border-radius: 14px;

@@ -162,7 +162,7 @@
 }
 
 .submitReviewButton{
-    width: 10em;
+    width: 28em;
     height: 3em;
     margin: 0 auto;
     background-color: red;
@@ -222,7 +222,7 @@
     left: 12em;
     display: flex;
     /* display: inline-block; */
-    justify-content: space-evenly;
+    justify-content: flex-end;
     flex-direction: row;
     flex-wrap: nowrap;
     align-content: stretch;
