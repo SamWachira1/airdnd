@@ -726,18 +726,18 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 router.get('/', validateQueryParams, async (req, res) => {
 
 
-    let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
 
-    page = parseInt(page) 
-    size = parseInt(size) 
+    page = parseInt(page)
+    size = parseInt(size)
 
 
     let limit;
     let offset;
-    
+
     if (!isNaN(page) && !isNaN(size) && page > 0 && size > 0) {
-        limit = size 
+        limit = size
         offset = size * (page - 1)
 
     }
@@ -755,44 +755,44 @@ router.get('/', validateQueryParams, async (req, res) => {
             [Op.between]: [parseFloat(minLat), parseFloat(maxLat)],
         };
     }
-    
+
     if (minLng && maxLng) {
         query.where.lng = {
             [Op.between]: [parseFloat(minLng), parseFloat(maxLng)],
         };
     }
 
-    if (minLat){
+    if (minLat) {
         query.where.lat = {
             [Op.gte]: parseFloat(minLat)
         }
     }
 
-    if (maxLat){
+    if (maxLat) {
         query.where.lat = {
             [Op.lte]: parseFloat(maxLat)
         }
     }
 
-    if (minLng){
-         query.where.lng = {
+    if (minLng) {
+        query.where.lng = {
             [Op.gte]: parseFloat(minLng)
         }
     }
 
-    if (maxLng){
-         query.where.lng = {
+    if (maxLng) {
+        query.where.lng = {
             [Op.lte]: parseFloat(maxLng)
         }
     }
 
-    if (minPrice){
+    if (minPrice) {
         query.where.price = {
             [Op.gte]: parseFloat(minPrice)
         }
     }
 
-    if (maxPrice){
+    if (maxPrice) {
         query.where.price = {
             [Op.lte]: parseFloat(maxPrice)
         }
@@ -804,14 +804,14 @@ router.get('/', validateQueryParams, async (req, res) => {
             [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)],
         };
     }
-    
+
 
 
     const getAllSpots = await Spot.findAll({
-        ...query 
+        ...query
     });
 
-    // console.log("\n\n\n",getAllSpots , "\n\n\n")
+
 
 
     const formattedSpots = [];
@@ -825,9 +825,9 @@ router.get('/', validateQueryParams, async (req, res) => {
 
         });
 
-        let totalStars = 0 
-        for (let review of reviews){
-            totalStars += review.stars 
+        let totalStars = 0
+        for (let review of reviews) {
+            totalStars += review.stars
         }
 
         const avgRating = reviews.length > 0 ? totalStars / reviews.length : null;
@@ -841,20 +841,20 @@ router.get('/', validateQueryParams, async (req, res) => {
         upadatedAtDate = upadatedAtDate.toISOString().replace('T', ' ').split('.')[0];
 
         let images = await Image.findAll({
-            where: { imageableType: 'Spot', imageableId: spot.id},
+            where: { imageableType: 'Spot', imageableId: spot.id },
         });
-        
-    
-        
+
+
+
         let imgUrl = ''
-        for (let i of images){
-            if(i.preview){
+        for (let i of images) {
+            if (i.preview) {
                 imgUrl = i.url
             }
-            
+
         }
 
-      
+
 
         const formattedSpot = {
 
@@ -875,7 +875,6 @@ router.get('/', validateQueryParams, async (req, res) => {
             previewImage: imgUrl ? imgUrl : null,
         };
 
-        // console.log("\n\n\n",formattedSpot, "\n\n\n")
 
 
 
@@ -884,7 +883,7 @@ router.get('/', validateQueryParams, async (req, res) => {
     }
 
 
-    return res.status(200).json({Spots: formattedSpots, page, size});
+    return res.status(200).json({ Spots: formattedSpots, page, size });
 
 
 
