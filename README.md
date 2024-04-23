@@ -3,7 +3,6 @@
 ## Table of Contents 
 * 💡Database Schema 
 * 💡API Docs
-* 💡Database Schema 
 * 💡Technologies Used 
 * 💡Code I'm Proud Of
 * 💡Getting Started
