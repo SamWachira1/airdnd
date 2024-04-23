@@ -13,7 +13,7 @@ Explore the structure of the PostgreSQL database supporting StayScape
 ## [API Routes ](https://github.com/SamWachira1/airdnd/wiki/API-Docs)
 
 Review the API documentation detailing the JSON data exchange between frontend and backend routes.
-## [Technologies Used ](https://github.com/SamWachira1/airdnd/wiki/Home/_edit)
+## [Technologies Used ](https://github.com/SamWachira1/airdnd/wiki/Home)
 <img src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" alt="JavaScript" width="50" style="display: inline-block;">
 <img src="https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png" alt="React" width="50" style="display: inline-block;">
 <img src="https://user-images.githubusercontent.com/25181517/187896150-cc1dcb12-d490-445c-8e4d-1275cd2388d6.png" alt="Redux" width="50" style="display: inline-block;">
