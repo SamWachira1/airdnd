@@ -24,10 +24,11 @@ Review the API documentation detailing the JSON data exchange between frontend a
 <img src="https://user-images.githubusercontent.com/25181517/192108372-f71d70ac-7ae6-4c0d-8395-51d8870c2ef0.png" alt="GIT" width="50" style="display: inline-block;">
 
 
-## Landing Page
+## [Landing Page](https://airdnd-ke24.onrender.com)
 <img width="1000" alt="homepage" src="https://github.com/SamWachira1/airdnd/assets/82975601/b4bc871a-05e4-43d9-a130-cc1f4f0fa1cb">
 
-# One Stop Page and Reviews 
+
+## [One Stop Page and Reviews]([https://airdnd-ke24.onrender.com](https://airdnd-ke24.onrender.com/spots/5))
 <img width="1440" alt="Screenshot 2024-04-22 at 4 38 12 PM" src="https://github.com/SamWachira1/airdnd/assets/82975601/66096e20-36a5-4578-b1bf-d45eff3f0169">
 
 ## Code Contributions that I'm proud of 
